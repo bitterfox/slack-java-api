@@ -13,7 +13,7 @@ import com.slack.api.Auth;
  *
  * @author bitter_fox
  */
-public class Main
+public class AuthTest
 {
     public static void main(String[] args)
     {
