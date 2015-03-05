@@ -35,13 +35,14 @@ class GetApiRequest implements ApiRequest
     {
         try
         {
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "GET Api URL", httpURLConnection.getURL());
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "GET: " + httpURLConnection.getURL());
             httpURLConnection.connect();
 
             InputStream is = httpURLConnection.getInputStream();
             JsonReader jr = Json.createReader(is);
 
             JsonObject rawResult = jr.readObject();
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, rawResult.toString());
 
             if (rawResult.getBoolean("ok"))
             {
