@@ -6,6 +6,8 @@
 
 package com.slack;
 
+import com.slack.data.json.SlackJsonUnmarshaller;
+import com.slack.data.impl.json.SlackJsonUnmarshallerImpl;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -18,6 +20,7 @@ import java.util.logging.Logger;
 public class Configure
 {
     private static URL DEFAULT_URL;
+    private static SlackJsonUnmarshaller DEFAULT_UNMARSHALLER = new SlackJsonUnmarshallerImpl();
 
     static
     {
@@ -52,5 +55,10 @@ public class Configure
     public URL url()
     {
         return url;
+    }
+
+    public SlackJsonUnmarshaller unmarshaller()
+    {
+        return DEFAULT_UNMARSHALLER;
     }
 }
