@@ -35,6 +35,13 @@ public class Channels
         return apiRequest.issue(Channels.List::new);
     }
 
+    public Channels.Info info(String channelId)
+    {
+        GetApiRequest apiRequest = api.get("info", builder -> builder.put("channel", channelId));
+
+        return apiRequest.issue(Channels.Info::new);
+    }
+
     public final class List extends ApiResult
     {
         private java.util.List<Channel> channels;
@@ -53,6 +60,22 @@ public class Channels
                     .map(slack.getConfigure().unmarshaller()::asChannel)
                     .collect(Collectors.toList());
             channels = Collections.unmodifiableList(list);
+        }
+    }
+
+    public final class Info extends ApiResult
+    {
+        private Channel channel;
+
+        public Channel channel()
+        {
+            return channel;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            channel = slack.getConfigure().unmarshaller().asChannel(result.getJsonObject("channel"));
         }
     }
 }
