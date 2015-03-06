@@ -35,6 +35,13 @@ public class Channels
         return apiRequest.issue(Channels.List::new);
     }
 
+    public Channels.Join join(String name)
+    {
+        GetApiRequest apiRequest = api.get("join", builder -> builder.put("name", name));
+
+        return apiRequest.issue(Channels.Join::new);
+    }
+
     public final class List extends ApiResult
     {
         private java.util.List<Channel> channels;
@@ -53,6 +60,31 @@ public class Channels
                     .map(slack.getConfigure().unmarshaller()::asChannel)
                     .collect(Collectors.toList());
             channels = Collections.unmodifiableList(list);
+        }
+    }
+
+    public final class Join extends ApiResult
+    {
+        private static final String ALREADY_IN_CHANNEL = "already_in_channel";
+
+        private Channel channel;
+        private boolean alreadyInChannel;
+
+        public Channel channel()
+        {
+            return channel;
+        }
+
+        public boolean alreadyInChannel()
+        {
+            return alreadyInChannel;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            channel = slack.getConfigure().unmarshaller().asChannel(result.getJsonObject("channel"));
+            alreadyInChannel = result.getBoolean(ALREADY_IN_CHANNEL, false);
         }
     }
 }

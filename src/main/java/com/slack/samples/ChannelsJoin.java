@@ -13,7 +13,7 @@ import com.slack.api.Channels;
  *
  * @author bitter_fox
  */
-public class ChannelsList
+public class ChannelsJoin
 {
     public static void main(String[] args)
     {
@@ -22,16 +22,14 @@ public class ChannelsList
                 config.token("YOUR-TOKEN")
         );
 
-        Channels.List channelsList = slack.channels().list();
+        Channels.Join channelsJoin = slack.channels().join("general");
 
-        channelsList.channels().stream()
-            .forEach(
-                channel ->
-                {
-                    System.out.println(channel.id());
-                    System.out.println(channel.name());
-                    System.out.println(channel.topic().value());
-                    System.out.println(channel.purpose().value());
-                });
+        System.out.println(channelsJoin.alreadyInChannel());
+        System.out.println(channelsJoin.channel().name());
+
+        channelsJoin = slack.channels().join("test");
+
+        System.out.println(channelsJoin.alreadyInChannel());
+        System.out.println(channelsJoin.channel().name());
     }
 }

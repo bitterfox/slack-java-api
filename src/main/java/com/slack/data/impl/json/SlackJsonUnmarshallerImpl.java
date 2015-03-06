@@ -59,7 +59,15 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
         channel.members(jo.getJsonArray(Names.MEMBERS).stream().map(JsonUtil::castToString).map(JsonString::getString).collect(Collectors.toList()));
         channel.topic(this.asTopic(jo.getJsonObject(Names.TOPIC)));
         channel.purpose(this.asPurpose(jo.getJsonObject(Names.PURPOSE)));
-        channel.numMembers(jo.getInt(Names.NUM_MEMBERS));
+
+        if (jo.containsKey(Names.NUM_MEMBERS))
+        {
+            channel.numMembers(jo.getInt(Names.NUM_MEMBERS));
+        }
+        else
+        {
+            channel.numMembers(channel.members().size());
+        }
 
         return channel;
     }
