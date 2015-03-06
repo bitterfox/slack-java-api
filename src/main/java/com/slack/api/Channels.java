@@ -8,12 +8,9 @@ package com.slack.api;
 
 import com.slack.Slack;
 import com.slack.data.Channel;
-import com.slack.data.impl.ChannelImpl;
-import com.slack.data.impl.PurposeImpl;
-import com.slack.data.impl.TopicImpl;
+import com.slack.util.JsonUtil;
 import java.util.Collections;
 import java.util.stream.Collectors;
-import javax.json.JsonObject;
 
 /**
  *
@@ -21,10 +18,12 @@ import javax.json.JsonObject;
  */
 public class Channels
 {
+    private Slack slack;
     private Api api;
 
     public Channels(Slack slack)
     {
+        this.slack = slack;
         api = new Api(slack, "channels");
     }
 
@@ -37,42 +36,9 @@ public class Channels
             {
                 java.util.List<Channel> channels =
                     rawResult.getJsonArray("channels").stream()
-                        .map(jv -> (JsonObject)jv)
-                        .map(
-                            jo ->
-                            {
-                                // TODO
-                                ChannelImpl channel = new ChannelImpl();
-                                channel.id(jo.getString("id"));
-                                channel.name(jo.getString("name"));
-                                channel.created(jo.getInt("created"));
-                                channel.creator(jo.getString("creator"));
-                                channel.isArchived(jo.getBoolean("is_archived"));
-                                channel.isMember(jo.getBoolean("is_member"));
-                                channel.numMembers(jo.getInt("num_members"));
-
-                                JsonObject topicObject = jo.getJsonObject("topic");
-                                {
-                                    TopicImpl topic = new TopicImpl();
-                                    topic.value(topicObject.getString("value"));
-                                    topic.creator(topicObject.getString("creator"));
-                                    topic.lastSet(topicObject.getInt("last_set"));
-
-                                    channel.topic(topic);
-                                }
-
-                                JsonObject purposeObject = jo.getJsonObject("purpose");
-                                {
-                                    PurposeImpl purpose = new PurposeImpl();
-                                    purpose.value(purposeObject.getString("value"));
-                                    purpose.creator(purposeObject.getString("creator"));
-                                    purpose.lastSet(purposeObject.getInt("last_set"));
-
-                                    channel.purpose(purpose);
-                                }
-
-                                return channel;
-                            }).collect(Collectors.toList());
+                        .map(JsonUtil::castToObject)
+                        .map(slack.getConfigure().unmarshaller()::asChannel)
+                        .collect(Collectors.toList());
                 result.channels(channels);
             });
     }
