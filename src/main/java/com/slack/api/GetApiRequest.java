@@ -31,7 +31,7 @@ class GetApiRequest implements ApiRequest
     }
 
     @Override
-    public <T> T issue(Supplier<? extends T> supplier, BiConsumer<T, JsonObject> consumer)
+    public <T extends ApiResult> T issue(Supplier<? extends T> supplier)
     {
         try
         {
@@ -47,7 +47,7 @@ class GetApiRequest implements ApiRequest
             if (rawResult.getBoolean("ok"))
             {
                 T result = supplier.get();
-                consumer.accept(result, rawResult);
+                result.apply(rawResult);
                 return result;
             }
             else

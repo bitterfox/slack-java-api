@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.JsonObject;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -31,25 +32,10 @@ public class Auth
     {
         ApiRequest req = api.get("test", b -> {});
 
-        return req.issue(Auth.Test::new ,
-            (result, rawResult) ->
-            {
-                try
-                {
-                    result.url(new URL(rawResult.getString("url")));
-                    result.team(rawResult.getString("team"));
-                    result.user(rawResult.getString("user"));
-                    result.userId(rawResult.getString("user_id"));
-                    result.teamId(rawResult.getString("team_id"));
-                }
-                catch (MalformedURLException ex)
-                {
-                    Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
+        return req.issue(Auth.Test::new);
     }
 
-    public static class Test
+    public static final class Test extends ApiResult
     {
         private URL url;
         private String team;
@@ -57,19 +43,9 @@ public class Auth
         private String teamId;
         private String userId;
 
-        void url(URL url)
-        {
-            this.url = url;
-        }
-
         public URL url()
         {
             return url;
-        }
-
-        void team(String team)
-        {
-            this.team = team;
         }
 
         public String team()
@@ -77,19 +53,9 @@ public class Auth
             return team;
         }
 
-        void user(String user)
-        {
-            this.user = user;
-        }
-
         public String user()
         {
             return user;
-        }
-
-        void teamId(String teamId)
-        {
-            this.teamId = teamId;
         }
 
         public String teamId()
@@ -97,14 +63,26 @@ public class Auth
             return teamId;
         }
 
-        void userId(String userId)
-        {
-            this.userId = userId;
-        }
-
         public String userId()
         {
             return userId;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            try
+            {
+                url = new URL(result.getString("url"));
+                team = result.getString("team");
+                user = result.getString("user");
+                userId = result.getString("user_id");
+                teamId = result.getString("team_id");
+            }
+            catch (MalformedURLException ex)
+            {
+                Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

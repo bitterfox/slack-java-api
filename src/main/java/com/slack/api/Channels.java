@@ -11,6 +11,7 @@ import com.slack.data.Channel;
 import com.slack.util.JsonUtil;
 import java.util.Collections;
 import java.util.stream.Collectors;
+import javax.json.JsonObject;
 
 /**
  *
@@ -31,30 +32,27 @@ public class Channels
     {
         GetApiRequest apiRequest = api.get("list", builder -> {});
 
-        return apiRequest.issue(Channels.List::new,
-            (result, rawResult) ->
-            {
-                java.util.List<Channel> channels =
-                    rawResult.getJsonArray("channels").stream()
-                        .map(JsonUtil::castToObject)
-                        .map(slack.getConfigure().unmarshaller()::asChannel)
-                        .collect(Collectors.toList());
-                result.channels(channels);
-            });
+        return apiRequest.issue(Channels.List::new);
     }
 
-    public static class List
+    public final class List extends ApiResult
     {
         private java.util.List<Channel> channels;
-
-        void channels(java.util.List<Channel> channels)
-        {
-            this.channels = Collections.unmodifiableList(channels);
-        }
 
         public java.util.List<Channel> channels()
         {
             return channels;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            java.util.List<Channel> list =
+                result.getJsonArray("channels").stream()
+                    .map(JsonUtil::castToObject)
+                    .map(slack.getConfigure().unmarshaller()::asChannel)
+                    .collect(Collectors.toList());
+            channels = Collections.unmodifiableList(list);
         }
     }
 }

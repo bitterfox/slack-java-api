@@ -6,15 +6,13 @@
 
 package com.slack.api;
 
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 import javax.json.JsonObject;
 
 /**
  *
  * @author bitter_fox
  */
-interface ApiRequest
+public abstract class ApiResult
 {
-    <T extends ApiResult> T issue(Supplier<? extends T> supplier);
+    protected abstract void apply(JsonObject result);
 }
