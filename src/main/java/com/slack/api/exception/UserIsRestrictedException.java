@@ -4,13 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.slack.api;
+package com.slack.api.exception;
 
 /**
  *
  * @author bitter_fox
  */
-public enum Errors
+public class UserIsRestrictedException extends SlackException
 {
-    NOT_AUTHED;
 }

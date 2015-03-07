@@ -21,7 +21,7 @@ import javax.json.JsonReader;
  *
  * @author bitter_fox
  */
-class GetApiRequest implements ApiRequest
+class GetApiRequest extends AbstractApiRequest
 {
     private HttpURLConnection httpURLConnection;
 
@@ -52,7 +52,8 @@ class GetApiRequest implements ApiRequest
             }
             else
             {
-                throw new RuntimeException();
+                this.error(rawResult.getString("error")); // always throw some exception
+                return null; // not reached // XXX
             }
         }
         catch (IOException e)
