@@ -6,6 +6,7 @@
 
 package com.slack.util;
 
+import java.util.Optional;
 import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
@@ -24,5 +25,12 @@ public class JsonUtil
     public static JsonObject castToObject(JsonValue jv)
     {
         return (JsonObject)jv;
+    }
+
+    public static Optional<String> getStringOpt(JsonObject jo, String key)
+    {
+        return jo.containsKey(key)
+            ? Optional.of(jo.getString(key))
+            : Optional.empty();
     }
 }

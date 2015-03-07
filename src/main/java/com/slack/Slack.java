@@ -8,6 +8,7 @@ package com.slack;
 
 import com.slack.api.Auth;
 import com.slack.api.Channels;
+import com.slack.api.Users;
 import java.util.function.Consumer;
 
 /**
@@ -19,12 +20,14 @@ public class Slack
     private Configure config;
     private Auth auth;
     private Channels channels;
+    private Users users;
 
     private Slack(Configure config)
     {
         this.config = config;
         auth = new Auth(this);
         channels = new Channels(this);
+        users = new Users(this);
     }
 
     public static Slack create(Consumer<Configure> consumer)
@@ -43,6 +46,11 @@ public class Slack
     public Channels channels()
     {
         return channels;
+    }
+
+    public Users users()
+    {
+        return users;
     }
 
     public void configure(Consumer<Configure> consumer)
