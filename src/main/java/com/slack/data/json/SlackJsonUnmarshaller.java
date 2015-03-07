@@ -7,8 +7,10 @@
 package com.slack.data.json;
 
 import com.slack.data.Channel;
+import com.slack.data.Profile;
 import com.slack.data.Purpose;
 import com.slack.data.Topic;
+import com.slack.data.User;
 import javax.json.JsonObject;
 
 /**
@@ -20,4 +22,7 @@ public interface SlackJsonUnmarshaller
     Channel asChannel(JsonObject jo);
     Topic asTopic(JsonObject jo);
     Purpose asPurpose(JsonObject jo);
+
+    User asUser(JsonObject jo);
+    Profile asProfile(JsonObject jo);
 }
