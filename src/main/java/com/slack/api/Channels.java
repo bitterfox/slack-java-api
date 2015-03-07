@@ -28,6 +28,13 @@ public class Channels
         api = new Api(slack, "channels");
     }
 
+    public Channels.Create create(String name)
+    {
+        GetApiRequest apiRequest = api.get("create", builder -> builder.put("name", name));
+
+        return apiRequest.issue(Channels.Create::new);
+    }
+
     public Channels.List list()
     {
         GetApiRequest apiRequest = api.get("list", builder -> {});
@@ -40,6 +47,22 @@ public class Channels
         GetApiRequest apiRequest = api.get("join", builder -> builder.put("name", name));
 
         return apiRequest.issue(Channels.Join::new);
+    }
+
+    public final class Create extends ApiResult
+    {
+        private Channel channel;
+
+        public Channel channel()
+        {
+            return channel;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            channel = slack.getConfigure().unmarshaller().asChannel(result.getJsonObject("channel"));
+        }
     }
 
     public final class List extends ApiResult
