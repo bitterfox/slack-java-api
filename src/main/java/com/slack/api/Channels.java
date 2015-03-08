@@ -37,7 +37,7 @@ public class Channels
 
     public Channels.List list()
     {
-        GetApiRequest apiRequest = api.get("list", builder -> {});
+        GetApiRequest apiRequest = api.get("list");
 
         return apiRequest.issue(Channels.List::new);
     }

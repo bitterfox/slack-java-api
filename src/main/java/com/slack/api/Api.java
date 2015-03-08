@@ -34,6 +34,11 @@ class Api
         this.clazz = clazz;
     }
 
+    public GetApiRequest get(String method)
+    {
+        return this.get(method, builder -> {});
+    }
+
     public GetApiRequest get(String method, Consumer<Api.GetBuilder> consumer)
     {
         GetBuilder builder = new GetBuilder();

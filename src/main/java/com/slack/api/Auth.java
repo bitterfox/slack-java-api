@@ -30,7 +30,7 @@ public class Auth
 
     public Auth.Test test()
     {
-        ApiRequest req = api.get("test", b -> {});
+        ApiRequest req = api.get("test");
 
         return req.issue(Auth.Test::new);
     }

@@ -37,7 +37,7 @@ public class Users
 
     public Users.List list()
     {
-        ApiRequest apiRequest = api.get("list", builder -> {});
+        ApiRequest apiRequest = api.get("list");
 
         return apiRequest.issue(Users.List::new);
     }
