@@ -28,6 +28,7 @@ public class Channels
         api = new Api(slack, "channels");
     }
 
+    @ApiIssuer
     public Channels.Create create(String name)
     {
         GetApiRequest apiRequest = api.get("create", builder -> builder.put("name", name));
@@ -35,6 +36,7 @@ public class Channels
         return apiRequest.issue(Channels.Create::new);
     }
 
+    @ApiIssuer
     public Channels.List list()
     {
         GetApiRequest apiRequest = api.get("list");
@@ -42,6 +44,7 @@ public class Channels
         return apiRequest.issue(Channels.List::new);
     }
 
+    @ApiIssuer
     public Channels.Join join(String name)
     {
         GetApiRequest apiRequest = api.get("join", builder -> builder.put("name", name));

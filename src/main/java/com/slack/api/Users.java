@@ -29,6 +29,7 @@ public class Users
         api = new Api(slack, "users");
     }
 
+    @ApiIssuer
     public Users.Info info(UserId userId)
     {
         ApiRequest apiRequest = api.get("info", builder -> builder.put("user", userId.id()));
@@ -36,6 +37,7 @@ public class Users
         return apiRequest.issue(Users.Info::new);
     }
 
+    @ApiIssuer
     public Users.List list()
     {
         ApiRequest apiRequest = api.get("list");
