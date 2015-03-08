@@ -7,12 +7,12 @@
 package com.slack.api;
 
 import com.slack.api.exception.UserNotFoundException;
+import com.slack.data.impl.UserIdImpl;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -22,7 +22,7 @@ public class UsersInfoTest extends AbstractApiTest
 {
     public UsersInfoTest()
     {
-        super(slack -> slack.users().info(""));
+        super(slack -> slack.users().info(new UserIdImpl("")));
     }
 
     @BeforeClass
@@ -48,6 +48,6 @@ public class UsersInfoTest extends AbstractApiTest
     @Test
     public void testUserNotFound()
     {
-        Tests.assertException(() -> this.authedSlack().users().info(""), UserNotFoundException.class);
+        Tests.assertException(() -> this.authedSlack().users().info(new UserIdImpl("")), UserNotFoundException.class);
     }
 }

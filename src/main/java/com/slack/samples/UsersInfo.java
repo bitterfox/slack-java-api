@@ -22,7 +22,9 @@ public class UsersInfo
                 config.token("YOUR-TOKEN")
         );
 
-        User user = slack.users().info("USER-ID").user();
+        User user = slack.users().info(
+            slack.users().list().members().stream()
+                .findAny().get().id()).user();
 
         System.out.println(user.id());
         System.out.println(user.name());

@@ -16,6 +16,7 @@ import com.slack.data.impl.ChannelImpl;
 import com.slack.data.impl.ProfileImpl;
 import com.slack.data.impl.PurposeImpl;
 import com.slack.data.impl.TopicImpl;
+import com.slack.data.impl.UserIdImpl;
 import com.slack.data.impl.UserImpl;
 import com.slack.data.json.SlackJsonUnmarshaller;
 import com.slack.util.JsonUtil;
@@ -94,11 +95,11 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
         channel.name(jo.getString(Names.NAME));
         channel.isChannel(jo.getBoolean(Names.IS_CHANNEL));
         channel.created(jo.getInt(Names.CREATED));
-        channel.creator(jo.getString(Names.CREATOR));
+        channel.creator(new UserIdImpl(jo.getString(Names.CREATOR)));
         channel.isArchived(jo.getBoolean(Names.IS_ARCHIVED));
         channel.isGeneral(jo.getBoolean(Names.IS_GENERAL));
         channel.isMember(jo.getBoolean(Names.IS_MEMBER));
-        channel.members(jo.getJsonArray(Names.MEMBERS).stream().map(JsonUtil::castToString).map(JsonString::getString).collect(Collectors.toList()));
+        channel.members(jo.getJsonArray(Names.MEMBERS).stream().map(JsonUtil::castToString).map(JsonString::getString).map(UserIdImpl::new).collect(Collectors.toList()));
         channel.topic(this.asTopic(jo.getJsonObject(Names.TOPIC)));
         channel.purpose(this.asPurpose(jo.getJsonObject(Names.PURPOSE)));
 
@@ -120,7 +121,7 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
         TopicImpl topic = new TopicImpl();
 
         topic.value(jo.getString(Names.VALUE));
-        topic.creator(jo.getString(Names.CREATOR));
+        topic.creator(new UserIdImpl(jo.getString(Names.CREATOR)));
         topic.lastSet(jo.getInt(Names.LAST_SET));
 
         return topic;
@@ -132,7 +133,7 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
         PurposeImpl purpose = new PurposeImpl();
 
         purpose.value(jo.getString(Names.VALUE));
-        purpose.creator(jo.getString(Names.CREATOR));
+        purpose.creator(new UserIdImpl(jo.getString(Names.CREATOR)));
         purpose.lastSet(jo.getInt(Names.LAST_SET));
 
         return purpose;
@@ -143,7 +144,7 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
     {
         UserImpl user = new UserImpl();
 
-        user.id(jo.getString(Names.ID));
+        user.id(new UserIdImpl(jo.getString(Names.ID)));
         user.name(jo.getString(Names.NAME));
         user.deleted(jo.getBoolean(Names.DELETED));
         // TODO user.status

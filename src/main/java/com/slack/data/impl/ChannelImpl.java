@@ -9,6 +9,7 @@ package com.slack.data.impl;
 import com.slack.data.Channel;
 import com.slack.data.Purpose;
 import com.slack.data.Topic;
+import com.slack.data.UserId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,11 +24,11 @@ public class ChannelImpl implements Channel
     private String name;
     private boolean isChannel;
     private int created;
-    private String creator;
+    private UserId creator;
     private boolean isArchived;
     private boolean isGeneral;
     private boolean isMember;
-    private List<String> members;
+    private List<UserId> members;
     private Topic topic;
     private Purpose purpose;
     private int numMembers;
@@ -76,13 +77,13 @@ public class ChannelImpl implements Channel
         return created;
     }
 
-    public void creator(String creator)
+    public void creator(UserId creator)
     {
         this.creator = creator;
     }
 
     @Override
-    public String creator()
+    public UserId creator()
     {
         return creator;
     }
@@ -120,15 +121,15 @@ public class ChannelImpl implements Channel
         return isMember;
     }
 
-    public void members(List<String> members)
+    public void members(List<UserId> members)
     {
         this.members = Collections.unmodifiableList(members);
     }
 
     @Override
-    public List<String> members()
+    public List<UserId> members()
     {
-        return Collections.unmodifiableList(members);
+        return this.members;
     }
 
     public void topic(Topic topic)

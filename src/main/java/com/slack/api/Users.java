@@ -8,6 +8,7 @@ package com.slack.api;
 
 import com.slack.Slack;
 import com.slack.data.User;
+import com.slack.data.UserId;
 import com.slack.util.JsonUtil;
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -28,9 +29,9 @@ public class Users
         api = new Api(slack, "users");
     }
 
-    public Users.Info info(String userId)
+    public Users.Info info(UserId userId)
     {
-        ApiRequest apiRequest = api.get("info", builder -> builder.put("user", userId));
+        ApiRequest apiRequest = api.get("info", builder -> builder.put("user", userId.id()));
 
         return apiRequest.issue(Users.Info::new);
     }

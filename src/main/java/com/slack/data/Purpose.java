@@ -13,6 +13,6 @@ package com.slack.data;
 public interface Purpose
 {
     String value();
-    String creator();
+    UserId creator();
     int lastSet();
 }
