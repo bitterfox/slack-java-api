@@ -47,12 +47,7 @@ public class Users
         @Override
         protected void apply(JsonObject result)
         {
-            java.util.List<User> list = result.getJsonArray("members").stream()
-                .map(JsonUtil::castToObject)
-                .map(slack.getConfigure().unmarshaller()::asUser)
-                .collect(Collectors.toList());
-
-            this.members = Collections.unmodifiableList(list);
+            members = slack.getConfigure().unmarshaller().asUsers(result.getJsonArray("members"));
         }
     }
 }
