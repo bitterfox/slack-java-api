@@ -18,6 +18,8 @@ import com.slack.api.exception.SlackException;
 import com.slack.api.exception.TokenRevokedException;
 import com.slack.api.exception.UserIsBotException;
 import com.slack.api.exception.UserIsRestrictedException;
+import com.slack.api.exception.UserNotFoundException;
+import com.slack.api.exception.UserNotVisible;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -42,9 +44,11 @@ public abstract class AbstractApiRequest implements ApiRequest
         this.putError(Error.RESTRICTED_ACTION, RestrictedActionException::new);
         this.putError(Error.NO_CHANNEL, NoChannelException::new);
         this.putError(Error.IS_ARCHIVED, IsArchivedException::new);
-        
+
         this.putError(Error.USER_IS_BOT, UserIsBotException::new);
         this.putError(Error.USER_IS_RESTRICTED, UserIsRestrictedException::new);
+        this.putError(Error.USER_NOT_FOUND, UserNotFoundException::new);
+        this.putError(Error.USER_NOT_VISIBLE, UserNotVisible::new);
     }
 
     private void putError(Error e, Supplier<? extends SlackException> s)
