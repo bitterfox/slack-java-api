@@ -25,6 +25,8 @@ public enum Error
 
     USER_IS_BOT("user_is_bot"),
     USER_IS_RESTRICTED("user_is_restricted"),
+    USER_NOT_FOUND("user_not_found"),
+    USER_NOT_VISIBLE("user_not_visible"),
     ;
 
     private String code;

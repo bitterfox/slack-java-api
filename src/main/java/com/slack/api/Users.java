@@ -28,11 +28,34 @@ public class Users
         api = new Api(slack, "users");
     }
 
+    public Users.Info info(String userId)
+    {
+        ApiRequest apiRequest = api.get("info", builder -> builder.put("user", userId));
+
+        return apiRequest.issue(Users.Info::new);
+    }
+
     public Users.List list()
     {
         ApiRequest apiRequest = api.get("list", builder -> {});
 
         return apiRequest.issue(Users.List::new);
+    }
+
+    public final class Info extends ApiResult
+    {
+        private User user;
+
+        public User user()
+        {
+            return user;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            user = slack.getConfigure().unmarshaller().asUser(result.getJsonObject("user"));
+        }
     }
 
     public final class List extends ApiResult
