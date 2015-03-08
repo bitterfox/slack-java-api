@@ -10,11 +10,6 @@ package com.slack.api.exception;
  *
  * @author bitter_fox
  */
-public class SlackException extends RuntimeException
+public class TokenRevokedException extends SlackException
 {
-    public SlackException() {}
-    public SlackException(String message)
-    {
-        super(message);
-    }
 }

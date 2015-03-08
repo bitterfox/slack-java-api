@@ -9,6 +9,7 @@ package com.slack.api;
 import com.slack.Slack;
 import com.slack.api.exception.InvalidAuthException;
 import com.slack.api.exception.NotAuthedException;
+import com.slack.api.exception.TokenRevokedException;
 import java.util.function.Consumer;
 import org.junit.Test;
 
@@ -18,7 +19,8 @@ import org.junit.Test;
  */
 public abstract class AbstractApiTest
 {
-    private Slack authedSlack = Slack.create(config -> config.token("xoxp-2569650323-2570554292-2604375399-4dc6fa"));
+    private Slack authedSlack = Slack.create(config -> config.token("YOUR-TOKEN"));
+    private Slack tokenRevokedSlack = Slack.create(config -> config.token("xoxp-2569650323-2570554292-2604375399-4dc6fa"));
     private Slack notAuthedSlack = Slack.create(config -> config.token(""));
     private Slack invalidAuthSlack = Slack.create(config -> config.token("invalid"));
 
@@ -34,6 +36,11 @@ public abstract class AbstractApiTest
         return authedSlack;
     }
 
+    protected Slack tokenRevokedSlack()
+    {
+        return tokenRevokedSlack;
+    }
+
     protected Slack notAuthedSlack()
     {
         return notAuthedSlack;
@@ -42,6 +49,12 @@ public abstract class AbstractApiTest
     protected Slack invalidAuthSlack()
     {
         return invalidAuthSlack;
+    }
+
+    @Test
+    public void testTokenRevoked()
+    {
+        this.testError(this.tokenRevokedSlack(), TokenRevokedException.class);
     }
 
     @Test

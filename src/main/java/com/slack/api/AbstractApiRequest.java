@@ -15,6 +15,7 @@ import com.slack.api.exception.NoChannelException;
 import com.slack.api.exception.NotAuthedException;
 import com.slack.api.exception.RestrictedActionException;
 import com.slack.api.exception.SlackException;
+import com.slack.api.exception.TokenRevokedException;
 import com.slack.api.exception.UserIsBotException;
 import com.slack.api.exception.UserIsRestrictedException;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public abstract class AbstractApiRequest implements ApiRequest
 
     public AbstractApiRequest()
     {
+        this.putError(Error.TOKEN_REVOKED, TokenRevokedException::new);
         this.putError(Error.NOT_AUTHED, NotAuthedException::new);
         this.putError(Error.INVALID_AUTH, InvalidAuthException::new);
         this.putError(Error.ACCOUNT_INACTIVE, AccountInactiveException::new);
@@ -52,6 +54,6 @@ public abstract class AbstractApiRequest implements ApiRequest
 
     protected void error(String error)
     {
-        throw errors.getOrDefault(error, SlackException::new).get();
+        throw errors.getOrDefault(error, () -> new SlackException(error)).get();
     }
 }

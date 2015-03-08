@@ -12,6 +12,7 @@ package com.slack.api;
  */
 public enum Error
 {
+    TOKEN_REVOKED("token_revoked"),
     NOT_AUTHED("not_authed"),
     INVALID_AUTH("invalid_auth"),
     ACCOUNT_INACTIVE("account_inactive"),
