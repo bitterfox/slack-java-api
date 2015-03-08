@@ -28,6 +28,7 @@ public class Auth
         api = new Api(slack, "auth");
     }
 
+    @ApiIssuer
     public Auth.Test test()
     {
         ApiRequest req = api.get("test");
