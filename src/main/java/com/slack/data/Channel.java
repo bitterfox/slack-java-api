@@ -18,11 +18,11 @@ public interface Channel
     String name();
     boolean isChannel();
     int created();
-    String creator();
+    UserId creator();
     boolean isArchived();
     boolean isGeneral();
     boolean isMember();
-    List<String> members();
+    List<UserId> members();
     Topic topic();
     Purpose purpose();
     int numMembers();

@@ -10,9 +10,7 @@ package com.slack.data;
  *
  * @author bitter_fox
  */
-public interface Topic
+public interface UserId
 {
-    String value();
-    UserId creator();
-    int lastSet();
+    String id();
 }

@@ -7,6 +7,7 @@
 package com.slack.data.impl;
 
 import com.slack.data.Purpose;
+import com.slack.data.UserId;
 
 /**
  *
@@ -15,7 +16,7 @@ import com.slack.data.Purpose;
 public class PurposeImpl implements Purpose
 {
     private String value;
-    private String creator;
+    private UserId creator;
     private int lastSet;
 
     public void value(String value)
@@ -29,13 +30,13 @@ public class PurposeImpl implements Purpose
         return value;
     }
 
-    public void creator(String creator)
+    public void creator(UserId creator)
     {
         this.creator = creator;
     }
 
     @Override
-    public String creator()
+    public UserId creator()
     {
         return creator;
     }

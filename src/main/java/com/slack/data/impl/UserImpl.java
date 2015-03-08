@@ -8,6 +8,7 @@ package com.slack.data.impl;
 
 import com.slack.data.Profile;
 import com.slack.data.User;
+import com.slack.data.UserId;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -16,7 +17,7 @@ import javafx.scene.paint.Color;
 
 public class UserImpl implements User
 {
-    private String id;
+    private UserId id;
     private String name;
     private boolean deleted;
     private Color color;
@@ -33,13 +34,13 @@ public class UserImpl implements User
     private boolean isBot;
     private boolean hasFiles;
 
-    public void id(String id)
+    public void id(UserId id)
     {
         this.id = id;
     }
 
     @Override
-    public String id()
+    public UserId id()
     {
         return id;
     }

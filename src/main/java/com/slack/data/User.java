@@ -14,7 +14,7 @@ import java.awt.Color;
  */
 public interface User
 {
-    String id();
+    UserId id();
     String name();
     boolean deleted();
     // TODO status();
