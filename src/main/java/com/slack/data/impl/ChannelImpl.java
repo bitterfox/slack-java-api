@@ -13,6 +13,7 @@ import com.slack.data.UserId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -163,5 +164,51 @@ public class ChannelImpl implements Channel
     public int numMembers()
     {
         return numMembers;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 61 * hash + Objects.hashCode(this.id);
+        hash = 61 * hash + Objects.hashCode(this.name);
+        hash = 61 * hash + (this.isChannel ? 1 : 0);
+        hash = 61 * hash + this.created;
+        hash = 61 * hash + Objects.hashCode(this.creator);
+        hash = 61 * hash + (this.isArchived ? 1 : 0);
+        hash = 61 * hash + (this.isGeneral ? 1 : 0);
+        hash = 61 * hash + (this.isMember ? 1 : 0);
+        hash = 61 * hash + Objects.hashCode(this.members);
+        hash = 61 * hash + Objects.hashCode(this.topic);
+        hash = 61 * hash + Objects.hashCode(this.purpose);
+        hash = 61 * hash + this.numMembers;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final ChannelImpl other = (ChannelImpl)obj;
+
+        return Objects.equals(this.id, other.id) &&
+            Objects.equals(this.name, other.name) &&
+            this.isChannel == other.isChannel &&
+            this.created == other.created &&
+            Objects.equals(this.creator, other.creator) &&
+            this.isArchived == other.isArchived &&
+            this.isGeneral == other.isGeneral &&
+            this.isMember == other.isMember &&
+            Objects.equals(this.members, other.members) &&
+            Objects.equals(this.topic, other.topic) &&
+            Objects.equals(this.purpose, other.purpose) &&
+            this.numMembers == other.numMembers;
     }
 }
