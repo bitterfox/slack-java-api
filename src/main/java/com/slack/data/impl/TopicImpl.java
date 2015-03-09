@@ -8,6 +8,7 @@ package com.slack.data.impl;
 
 import com.slack.data.Topic;
 import com.slack.data.UserId;
+import java.util.Objects;
 
 /**
  *
@@ -51,4 +52,33 @@ public class TopicImpl implements Topic
     {
         return lastSet;
     }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 5;
+        hash = 67 * hash + Objects.hashCode(this.value);
+        hash = 67 * hash + Objects.hashCode(this.creator);
+        hash = 67 * hash + this.lastSet;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final TopicImpl other = (TopicImpl)obj;
+
+        return Objects.equals(this.value, other.value) &&
+            Objects.equals(this.creator, other.creator) &&
+            this.lastSet == other.lastSet;
+    }
+
 }

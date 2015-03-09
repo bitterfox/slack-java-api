@@ -8,6 +8,7 @@ package com.slack.data.impl;
 
 import com.slack.data.Purpose;
 import com.slack.data.UserId;
+import java.util.Objects;
 
 /**
  *
@@ -50,5 +51,33 @@ public class PurposeImpl implements Purpose
     public int lastSet()
     {
         return lastSet;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 3;
+        hash = 37 * hash + Objects.hashCode(this.value);
+        hash = 37 * hash + Objects.hashCode(this.creator);
+        hash = 37 * hash + this.lastSet;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final PurposeImpl other = (PurposeImpl)obj;
+
+        return Objects.equals(this.value, other.value) &&
+            Objects.equals(this.creator, other.creator) &&
+            this.lastSet == other.lastSet;
     }
 }

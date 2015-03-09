@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.logging.Level;
@@ -214,5 +215,45 @@ public class ProfileImpl implements Profile
     public String email()
     {
         return email;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 5;
+        hash = 53 * hash + Objects.hashCode(this.images);
+        hash = 53 * hash + Objects.hashCode(this.firstName);
+        hash = 53 * hash + Objects.hashCode(this.lastName);
+        hash = 53 * hash + Objects.hashCode(this.title);
+        hash = 53 * hash + Objects.hashCode(this.skype);
+        hash = 53 * hash + Objects.hashCode(this.phone);
+        hash = 53 * hash + Objects.hashCode(this.realName);
+        hash = 53 * hash + Objects.hashCode(this.realNameNormalized);
+        hash = 53 * hash + Objects.hashCode(this.email);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final ProfileImpl other = (ProfileImpl)obj;
+
+        return Objects.equals(this.images, other.images) &&
+            Objects.equals(this.firstName, other.firstName) &&
+            Objects.equals(this.lastName, other.lastName) &&
+            Objects.equals(this.title, other.title) &&
+            Objects.equals(this.skype, other.skype) &&
+            Objects.equals(this.phone, other.phone) &&
+            Objects.equals(this.realName, other.realName) &&
+            Objects.equals(this.realNameNormalized, other.realNameNormalized) &&
+            Objects.equals(this.email, other.email);
     }
 }

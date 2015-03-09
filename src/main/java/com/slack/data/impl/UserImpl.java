@@ -12,6 +12,7 @@ import com.slack.data.UserId;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.Objects;
 import javafx.scene.paint.Color;
 
 
@@ -208,5 +209,59 @@ public class UserImpl implements User
     public boolean hasFiles()
     {
         return hasFiles;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 5;
+        hash = 59 * hash + Objects.hashCode(this.id);
+        hash = 59 * hash + Objects.hashCode(this.name);
+        hash = 59 * hash + (this.deleted ? 1 : 0);
+        hash = 59 * hash + Objects.hashCode(this.color);
+        hash = 59 * hash + Objects.hashCode(this.realName);
+        hash = 59 * hash + Objects.hashCode(this.timeZone);
+        hash = 59 * hash + Objects.hashCode(this.timeZoneId);
+        hash = 59 * hash + Objects.hashCode(this.timeZoneLabel);
+        hash = 59 * hash + Objects.hashCode(this.profile);
+        hash = 59 * hash + (this.isAdmin ? 1 : 0);
+        hash = 59 * hash + (this.isOwner ? 1 : 0);
+        hash = 59 * hash + (this.isPrimaryOwner ? 1 : 0);
+        hash = 59 * hash + (this.isRestricted ? 1 : 0);
+        hash = 59 * hash + (this.isUltraRestricted ? 1 : 0);
+        hash = 59 * hash + (this.isBot ? 1 : 0);
+        hash = 59 * hash + (this.hasFiles ? 1 : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final UserImpl other = (UserImpl)obj;
+
+        return Objects.equals(this.id, other.id) &&
+            Objects.equals(this.name, other.name) &&
+            this.deleted == other.deleted &&
+            Objects.equals(this.color, other.color) &&
+            Objects.equals(this.realName, other.realName) &&
+            Objects.equals(this.timeZone, other.timeZone) &&
+            Objects.equals(this.timeZoneId, other.timeZoneId) &&
+            Objects.equals(this.timeZoneLabel, other.timeZoneLabel) &&
+            Objects.equals(this.profile, other.profile) &&
+            this.isAdmin == other.isAdmin &&
+            this.isOwner == other.isOwner &&
+            this.isPrimaryOwner == other.isPrimaryOwner &&
+            this.isRestricted == other.isRestricted &&
+            this.isUltraRestricted == other.isUltraRestricted &&
+            this.isBot == other.isBot &&
+            this.hasFiles == other.hasFiles;
     }
 }
