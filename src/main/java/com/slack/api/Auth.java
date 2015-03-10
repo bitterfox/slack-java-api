@@ -3,6 +3,8 @@ package com.slack.api;
 
 
 import com.slack.Slack;
+import com.slack.data.UserId;
+import com.slack.data.impl.UserIdImpl;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -42,7 +44,7 @@ public class Auth
         private String team;
         private String user;
         private String teamId;
-        private String userId;
+        private UserId userId;
 
         public URL url()
         {
@@ -64,7 +66,7 @@ public class Auth
             return teamId;
         }
 
-        public String userId()
+        public UserId userId()
         {
             return userId;
         }
@@ -77,7 +79,7 @@ public class Auth
                 url = new URL(result.getString("url"));
                 team = result.getString("team");
                 user = result.getString("user");
-                userId = result.getString("user_id");
+                userId = new UserIdImpl(result.getString("user_id"));
                 teamId = result.getString("team_id");
             }
             catch (MalformedURLException ex)
