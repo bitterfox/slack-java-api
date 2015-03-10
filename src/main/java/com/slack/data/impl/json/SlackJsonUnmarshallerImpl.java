@@ -13,6 +13,7 @@ import com.slack.data.Purpose;
 import com.slack.data.Topic;
 import com.slack.data.User;
 import com.slack.data.UserId;
+import com.slack.data.impl.ChannelIdImpl;
 import com.slack.data.impl.ChannelImpl;
 import com.slack.data.impl.ProfileImpl;
 import com.slack.data.impl.PurposeImpl;
@@ -168,7 +169,7 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
     {
         ChannelImpl channel = new ChannelImpl();
 
-        this.unmarshalString(jo,              Names.ID,          channel::id);
+        this.unmarshalString(jo,              Names.ID,          channel::id,          ChannelIdImpl::new);
         this.unmarshalString(jo,              Names.NAME,        channel::name);
         this.unmarshalBoolean(jo,             Names.IS_CHANNEL,  channel::isChannel);
         this.unmarshalInt(jo,                 Names.CREATED,     channel::created);

@@ -6,6 +6,7 @@
 
 package com.slack.api;
 
+import com.slack.data.impl.ChannelIdImpl;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -21,7 +22,7 @@ public class ChannelsRenameTest extends AbstractApiTest
 {
     public ChannelsRenameTest()
     {
-        super(slack -> slack.channels().rename("", ""));
+        super(slack -> slack.channels().rename(new ChannelIdImpl(""), ""));
     }
 
     @BeforeClass

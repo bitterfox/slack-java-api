@@ -8,6 +8,8 @@ package com.slack.api;
 
 import com.slack.Slack;
 import com.slack.data.Channel;
+import com.slack.data.ChannelId;
+import com.slack.data.impl.ChannelIdImpl;
 import com.slack.util.JsonUtil;
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -45,9 +47,9 @@ public class Channels
     }
 
     @ApiIssuer
-    public Channels.Leave leave(String id)
+    public Channels.Leave leave(ChannelId id)
     {
-        GetApiRequest apiRequest = api.get("leave", builder -> builder.put("channel", id));
+        GetApiRequest apiRequest = api.get("leave", builder -> builder.put("channel", id.id()));
 
         return apiRequest.issue(Channels.Leave::new);
     }
@@ -61,10 +63,10 @@ public class Channels
     }
 
     @ApiIssuer
-    public Channels.Rename rename(String id, String newName)
+    public Channels.Rename rename(ChannelId id, String newName)
     {
         GetApiRequest apiRequest = api.get("rename", builder ->
-            builder.put("channel", id)
+            builder.put("channel", id.id())
                 .put("name", newName));
 
         return apiRequest.issue(Channels.Rename::new);
@@ -145,12 +147,12 @@ public class Channels
 
     public final class Rename extends ApiResult
     {
-        private String id;
+        private ChannelId id;
         private boolean isChannel;
         private String name;
         private int created;
 
-        public String id()
+        public ChannelId id()
         {
             return id;
         }
@@ -174,7 +176,7 @@ public class Channels
         protected void apply(JsonObject result)
         {
             JsonObject channel = result.getJsonObject("channel");
-            this.id = channel.getString("id");
+            this.id = new ChannelIdImpl(channel.getString("id"));
             this.isChannel = channel.getBoolean("is_channel");
             this.name = channel.getString("name");
             this.created = channel.getInt("created");

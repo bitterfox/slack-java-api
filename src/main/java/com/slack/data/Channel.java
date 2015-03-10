@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface Channel
 {
-    String id();
+    ChannelId id();
     String name();
     boolean isChannel();
     int created();

@@ -7,10 +7,10 @@
 package com.slack.data.impl;
 
 import com.slack.data.Channel;
+import com.slack.data.ChannelId;
 import com.slack.data.Purpose;
 import com.slack.data.Topic;
 import com.slack.data.UserId;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -21,7 +21,7 @@ import java.util.Objects;
  */
 public class ChannelImpl implements Channel
 {
-    private String id;
+    private ChannelId id;
     private String name;
     private boolean isChannel;
     private int created;
@@ -34,13 +34,13 @@ public class ChannelImpl implements Channel
     private Purpose purpose;
     private int numMembers;
 
-    public void id(String id)
+    public void id(ChannelId id)
     {
         this.id = id;
     }
 
     @Override
-    public String id()
+    public ChannelId id()
     {
         return id;
     }
