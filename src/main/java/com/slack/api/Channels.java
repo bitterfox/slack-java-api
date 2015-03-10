@@ -45,6 +45,14 @@ public class Channels
     }
 
     @ApiIssuer
+    public Channels.Leave leave(String id)
+    {
+        GetApiRequest apiRequest = api.get("leave", builder -> builder.put("channel", id));
+
+        return apiRequest.issue(Channels.Leave::new);
+    }
+
+    @ApiIssuer
     public Channels.Join join(String name)
     {
         GetApiRequest apiRequest = api.get("join", builder -> builder.put("name", name));
@@ -91,6 +99,22 @@ public class Channels
         protected void apply(JsonObject result)
         {
             channels = slack.getConfigure().unmarshaller().asChannels(result.getJsonArray("channels"));
+        }
+    }
+
+    public static final class Leave extends ApiResult
+    {
+        private boolean notInChannel;
+
+        public boolean notInChannel()
+        {
+            return notInChannel;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            this.notInChannel = result.getBoolean("not_in_channel", false);
         }
     }
 

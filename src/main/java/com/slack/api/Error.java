@@ -25,6 +25,7 @@ public enum Error
     RESTRICTED_ACTION("restricted_action"),
     NO_CHANNEL("no_channel"),
     IS_ARCHIVED("is_archived"),
+    CANT_LEAVE_GENERAL("cant_leave_general"),
 
     USER_IS_BOT("user_is_bot"),
     USER_IS_RESTRICTED("user_is_restricted"),
