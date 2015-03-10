@@ -7,6 +7,7 @@
 package com.slack.api;
 
 import com.slack.api.exception.AccountInactiveException;
+import com.slack.api.exception.CannotLeaveGeneralException;
 import com.slack.api.exception.ChannelNotFoundException;
 import com.slack.api.exception.InvalidAuthException;
 import com.slack.api.exception.InvalidNameException;
@@ -50,6 +51,7 @@ public abstract class AbstractApiRequest implements ApiRequest
         this.putError(Error.RESTRICTED_ACTION, RestrictedActionException::new);
         this.putError(Error.NO_CHANNEL, NoChannelException::new);
         this.putError(Error.IS_ARCHIVED, IsArchivedException::new);
+        this.putError(Error.CANT_LEAVE_GENERAL, CannotLeaveGeneralException::new);
 
         this.putError(Error.USER_IS_BOT, UserIsBotException::new);
         this.putError(Error.USER_IS_RESTRICTED, UserIsRestrictedException::new);
