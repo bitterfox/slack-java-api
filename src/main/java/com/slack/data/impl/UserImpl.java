@@ -264,4 +264,10 @@ public class UserImpl implements User
             this.isBot == other.isBot &&
             this.hasFiles == other.hasFiles;
     }
+
+    @Override
+    public String toString()
+    {
+        return "UserImpl{" + "id=" + id + ", name=" + name + ", deleted=" + deleted + ", color=" + color + ", realName=" + realName + ", timeZone=" + timeZone + ", timeZoneId=" + timeZoneId + ", timeZoneLabel=" + timeZoneLabel + ", profile=" + profile + ", isAdmin=" + isAdmin + ", isOwner=" + isOwner + ", isPrimaryOwner=" + isPrimaryOwner + ", isRestricted=" + isRestricted + ", isUltraRestricted=" + isUltraRestricted + ", isBot=" + isBot + ", hasFiles=" + hasFiles + '}';
+    }
 }

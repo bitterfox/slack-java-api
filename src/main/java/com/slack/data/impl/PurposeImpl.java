@@ -80,4 +80,10 @@ public class PurposeImpl implements Purpose
             Objects.equals(this.creator, other.creator) &&
             this.lastSet == other.lastSet;
     }
+
+    @Override
+    public String toString()
+    {
+        return "PurposeImpl{" + "value=" + value + ", creator=" + creator + ", lastSet=" + lastSet + '}';
+    }
 }

@@ -211,4 +211,10 @@ public class ChannelImpl implements Channel
             Objects.equals(this.purpose, other.purpose) &&
             this.numMembers == other.numMembers;
     }
+
+    @Override
+    public String toString()
+    {
+        return "ChannelImpl{" + "id=" + id + ", name=" + name + ", isChannel=" + isChannel + ", created=" + created + ", creator=" + creator + ", isArchived=" + isArchived + ", isGeneral=" + isGeneral + ", isMember=" + isMember + ", members=" + members + ", topic=" + topic + ", purpose=" + purpose + ", numMembers=" + numMembers + '}';
+    }
 }

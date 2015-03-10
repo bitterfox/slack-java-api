@@ -25,11 +25,11 @@ public class ChannelsJoin
         Channels.Join channelsJoin = slack.channels().join("general");
 
         System.out.println(channelsJoin.alreadyInChannel());
-        System.out.println(channelsJoin.channel().name());
+        System.out.println(channelsJoin.channel());
 
         channelsJoin = slack.channels().join("test");
 
         System.out.println(channelsJoin.alreadyInChannel());
-        System.out.println(channelsJoin.channel().name());
+        System.out.println(channelsJoin.channel());
     }
 }

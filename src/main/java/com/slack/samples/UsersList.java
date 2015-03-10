@@ -8,7 +8,6 @@ package com.slack.samples;
 
 import com.slack.Slack;
 import com.slack.api.Users;
-import com.slack.data.Profile;
 
 /**
  *
@@ -24,13 +23,6 @@ public class UsersList
 
         Users.List usersList = slack.users().list();
 
-        usersList.members().forEach(
-            user ->
-            {
-                System.out.println(user.id());
-                System.out.println(user.name());
-                System.out.println(user.realName());
-                System.out.println(user.profile().image(Profile.ImageSize.ORIGINAL));
-            });
+        usersList.members().forEach(System.out::println);
     }
 }
