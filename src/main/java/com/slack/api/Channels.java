@@ -52,6 +52,16 @@ public class Channels
         return apiRequest.issue(Channels.Join::new);
     }
 
+    @ApiIssuer
+    public Channels.Rename rename(String id, String newName)
+    {
+        GetApiRequest apiRequest = api.get("rename", builder ->
+            builder.put("channel", id)
+                .put("name", newName));
+
+        return apiRequest.issue(Channels.Rename::new);
+    }
+
     public final class Create extends ApiResult
     {
         private Channel channel;
@@ -106,6 +116,44 @@ public class Channels
         {
             channel = slack.getConfigure().unmarshaller().asChannel(result.getJsonObject("channel"));
             alreadyInChannel = result.getBoolean(ALREADY_IN_CHANNEL, false);
+        }
+    }
+
+    public final class Rename extends ApiResult
+    {
+        private String id;
+        private boolean isChannel;
+        private String name;
+        private int created;
+
+        public String id()
+        {
+            return id;
+        }
+
+        public boolean isChannel()
+        {
+            return isChannel;
+        }
+
+        public String name()
+        {
+            return name;
+        }
+
+        public int created()
+        {
+            return created;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            JsonObject channel = result.getJsonObject("channel");
+            this.id = channel.getString("id");
+            this.isChannel = channel.getBoolean("is_channel");
+            this.name = channel.getString("name");
+            this.created = channel.getInt("created");
         }
     }
 }
