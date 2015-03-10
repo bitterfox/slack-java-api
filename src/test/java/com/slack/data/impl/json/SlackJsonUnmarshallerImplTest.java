@@ -12,6 +12,7 @@ import com.slack.data.Purpose;
 import com.slack.data.Topic;
 import com.slack.data.User;
 import com.slack.data.UserId;
+import com.slack.data.impl.ChannelIdImpl;
 import com.slack.data.impl.ChannelImpl;
 import com.slack.data.impl.ProfileImpl;
 import com.slack.data.impl.PurposeImpl;
@@ -74,7 +75,7 @@ public class SlackJsonUnmarshallerImplTest
     {
         ChannelImpl channel = new ChannelImpl();
 
-        channel.id("CHANNEL-ID");
+        channel.id(new ChannelIdImpl("CHANNEL-ID"));
         channel.created(123456);
         channel.creator(new UserIdImpl("USER-ID"));
         channel.isArchived(true);
@@ -164,7 +165,7 @@ public class SlackJsonUnmarshallerImplTest
             .map(UserId::id)
             .reduce(Json.createArrayBuilder(), JsonArrayBuilder::add, (a1, a2) -> a1);
         return Json.createObjectBuilder()
-            .add("id", channel.id())
+            .add("id", channel.id().id())
             .add("created", channel.created())
             .add("creator", channel.creator().id())
             .add("is_archived", channel.isArchived())

@@ -10,6 +10,7 @@ import com.slack.Slack;
 import com.slack.api.exception.CannotLeaveGeneralException;
 import com.slack.api.exception.ChannelNotFoundException;
 import com.slack.data.Channel;
+import com.slack.data.impl.ChannelIdImpl;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -26,7 +27,7 @@ public class ChannelsLeaveTest extends AbstractApiTest
 {
     public ChannelsLeaveTest()
     {
-        super(slack -> slack.channels().leave(""));
+        super(slack -> slack.channels().leave(new ChannelIdImpl("")));
     }
 
     @BeforeClass
@@ -86,6 +87,6 @@ public class ChannelsLeaveTest extends AbstractApiTest
     @Test(expected = ChannelNotFoundException.class)
     public void testChannelNotFound()
     {
-        authedSlack().channels().leave("");
+        authedSlack().channels().leave(new ChannelIdImpl(""));
     }
 }
