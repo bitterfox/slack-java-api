@@ -195,7 +195,7 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
             JsonUtil.getStringOpt(jo, Names.FIRST_NAME)
                 .ifPresent(profile::firstName);
             JsonUtil.getStringOpt(jo, Names.LAST_NAME)
-                .ifPresent(profile::firstName);
+                .ifPresent(profile::lastName);
             JsonUtil.getStringOpt(jo, Names.TITLE)
                 .ifPresent(profile::title);
             JsonUtil.getStringOpt(jo, Names.SKYPE)
@@ -204,6 +204,7 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
                 .ifPresent(profile::phone);
             profile.realName(jo.getString(Names.REAL_NAME));
             profile.realNameNormalized(jo.getString(Names.REAL_NAME_NORMALIZED));
+            profile.email(jo.getString(Names.EMAIL));
         }
         catch (Exception e)
         {
