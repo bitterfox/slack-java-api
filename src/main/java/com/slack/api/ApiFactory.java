@@ -6,15 +6,15 @@
 
 package com.slack.api;
 
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
-import javax.json.JsonObject;
+import com.slack.Slack;
 
 /**
  *
  * @author bitter_fox
  */
-interface ApiRequest
+public interface ApiFactory
 {
-    <T extends ApiResult> T issue(Supplier<? extends T> supplier);
+    Auth createAuth(Slack slack);
+    Channels createChannels(Slack slack);
+    Users createUsers(Slack slack);
 }

@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 
-package com.slack.api;
+package com.slack.api.impl;
 
 /**
  *
  * @author bitter_fox
  */
-public enum Error
+enum Error
 {
     TOKEN_REVOKED("token_revoked"),
     NOT_AUTHED("not_authed"),

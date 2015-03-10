@@ -6,74 +6,28 @@
 
 package com.slack.api;
 
-import com.slack.Slack;
 import com.slack.data.User;
 import com.slack.data.UserId;
-import com.slack.util.JsonUtil;
-import java.util.Collections;
-import java.util.stream.Collectors;
-import javax.json.JsonObject;
 
 /**
  *
  * @author bitter_fox
  */
-public class Users
+public interface Users
 {
-    private Slack slack;
-    private Api api;
-
-    public Users(Slack slack)
-    {
-        this.slack = slack;
-        api = new Api(slack, "users");
-    }
+    @ApiIssuer
+    Users.Info info(UserId userId);
 
     @ApiIssuer
-    public Users.Info info(UserId userId)
-    {
-        ApiRequest apiRequest = api.get("info", builder -> builder.put("user", userId.id()));
+    Users.List list();
 
-        return apiRequest.issue(Users.Info::new);
+    interface Info
+    {
+        User user();
     }
 
-    @ApiIssuer
-    public Users.List list()
+    interface List
     {
-        ApiRequest apiRequest = api.get("list");
-
-        return apiRequest.issue(Users.List::new);
-    }
-
-    public final class Info extends ApiResult
-    {
-        private User user;
-
-        public User user()
-        {
-            return user;
-        }
-
-        @Override
-        protected void apply(JsonObject result)
-        {
-            user = slack.getConfigure().unmarshaller().asUser(result.getJsonObject("user"));
-        }
-    }
-
-    public final class List extends ApiResult
-    {
-        private java.util.List<User> members;
-
-        public java.util.List<User> members()
-        {
-            return members;
-        }
-
-        @Override
-        protected void apply(JsonObject result)
-        {
-            members = slack.getConfigure().unmarshaller().asUsers(result.getJsonArray("members"));
-        }
+        java.util.List<User> members();
     }
 }

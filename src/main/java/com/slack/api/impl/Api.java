@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.slack.api;
+package com.slack.api.impl;
 
 import com.slack.Slack;
 import com.slack.api.util.URLUtil;

@@ -2,14 +2,8 @@
 package com.slack.api;
 
 
-import com.slack.Slack;
 import com.slack.data.UserId;
-import com.slack.data.impl.UserIdImpl;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.json.JsonObject;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,71 +15,17 @@ import javax.json.JsonObject;
  *
  * @author bitter_fox
  */
-public class Auth
+public interface Auth
 {
-    private Api api;
-
-    public Auth(Slack slack)
-    {
-        api = new Api(slack, "auth");
-    }
-
     @ApiIssuer
-    public Auth.Test test()
+    Auth.Test test();
+
+    interface Test
     {
-        ApiRequest req = api.get("test");
-
-        return req.issue(Auth.Test::new);
-    }
-
-    public static final class Test extends ApiResult
-    {
-        private URL url;
-        private String team;
-        private String user;
-        private String teamId;
-        private UserId userId;
-
-        public URL url()
-        {
-            return url;
-        }
-
-        public String team()
-        {
-            return team;
-        }
-
-        public String user()
-        {
-            return user;
-        }
-
-        public String teamId()
-        {
-            return teamId;
-        }
-
-        public UserId userId()
-        {
-            return userId;
-        }
-
-        @Override
-        protected void apply(JsonObject result)
-        {
-            try
-            {
-                url = new URL(result.getString("url"));
-                team = result.getString("team");
-                user = result.getString("user");
-                userId = new UserIdImpl(result.getString("user_id"));
-                teamId = result.getString("team_id");
-            }
-            catch (MalformedURLException ex)
-            {
-                Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        URL url();
+        String team();
+        String user();
+        String teamId();
+        UserId userId();
     }
 }

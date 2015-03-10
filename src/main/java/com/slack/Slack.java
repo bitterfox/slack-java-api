@@ -25,9 +25,9 @@ public class Slack
     private Slack(Configure config)
     {
         this.config = config;
-        auth = new Auth(this);
-        channels = new Channels(this);
-        users = new Users(this);
+        this.auth = config.apiFactory().createAuth(this);
+        this.channels = config.apiFactory().createChannels(this);
+        this.users = config.apiFactory().createUsers(this);
     }
 
     public static Slack create(Consumer<Configure> consumer)

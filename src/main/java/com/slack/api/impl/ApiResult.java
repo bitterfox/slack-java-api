@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.slack.api;
+package com.slack.api.impl;
 
 import javax.json.JsonObject;
 
@@ -12,7 +12,7 @@ import javax.json.JsonObject;
  *
  * @author bitter_fox
  */
-public abstract class ApiResult
+abstract class ApiResult
 {
     protected abstract void apply(JsonObject result);
 }

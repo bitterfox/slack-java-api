@@ -6,6 +6,8 @@
 
 package com.slack;
 
+import com.slack.api.ApiFactory;
+import com.slack.api.impl.ApiFactoryImpl;
 import com.slack.data.json.SlackJsonUnmarshaller;
 import com.slack.data.impl.json.SlackJsonUnmarshallerImpl;
 import java.net.MalformedURLException;
@@ -21,6 +23,7 @@ public class Configure
 {
     private static URL DEFAULT_URL;
     private static SlackJsonUnmarshaller DEFAULT_UNMARSHALLER = new SlackJsonUnmarshallerImpl();
+    private static ApiFactory DEFAULT_API_FACTORY = new ApiFactoryImpl();
 
     static
     {
@@ -36,6 +39,7 @@ public class Configure
 
     private String token;
     private URL url = DEFAULT_URL;
+    private ApiFactory factory = DEFAULT_API_FACTORY;
 
     public void token(String token)
     {
@@ -60,5 +64,10 @@ public class Configure
     public SlackJsonUnmarshaller unmarshaller()
     {
         return DEFAULT_UNMARSHALLER;
+    }
+
+    public ApiFactory apiFactory()
+    {
+        return factory;
     }
 }

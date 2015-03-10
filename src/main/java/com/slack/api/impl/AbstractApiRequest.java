@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.slack.api;
+package com.slack.api.impl;
 
 import com.slack.api.exception.AccountInactiveException;
 import com.slack.api.exception.CannotLeaveGeneralException;
@@ -32,7 +32,7 @@ import java.util.function.Supplier;
  *
  * @author bitter_fox
  */
-public abstract class AbstractApiRequest implements ApiRequest
+abstract class AbstractApiRequest implements ApiRequest
 {
     private Map<String, Supplier<? extends SlackException>> errors = new HashMap<>();
 

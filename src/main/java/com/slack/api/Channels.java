@@ -6,180 +6,56 @@
 
 package com.slack.api;
 
-import com.slack.Slack;
 import com.slack.data.Channel;
 import com.slack.data.ChannelId;
-import com.slack.data.impl.ChannelIdImpl;
-import com.slack.util.JsonUtil;
-import java.util.Collections;
-import java.util.stream.Collectors;
-import javax.json.JsonObject;
 
 /**
  *
  * @author bitter_fox
  */
-public class Channels
+public interface Channels
 {
-    private Slack slack;
-    private Api api;
-
-    public Channels(Slack slack)
-    {
-        this.slack = slack;
-        api = new Api(slack, "channels");
-    }
+    @ApiIssuer
+    Channels.Create create(String name);
 
     @ApiIssuer
-    public Channels.Create create(String name)
-    {
-        GetApiRequest apiRequest = api.get("create", builder -> builder.put("name", name));
-
-        return apiRequest.issue(Channels.Create::new);
-    }
+    Channels.Join join(String channelName);
 
     @ApiIssuer
-    public Channels.List list()
-    {
-        GetApiRequest apiRequest = api.get("list");
-
-        return apiRequest.issue(Channels.List::new);
-    }
+    Channels.Leave leave(ChannelId channelId);
 
     @ApiIssuer
-    public Channels.Leave leave(ChannelId id)
-    {
-        GetApiRequest apiRequest = api.get("leave", builder -> builder.put("channel", id.id()));
-
-        return apiRequest.issue(Channels.Leave::new);
-    }
+    Channels.List list();
 
     @ApiIssuer
-    public Channels.Join join(String name)
-    {
-        GetApiRequest apiRequest = api.get("join", builder -> builder.put("name", name));
+    Channels.Rename rename(ChannelId channelId, String newName);
 
-        return apiRequest.issue(Channels.Join::new);
+    interface Create
+    {
+        Channel channel();
     }
 
-    @ApiIssuer
-    public Channels.Rename rename(ChannelId id, String newName)
+    interface Join
     {
-        GetApiRequest apiRequest = api.get("rename", builder ->
-            builder.put("channel", id.id())
-                .put("name", newName));
-
-        return apiRequest.issue(Channels.Rename::new);
+        Channel channel();
+        boolean alreadyInChannel();
     }
 
-    public final class Create extends ApiResult
+    interface Leave
     {
-        private Channel channel;
-
-        public Channel channel()
-        {
-            return channel;
-        }
-
-        @Override
-        protected void apply(JsonObject result)
-        {
-            channel = slack.getConfigure().unmarshaller().asChannel(result.getJsonObject("channel"));
-        }
+        boolean notInChannel();
     }
 
-    public final class List extends ApiResult
+    interface List
     {
-        private java.util.List<Channel> channels;
-
-        public java.util.List<Channel> channels()
-        {
-            return channels;
-        }
-
-        @Override
-        protected void apply(JsonObject result)
-        {
-            channels = slack.getConfigure().unmarshaller().asChannels(result.getJsonArray("channels"));
-        }
+        java.util.List<Channel> channels();
     }
 
-    public static final class Leave extends ApiResult
+    interface Rename
     {
-        private boolean notInChannel;
-
-        public boolean notInChannel()
-        {
-            return notInChannel;
-        }
-
-        @Override
-        protected void apply(JsonObject result)
-        {
-            this.notInChannel = result.getBoolean("not_in_channel", false);
-        }
-    }
-
-    public final class Join extends ApiResult
-    {
-        private static final String ALREADY_IN_CHANNEL = "already_in_channel";
-
-        private Channel channel;
-        private boolean alreadyInChannel;
-
-        public Channel channel()
-        {
-            return channel;
-        }
-
-        public boolean alreadyInChannel()
-        {
-            return alreadyInChannel;
-        }
-
-        @Override
-        protected void apply(JsonObject result)
-        {
-            channel = slack.getConfigure().unmarshaller().asChannel(result.getJsonObject("channel"));
-            alreadyInChannel = result.getBoolean(ALREADY_IN_CHANNEL, false);
-        }
-    }
-
-    public final class Rename extends ApiResult
-    {
-        private ChannelId id;
-        private boolean isChannel;
-        private String name;
-        private int created;
-
-        public ChannelId id()
-        {
-            return id;
-        }
-
-        public boolean isChannel()
-        {
-            return isChannel;
-        }
-
-        public String name()
-        {
-            return name;
-        }
-
-        public int created()
-        {
-            return created;
-        }
-
-        @Override
-        protected void apply(JsonObject result)
-        {
-            JsonObject channel = result.getJsonObject("channel");
-            this.id = new ChannelIdImpl(channel.getString("id"));
-            this.isChannel = channel.getBoolean("is_channel");
-            this.name = channel.getString("name");
-            this.created = channel.getInt("created");
-        }
+        ChannelId id();
+        boolean isChannel();
+        String name();
+        int created();
     }
 }
