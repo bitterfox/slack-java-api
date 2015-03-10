@@ -81,4 +81,9 @@ public class TopicImpl implements Topic
             this.lastSet == other.lastSet;
     }
 
+    @Override
+    public String toString()
+    {
+        return "TopicImpl{" + "value=" + value + ", creator=" + creator + ", lastSet=" + lastSet + '}';
+    }
 }

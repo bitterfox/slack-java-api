@@ -7,7 +7,6 @@
 package com.slack.samples;
 
 import com.slack.Slack;
-import com.slack.data.Profile;
 import com.slack.data.User;
 
 /**
@@ -26,9 +25,6 @@ public class UsersInfo
             slack.users().list().members().stream()
                 .findAny().get().id()).user();
 
-        System.out.println(user.id());
-        System.out.println(user.name());
-        System.out.println(user.realName());
-        System.out.println(user.profile().image(Profile.ImageSize.ORIGINAL));
+        System.out.println(user);
     }
 }

@@ -256,4 +256,10 @@ public class ProfileImpl implements Profile
             Objects.equals(this.realNameNormalized, other.realNameNormalized) &&
             Objects.equals(this.email, other.email);
     }
+
+    @Override
+    public String toString()
+    {
+        return "ProfileImpl{" + "images=" + images + ", imagesAwt=" + imagesAwt + ", imagesFx=" + imagesFx + ", firstName=" + firstName + ", lastName=" + lastName + ", title=" + title + ", skype=" + skype + ", phone=" + phone + ", realName=" + realName + ", realNameNormalized=" + realNameNormalized + ", email=" + email + '}';
+    }
 }

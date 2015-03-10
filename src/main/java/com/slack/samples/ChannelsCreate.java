@@ -23,9 +23,6 @@ public class ChannelsCreate
 
         Channels.Create channelsCreate = slack.channels().create("sample");
 
-        System.out.println(channelsCreate.channel().id());
-        System.out.println(channelsCreate.channel().name());
-        System.out.println(channelsCreate.channel().creator());
-        channelsCreate.channel().members().forEach(System.out::println);
+        System.out.println(channelsCreate.channel());
     }
 }

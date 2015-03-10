@@ -25,13 +25,6 @@ public class ChannelsList
         Channels.List channelsList = slack.channels().list();
 
         channelsList.channels().stream()
-            .forEach(
-                channel ->
-                {
-                    System.out.println(channel.id());
-                    System.out.println(channel.name());
-                    System.out.println(channel.topic().value());
-                    System.out.println(channel.purpose().value());
-                });
+            .forEach(System.out::println);
     }
 }

@@ -51,4 +51,10 @@ public class UserIdImpl implements UserId
 
         return Objects.equals(this.id, other.id);
     }
+
+    @Override
+    public String toString()
+    {
+        return "UserIdImpl{" + "id=" + id + '}';
+    }
 }
