@@ -45,9 +45,9 @@ public class ChannelsJoinTest extends AbstractApiTest
     {
     }
 
-    @Test
+    @Test(expected = NoChannelException.class)
     public void testNoChannel()
     {
-        Tests.assertException(() -> this.authedSlack().channels().join(""), NoChannelException.class);
+        this.authedSlack().channels().join("");
     }
 }

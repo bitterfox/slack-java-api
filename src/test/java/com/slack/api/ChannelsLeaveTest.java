@@ -69,7 +69,7 @@ public class ChannelsLeaveTest extends AbstractApiTest
         slack.channels().join(channel.name());
     }
 
-    @Test
+    @Test(expected = CannotLeaveGeneralException.class)
     public void testLeaveGeneral()
     {
         Slack slack = this.authedSlack();
@@ -80,12 +80,12 @@ public class ChannelsLeaveTest extends AbstractApiTest
             .filter(c -> c.isGeneral())
             .findAny().get();
 
-        Tests.assertException(() -> slack.channels().leave(channel.id()), CannotLeaveGeneralException.class);
+        slack.channels().leave(channel.id());
     }
 
-    @Test
+    @Test(expected = ChannelNotFoundException.class)
     public void testChannelNotFound()
     {
-        Tests.assertException(() -> authedSlack().channels().leave(""), ChannelNotFoundException.class);
+        authedSlack().channels().leave("");
     }
 }

@@ -51,29 +51,28 @@ public abstract class AbstractApiTest
         return invalidAuthSlack;
     }
 
-    @Test
+    @Test(expected = TokenRevokedException.class)
     public void testTokenRevoked()
     {
-        this.testError(this.tokenRevokedSlack(), TokenRevokedException.class);
+        this.testError(this.tokenRevokedSlack());
     }
 
-    @Test
+    @Test(expected = NotAuthedException.class)
     public void testNotAuthed()
     {
-        this.testError(this.notAuthedSlack(), NotAuthedException.class);
+        this.testError(this.notAuthedSlack());
     }
 
-    @Test
+    @Test(expected = InvalidAuthException.class)
     public void testInvalidAuth()
     {
-        this.testError(this.invalidAuthSlack(), InvalidAuthException.class);
-
+        this.testError(this.invalidAuthSlack());
     }
 
     // FIXME: account inactive
 
-    private void testError(Slack slack, Class<? extends Exception> clazz)
+    private void testError(Slack slack)
     {
-        Tests.assertException(() -> api.accept(slack), clazz);
+        api.accept(slack);
     }
 }

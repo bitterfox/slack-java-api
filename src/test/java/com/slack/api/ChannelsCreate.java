@@ -13,7 +13,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -47,19 +46,15 @@ public class ChannelsCreate extends AbstractApiTest
     {
     }
 
-    @Test
+    @Test(expected = NoChannelException.class)
     public void testNoChannel()
     {
-        Tests.assertException(
-            () -> this.authedSlack().channels().create(""),
-            NoChannelException.class);
+        this.authedSlack().channels().create("");
     }
 
-    @Test
+    @Test(expected = NameTakenException.class)
     public void testNameTaken()
     {
-        Tests.assertException(
-            () -> this.authedSlack().channels().create("general"),
-            NameTakenException.class);
+        this.authedSlack().channels().create("general");
     }
 }

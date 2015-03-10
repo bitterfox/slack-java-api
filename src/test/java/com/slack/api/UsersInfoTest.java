@@ -45,9 +45,9 @@ public class UsersInfoTest extends AbstractApiTest
     {
     }
 
-    @Test
+    @Test(expected = UserNotFoundException.class)
     public void testUserNotFound()
     {
-        Tests.assertException(() -> this.authedSlack().users().info(new UserIdImpl("")), UserNotFoundException.class);
+        this.authedSlack().users().info(new UserIdImpl(""));
     }
 }
