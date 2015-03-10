@@ -64,9 +64,11 @@ class Api
     {
         private Map<String, String> queries = new HashMap<>();
 
-        public void put(String key, String value)
+        public GetBuilder put(String key, String value)
         {
             queries.put(key, value);
+
+            return this;
         }
 
         public GetApiRequest build(String clazz, String method)

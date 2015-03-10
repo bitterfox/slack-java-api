@@ -18,6 +18,9 @@ public enum Error
     ACCOUNT_INACTIVE("account_inactive"),
 
     CHANNEL_NOT_FOUND("channel_not_found"),
+    NOT_IN_CHANNEL("not_in_channel"),
+    NOT_AUTHORIZED("not_authorized"),
+    INVALID_NAME("invalid_name"),
     NAME_TAKEN("name_taken"),
     RESTRICTED_ACTION("restricted_action"),
     NO_CHANNEL("no_channel"),
