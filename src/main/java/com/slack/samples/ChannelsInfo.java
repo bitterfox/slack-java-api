@@ -23,9 +23,12 @@ public class ChannelsInfo
                 config.token("YOUR-TOKEN")
         );
 
-        Channels.Info channelsInfo = slack.channels().info("CHANNEL-ID");
+        Channel channel = slack.channels().list().channels().stream()
+            .findAny().get();
 
-        Channel channel = channelsInfo.channel();
+        Channels.Info channelsInfo = slack.channels().info(channel.id());
+
+        channel = channelsInfo.channel();
 
         System.out.println(channel.id());
         System.out.println(channel.name());

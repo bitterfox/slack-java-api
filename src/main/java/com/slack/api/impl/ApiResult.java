@@ -4,17 +4,15 @@
  * and open the template in the editor.
  */
 
-package com.slack.api;
+package com.slack.api.impl;
 
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 import javax.json.JsonObject;
 
 /**
  *
  * @author bitter_fox
  */
-interface ApiRequest
+abstract class ApiResult
 {
-    <T extends ApiResult> T issue(Supplier<? extends T> supplier);
+    protected abstract void apply(JsonObject result);
 }

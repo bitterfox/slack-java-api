@@ -7,11 +7,13 @@
 package com.slack.data.impl;
 
 import com.slack.data.Channel;
+import com.slack.data.ChannelId;
 import com.slack.data.Purpose;
 import com.slack.data.Topic;
-import java.util.ArrayList;
+import com.slack.data.UserId;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -19,26 +21,26 @@ import java.util.List;
  */
 public class ChannelImpl implements Channel
 {
-    private String id;
+    private ChannelId id;
     private String name;
     private boolean isChannel;
     private int created;
-    private String creator;
+    private UserId creator;
     private boolean isArchived;
     private boolean isGeneral;
     private boolean isMember;
-    private List<String> members;
+    private List<UserId> members;
     private Topic topic;
     private Purpose purpose;
     private int numMembers;
 
-    public void id(String id)
+    public void id(ChannelId id)
     {
         this.id = id;
     }
 
     @Override
-    public String id()
+    public ChannelId id()
     {
         return id;
     }
@@ -76,13 +78,13 @@ public class ChannelImpl implements Channel
         return created;
     }
 
-    public void creator(String creator)
+    public void creator(UserId creator)
     {
         this.creator = creator;
     }
 
     @Override
-    public String creator()
+    public UserId creator()
     {
         return creator;
     }
@@ -120,15 +122,15 @@ public class ChannelImpl implements Channel
         return isMember;
     }
 
-    public void members(List<String> members)
+    public void members(List<UserId> members)
     {
         this.members = Collections.unmodifiableList(members);
     }
 
     @Override
-    public List<String> members()
+    public List<UserId> members()
     {
-        return Collections.unmodifiableList(members);
+        return this.members;
     }
 
     public void topic(Topic topic)
@@ -162,5 +164,57 @@ public class ChannelImpl implements Channel
     public int numMembers()
     {
         return numMembers;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 61 * hash + Objects.hashCode(this.id);
+        hash = 61 * hash + Objects.hashCode(this.name);
+        hash = 61 * hash + (this.isChannel ? 1 : 0);
+        hash = 61 * hash + this.created;
+        hash = 61 * hash + Objects.hashCode(this.creator);
+        hash = 61 * hash + (this.isArchived ? 1 : 0);
+        hash = 61 * hash + (this.isGeneral ? 1 : 0);
+        hash = 61 * hash + (this.isMember ? 1 : 0);
+        hash = 61 * hash + Objects.hashCode(this.members);
+        hash = 61 * hash + Objects.hashCode(this.topic);
+        hash = 61 * hash + Objects.hashCode(this.purpose);
+        hash = 61 * hash + this.numMembers;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final ChannelImpl other = (ChannelImpl)obj;
+
+        return Objects.equals(this.id, other.id) &&
+            Objects.equals(this.name, other.name) &&
+            this.isChannel == other.isChannel &&
+            this.created == other.created &&
+            Objects.equals(this.creator, other.creator) &&
+            this.isArchived == other.isArchived &&
+            this.isGeneral == other.isGeneral &&
+            this.isMember == other.isMember &&
+            Objects.equals(this.members, other.members) &&
+            Objects.equals(this.topic, other.topic) &&
+            Objects.equals(this.purpose, other.purpose) &&
+            this.numMembers == other.numMembers;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ChannelImpl{" + "id=" + id + ", name=" + name + ", isChannel=" + isChannel + ", created=" + created + ", creator=" + creator + ", isArchived=" + isArchived + ", isGeneral=" + isGeneral + ", isMember=" + isMember + ", members=" + members + ", topic=" + topic + ", purpose=" + purpose + ", numMembers=" + numMembers + '}';
     }
 }

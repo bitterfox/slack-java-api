@@ -6,76 +6,72 @@
 
 package com.slack.api;
 
-import com.slack.Slack;
 import com.slack.data.Channel;
-import com.slack.util.JsonUtil;
-import java.util.Collections;
-import java.util.stream.Collectors;
-import javax.json.JsonObject;
+import com.slack.data.ChannelId;
 
 /**
  *
  * @author bitter_fox
  */
-public class Channels
+public interface Channels
 {
-    private Slack slack;
-    private Api api;
+    @ApiIssuer
+    Channels.Create create(String name);
 
-    public Channels(Slack slack)
+    @ApiIssuer
+    Channels.Info info(ChannelId channelId);
+
+    @ApiIssuer
+    Channels.Join join(String channelName);
+
+    @ApiIssuer
+    Channels.Leave leave(ChannelId channelId);
+
+    @ApiIssuer
+    Channels.List list();
+
+    @ApiIssuer
+    Channels.Rename rename(ChannelId channelId, String newName);
+
+    @ApiIssuer
+    Channels.SetTopic setTopic(ChannelId channelId, String topic);
+
+    interface Create
     {
-        this.slack = slack;
-        api = new Api(slack, "channels");
+        Channel channel();
     }
 
-    public Channels.List list()
+    interface Info
     {
-        GetApiRequest apiRequest = api.get("list", builder -> {});
-
-        return apiRequest.issue(Channels.List::new);
+        Channel channel();
     }
 
-    public Channels.Info info(String channelId)
+    interface Join
     {
-        GetApiRequest apiRequest = api.get("info", builder -> builder.put("channel", channelId));
-
-        return apiRequest.issue(Channels.Info::new);
+        Channel channel();
+        boolean alreadyInChannel();
     }
 
-    public final class List extends ApiResult
+    interface Leave
     {
-        private java.util.List<Channel> channels;
-
-        public java.util.List<Channel> channels()
-        {
-            return channels;
-        }
-
-        @Override
-        protected void apply(JsonObject result)
-        {
-            java.util.List<Channel> list =
-                result.getJsonArray("channels").stream()
-                    .map(JsonUtil::castToObject)
-                    .map(slack.getConfigure().unmarshaller()::asChannel)
-                    .collect(Collectors.toList());
-            channels = Collections.unmodifiableList(list);
-        }
+        boolean notInChannel();
     }
 
-    public final class Info extends ApiResult
+    interface List
     {
-        private Channel channel;
+        java.util.List<Channel> channels();
+    }
 
-        public Channel channel()
-        {
-            return channel;
-        }
+    interface Rename
+    {
+        ChannelId id();
+        boolean isChannel();
+        String name();
+        int created();
+    }
 
-        @Override
-        protected void apply(JsonObject result)
-        {
-            channel = slack.getConfigure().unmarshaller().asChannel(result.getJsonObject("channel"));
-        }
+    interface SetTopic
+    {
+        String topic();
     }
 }

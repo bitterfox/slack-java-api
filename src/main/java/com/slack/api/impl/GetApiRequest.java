@@ -4,12 +4,11 @@
  * and open the template in the editor.
  */
 
-package com.slack.api;
+package com.slack.api.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +20,7 @@ import javax.json.JsonReader;
  *
  * @author bitter_fox
  */
-class GetApiRequest implements ApiRequest
+class GetApiRequest extends AbstractApiRequest
 {
     private HttpURLConnection httpURLConnection;
 
@@ -52,7 +51,8 @@ class GetApiRequest implements ApiRequest
             }
             else
             {
-                throw new RuntimeException();
+                this.error(rawResult.getString("error")); // always throw some exception
+                return null; // not reached // XXX
             }
         }
         catch (IOException e)

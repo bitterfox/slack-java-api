@@ -20,7 +20,7 @@ public class AuthTest
         Slack slack = Slack.create(
             config ->
                 config.token("YOUR-TOKEN")
-            );
+        );
 
         Auth.Test authTest = slack.auth().test();
 

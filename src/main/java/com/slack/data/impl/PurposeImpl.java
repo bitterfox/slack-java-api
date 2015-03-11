@@ -7,6 +7,8 @@
 package com.slack.data.impl;
 
 import com.slack.data.Purpose;
+import com.slack.data.UserId;
+import java.util.Objects;
 
 /**
  *
@@ -15,7 +17,7 @@ import com.slack.data.Purpose;
 public class PurposeImpl implements Purpose
 {
     private String value;
-    private String creator;
+    private UserId creator;
     private int lastSet;
 
     public void value(String value)
@@ -29,13 +31,13 @@ public class PurposeImpl implements Purpose
         return value;
     }
 
-    public void creator(String creator)
+    public void creator(UserId creator)
     {
         this.creator = creator;
     }
 
     @Override
-    public String creator()
+    public UserId creator()
     {
         return creator;
     }
@@ -49,5 +51,39 @@ public class PurposeImpl implements Purpose
     public int lastSet()
     {
         return lastSet;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 3;
+        hash = 37 * hash + Objects.hashCode(this.value);
+        hash = 37 * hash + Objects.hashCode(this.creator);
+        hash = 37 * hash + this.lastSet;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final PurposeImpl other = (PurposeImpl)obj;
+
+        return Objects.equals(this.value, other.value) &&
+            Objects.equals(this.creator, other.creator) &&
+            this.lastSet == other.lastSet;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "PurposeImpl{" + "value=" + value + ", creator=" + creator + ", lastSet=" + lastSet + '}';
     }
 }

@@ -4,20 +4,22 @@
  * and open the template in the editor.
  */
 
-package com.slack.api;
+package com.slack.api.impl;
 
 import com.slack.Slack;
 import com.slack.api.util.URLUtil;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -32,6 +34,11 @@ class Api
     {
         this.slack = slack;
         this.clazz = clazz;
+    }
+
+    public GetApiRequest get(String method)
+    {
+        return this.get(method, builder -> {});
     }
 
     public GetApiRequest get(String method, Consumer<Api.GetBuilder> consumer)
@@ -59,9 +66,31 @@ class Api
     {
         private Map<String, String> queries = new HashMap<>();
 
-        public void put(String key, String value)
+        public GetBuilder put(String key, String value)
         {
+            // escape
+            key = this.escape(key);
+            value = this.escape(value);
+
             queries.put(key, value);
+
+            return this;
+        }
+
+        private String escape(String str)
+        {
+            try
+            {
+                str = URLEncoder.encode(str, "UTF-8");
+                str = str.replace("+", "%20");
+            }
+            catch (UnsupportedEncodingException ex)
+            {
+                Logger.getLogger(Api.class.getName()).log(Level.SEVERE, null, ex);
+                throw new RuntimeException(ex);
+            }
+
+            return str;
         }
 
         public GetApiRequest build(String clazz, String method)

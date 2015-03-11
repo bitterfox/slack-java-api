@@ -9,6 +9,8 @@ package com.slack.api.util;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,5 +29,18 @@ public class URLUtil
         sb.deleteCharAt(sb.length()-1);
 
         return new URL(context, sb.toString());
+    }
+
+    public static URL unsafeCreate(String url)
+    {
+        try
+        {
+            return new URL(url);
+        }
+        catch (MalformedURLException ex)
+        {
+            Logger.getLogger(URLUtil.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException(ex);
+        }
     }
 }

@@ -4,15 +4,12 @@
  * and open the template in the editor.
  */
 
-package com.slack.api;
-
-import javax.json.JsonObject;
+package com.slack.api.exception;
 
 /**
  *
  * @author bitter_fox
  */
-public abstract class ApiResult
+public class UserIsRestrictedException extends SlackException
 {
-    protected abstract void apply(JsonObject result);
 }
