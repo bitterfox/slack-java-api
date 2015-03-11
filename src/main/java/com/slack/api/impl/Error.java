@@ -17,6 +17,8 @@ enum Error
     INVALID_AUTH("invalid_auth"),
     ACCOUNT_INACTIVE("account_inactive"),
 
+    TOO_LONG("too_long"),
+
     CHANNEL_NOT_FOUND("channel_not_found"),
     NOT_IN_CHANNEL("not_in_channel"),
     NOT_AUTHORIZED("not_authorized"),

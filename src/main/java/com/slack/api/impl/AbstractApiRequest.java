@@ -20,6 +20,7 @@ import com.slack.api.exception.NotInChannelException;
 import com.slack.api.exception.RestrictedActionException;
 import com.slack.api.exception.SlackException;
 import com.slack.api.exception.TokenRevokedException;
+import com.slack.api.exception.TooLongException;
 import com.slack.api.exception.UserIsBotException;
 import com.slack.api.exception.UserIsRestrictedException;
 import com.slack.api.exception.UserNotFoundException;
@@ -42,6 +43,8 @@ abstract class AbstractApiRequest implements ApiRequest
         this.putError(Error.NOT_AUTHED, NotAuthedException::new);
         this.putError(Error.INVALID_AUTH, InvalidAuthException::new);
         this.putError(Error.ACCOUNT_INACTIVE, AccountInactiveException::new);
+
+        this.putError(Error.TOO_LONG, TooLongException::new);
 
         this.putError(Error.CHANNEL_NOT_FOUND, ChannelNotFoundException::new);
         this.putError(Error.NOT_IN_CHANNEL, NotInChannelException::new);
