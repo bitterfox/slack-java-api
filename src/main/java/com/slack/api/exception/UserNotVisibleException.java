@@ -10,6 +10,6 @@ package com.slack.api.exception;
  *
  * @author bitter_fox
  */
-public class UserNotVisible extends SlackException
+public class UserNotVisibleException extends SlackException
 {
 }
