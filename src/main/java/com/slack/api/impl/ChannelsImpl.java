@@ -39,6 +39,15 @@ class ChannelsImpl implements Channels
 
     @ApiIssuer
     @Override
+    public Channels.Info info(ChannelId channelId)
+    {
+        GetApiRequest apiRequest = api.get("info", builder -> builder.put("channel", channelId.id()));
+
+        return apiRequest.issue(ChannelsImpl.Info::new);
+    }
+
+    @ApiIssuer
+    @Override
     public Channels.List list()
     {
         GetApiRequest apiRequest = api.get("list");
@@ -87,6 +96,22 @@ class ChannelsImpl implements Channels
     }
 
     public final class Create extends ApiResult implements Channels.Create
+    {
+        private Channel channel;
+
+        public Channel channel()
+        {
+            return channel;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            channel = slack.getConfigure().unmarshaller().asChannel(result.getJsonObject("channel"));
+        }
+    }
+
+    public final class Info extends ApiResult implements Channels.Info
     {
         private Channel channel;
 

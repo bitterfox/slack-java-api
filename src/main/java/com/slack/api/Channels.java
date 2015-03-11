@@ -19,6 +19,9 @@ public interface Channels
     Channels.Create create(String name);
 
     @ApiIssuer
+    Channels.Info info(ChannelId channelId);
+
+    @ApiIssuer
     Channels.Join join(String channelName);
 
     @ApiIssuer
@@ -34,6 +37,11 @@ public interface Channels
     Channels.SetTopic setTopic(ChannelId channelId, String topic);
 
     interface Create
+    {
+        Channel channel();
+    }
+
+    interface Info
     {
         Channel channel();
     }
