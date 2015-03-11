@@ -25,7 +25,8 @@ import org.junit.runners.Suite;
     AuthTestErrorTest.class,
     ChannelsRenameTest.class,
     ChannelsJoinTest.class,
-    ChannelsLeaveTest.class
+    ChannelsLeaveTest.class,
+    ChannelsSetTopicTest.class
 })
 public class ApiTestSuite
 {

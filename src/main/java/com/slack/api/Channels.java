@@ -30,6 +30,9 @@ public interface Channels
     @ApiIssuer
     Channels.Rename rename(ChannelId channelId, String newName);
 
+    @ApiIssuer
+    Channels.SetTopic setTopic(ChannelId channelId, String topic);
+
     interface Create
     {
         Channel channel();
@@ -57,5 +60,10 @@ public interface Channels
         boolean isChannel();
         String name();
         int created();
+    }
+
+    interface SetTopic
+    {
+        String topic();
     }
 }

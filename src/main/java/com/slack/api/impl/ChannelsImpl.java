@@ -65,6 +65,7 @@ class ChannelsImpl implements Channels
     }
 
     @ApiIssuer
+    @Override
     public Channels.Rename rename(ChannelId id, String newName)
     {
         GetApiRequest apiRequest = api.get("rename", builder ->
@@ -72,6 +73,17 @@ class ChannelsImpl implements Channels
                 .put("name", newName));
 
         return apiRequest.issue(ChannelsImpl.Rename::new);
+    }
+
+    @ApiIssuer
+    @Override
+    public Channels.SetTopic setTopic(ChannelId channelId, String topic)
+    {
+        GetApiRequest apiRequest = api.get("setTopic", builder ->
+            builder.put("channel", channelId.id())
+                .put("topic", topic));
+
+        return apiRequest.issue(ChannelsImpl.SetTopic::new);
     }
 
     public final class Create extends ApiResult implements Channels.Create
@@ -182,6 +194,23 @@ class ChannelsImpl implements Channels
             this.isChannel = channel.getBoolean("is_channel");
             this.name = channel.getString("name");
             this.created = channel.getInt("created");
+        }
+    }
+
+    public final class SetTopic extends ApiResult implements Channels.SetTopic
+    {
+        private String topic;
+
+        @Override
+        public String topic()
+        {
+            return topic;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            this.topic = result.getString("topic");
         }
     }
 }
