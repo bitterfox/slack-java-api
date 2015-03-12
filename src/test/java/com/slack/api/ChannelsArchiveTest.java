@@ -7,7 +7,7 @@
 package com.slack.api;
 
 import com.slack.Slack;
-import com.slack.api.exception.CannotArchiveGeneralException;
+import com.slack.api.exception.CannotDoGeneralException;
 import com.slack.api.exception.ChannelNotFoundException;
 import com.slack.api.exception.IsArchivedException;
 import com.slack.data.Channel;
@@ -87,7 +87,7 @@ public class ChannelsArchiveTest extends AbstractApiTest
         slack.channels().archive(channel.id());
     }
 
-    @Test(expected = CannotArchiveGeneralException.class)
+    @Test(expected = CannotDoGeneralException.class)
     public void testCannotArchiveGeneral()
     {
         Slack slack = this.authedSlack();

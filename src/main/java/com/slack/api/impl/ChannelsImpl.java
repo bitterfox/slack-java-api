@@ -97,6 +97,17 @@ class ChannelsImpl implements Channels
 
     @ApiIssuer
     @Override
+    public Channels.Kick kick(ChannelId channelId, UserId userId)
+    {
+        GetApiRequest apiRequest = api.get("kick", builder ->
+            builder.put("channel", channelId.id())
+                .put("user", userId.id()));
+
+        return apiRequest.issue(ChannelsImpl.EmptyResult::new);
+    }
+
+    @ApiIssuer
+    @Override
     public Channels.Rename rename(ChannelId id, String newName)
     {
         GetApiRequest apiRequest = api.get("rename", builder ->
@@ -153,7 +164,7 @@ class ChannelsImpl implements Channels
         }
     }
 
-    private class EmptyResult extends ApiResult implements Channels.Archive, Channels.Unarchive
+    private class EmptyResult extends ApiResult implements Channels.Archive, Channels.Unarchive, Channels.Kick
     {
         @Override
         protected void apply(JsonObject result) {}

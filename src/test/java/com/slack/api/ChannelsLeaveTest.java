@@ -7,7 +7,7 @@
 package com.slack.api;
 
 import com.slack.Slack;
-import com.slack.api.exception.CannotLeaveGeneralException;
+import com.slack.api.exception.CannotDoGeneralException;
 import com.slack.api.exception.ChannelNotFoundException;
 import com.slack.data.Channel;
 import com.slack.data.impl.ChannelIdImpl;
@@ -70,7 +70,7 @@ public class ChannelsLeaveTest extends AbstractApiTest
         slack.channels().join(channel.name());
     }
 
-    @Test(expected = CannotLeaveGeneralException.class)
+    @Test(expected = CannotDoGeneralException.class)
     public void testLeaveGeneral()
     {
         Slack slack = this.authedSlack();

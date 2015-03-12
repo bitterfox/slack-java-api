@@ -10,6 +10,6 @@ package com.slack.api.exception;
  *
  * @author bitter_fox
  */
-public class CannotArchiveGeneralException extends SlackException
+public class CannotDoSelfException extends SlackException
 {
 }

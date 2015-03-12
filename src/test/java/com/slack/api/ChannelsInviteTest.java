@@ -8,7 +8,7 @@ package com.slack.api;
 
 import com.slack.Slack;
 import com.slack.api.exception.AlreadyInChannelException;
-import com.slack.api.exception.CannotInviteSelfException;
+import com.slack.api.exception.CannotDoSelfException;
 import com.slack.api.exception.ChannelNotFoundException;
 import com.slack.api.exception.IsArchivedException;
 import com.slack.api.exception.NotInChannelException;
@@ -81,7 +81,7 @@ public class ChannelsInviteTest extends AbstractApiTest
         slack.channels().invite(channel.id(), new UserIdImpl(""));
     }
 
-    @Test(expected = CannotInviteSelfException.class)
+    @Test(expected = CannotDoSelfException.class)
     public void testCannotInviteSelf()
     {
         Slack slack = this.authedSlack();
