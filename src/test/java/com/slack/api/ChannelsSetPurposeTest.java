@@ -63,12 +63,12 @@ public class ChannelsSetPurposeTest extends AbstractApiTest
         System.out.println(setPurpose.purpose());
 
         Assert.assertEquals(purpose, setPurpose.purpose());
-        Assert.assertEquals(purpose, slack.channels().list().channels().stream().filter(c -> c.id().equals(channel.id())).findAny().get().purpose().value()); // XXX: use info
+        Assert.assertEquals(purpose, slack.channels().info(channel.id()).channel().purpose().value());
 
         setPurpose = slack.channels().setPurpose(channel.id(), channel.purpose().value());
 
         Assert.assertEquals(channel.purpose().value(), setPurpose.purpose());
-        Assert.assertEquals(channel.purpose().value(), slack.channels().list().channels().stream().filter(c -> c.id().equals(channel.id())).findAny().get().purpose().value()); // XXX: use info
+        Assert.assertEquals(channel.purpose().value(), slack.channels().info(channel.id()).channel().purpose().value());
     }
 
     @Test

@@ -61,12 +61,12 @@ public class ChannelsSetTopicTest extends AbstractApiTest
         System.out.println(setTopic.topic());
 
         Assert.assertEquals(topic, setTopic.topic());
-        Assert.assertEquals(topic, slack.channels().list().channels().stream().filter(c -> c.id().equals(channel.id())).findAny().get().topic().value()); // XXX: use info
+        Assert.assertEquals(topic, slack.channels().info(channel.id()).channel().topic().value());
 
         setTopic = slack.channels().setTopic(channel.id(), channel.topic().value());
 
         Assert.assertEquals(channel.topic().value(), setTopic.topic());
-        Assert.assertEquals(channel.topic().value(), slack.channels().list().channels().stream().filter(c -> c.id().equals(channel.id())).findAny().get().topic().value()); // XXX: use info
+        Assert.assertEquals(channel.topic().value(), slack.channels().info(channel.id()).channel().topic().value());
     }
 
     @Test
