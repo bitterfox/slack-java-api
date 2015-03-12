@@ -46,6 +46,9 @@ public interface Channels
     @ApiIssuer
     Channels.SetTopic setTopic(ChannelId channelId, String topic);
 
+    @ApiIssuer
+    Channels.Unarchive unarchive(ChannelId channelId);
+
     interface Archive {}
 
     interface Create
@@ -96,4 +99,6 @@ public interface Channels
     {
         String topic();
     }
+
+    interface Unarchive {}
 }

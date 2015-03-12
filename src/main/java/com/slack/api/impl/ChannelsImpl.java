@@ -128,6 +128,15 @@ class ChannelsImpl implements Channels
         return apiRequest.issue(ChannelsImpl.SetTopic::new);
     }
 
+    @ApiIssuer
+    @Override
+    public Channels.Unarchive unarchive(ChannelId channelId)
+    {
+        GetApiRequest apiRequest = api.get("unarchive", builder -> builder.put("channel", channelId.id()));
+
+        return apiRequest.issue(ChannelsImpl.EmptyResult::new);
+    }
+
     private class ChannelResult extends ApiResult implements Channels.Create, Channels.Info, Channels.Invite
     {
         private Channel channel;
@@ -144,7 +153,7 @@ class ChannelsImpl implements Channels
         }
     }
 
-    private class EmptyResult extends ApiResult implements Channels.Archive
+    private class EmptyResult extends ApiResult implements Channels.Archive, Channels.Unarchive
     {
         @Override
         protected void apply(JsonObject result) {}
