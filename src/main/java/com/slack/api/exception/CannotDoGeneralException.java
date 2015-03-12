@@ -10,6 +10,6 @@ package com.slack.api.exception;
  *
  * @author bitter_fox
  */
-public class CannotLeaveGeneralException extends SlackException
+public class CannotDoGeneralException extends SlackException
 {
 }

@@ -8,9 +8,8 @@ package com.slack.api.impl;
 
 import com.slack.api.exception.AccountInactiveException;
 import com.slack.api.exception.AlreadyInChannelException;
-import com.slack.api.exception.CannotArchiveGeneralException;
-import com.slack.api.exception.CannotInviteSelfException;
-import com.slack.api.exception.CannotLeaveGeneralException;
+import com.slack.api.exception.CannotDoGeneralException;
+import com.slack.api.exception.CannotDoSelfException;
 import com.slack.api.exception.ChannelNotFoundException;
 import com.slack.api.exception.InvalidAuthException;
 import com.slack.api.exception.InvalidNameException;
@@ -54,9 +53,11 @@ enum Error
     NOT_ARCHIVED("not_archived", NotArchivedException::new),
     IS_ARCHIVED("is_archived", IsArchivedException::new),
     ALREADY_ARCHIVED("already_archived", IsArchivedException::new),
-    CANT_ARCHIVE_GENERAL("cant_archive_general", CannotArchiveGeneralException::new),
-    CANT_LEAVE_GENERAL("cant_leave_general", CannotLeaveGeneralException::new),
-    CANT_INVITE_SELF("cant_invite_self", CannotInviteSelfException::new),
+    CANT_ARCHIVE_GENERAL("cant_archive_general", CannotDoGeneralException::new),
+    CANT_LEAVE_GENERAL("cant_leave_general", CannotDoGeneralException::new),
+    CANT_KICK_GENERAL("cant_kick_from_general", CannotDoGeneralException::new),
+    CANT_INVITE_SELF("cant_invite_self", CannotDoSelfException::new),
+    CANT_KICK_SELF("cant_kick_self", CannotDoSelfException::new),
     ALREADY_IN_CHANNEL("already_in_channel", AlreadyInChannelException::new),
 
     USER_IS_BOT("user_is_bot", UserIsBotException::new),

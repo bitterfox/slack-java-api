@@ -32,6 +32,9 @@ public interface Channels
     Channels.Join join(String channelName);
 
     @ApiIssuer
+    Channels.Kick kick(ChannelId channelId, UserId userId);
+
+    @ApiIssuer
     Channels.Leave leave(ChannelId channelId);
 
     @ApiIssuer
@@ -71,6 +74,8 @@ public interface Channels
         Channel channel();
         boolean alreadyInChannel();
     }
+
+    interface Kick {}
 
     interface Leave
     {

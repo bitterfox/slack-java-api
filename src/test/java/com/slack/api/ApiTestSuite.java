@@ -25,6 +25,7 @@ import org.junit.runners.Suite;
     AuthTestErrorTest.class,
     ChannelsRenameTest.class,
     ChannelsJoinTest.class,
+    ChannelsKickTest.class,
     ChannelsLeaveTest.class,
     ChannelsSetTopicTest.class
 })
