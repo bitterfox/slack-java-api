@@ -17,6 +17,9 @@ import com.slack.data.UserId;
 public interface Channels
 {
     @ApiIssuer
+    Channels.Archive archive(ChannelId channelId);
+
+    @ApiIssuer
     Channels.Create create(String name);
 
     @ApiIssuer
@@ -42,6 +45,8 @@ public interface Channels
 
     @ApiIssuer
     Channels.SetTopic setTopic(ChannelId channelId, String topic);
+
+    interface Archive {}
 
     interface Create
     {

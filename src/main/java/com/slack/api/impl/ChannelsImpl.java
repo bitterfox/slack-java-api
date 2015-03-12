@@ -20,13 +20,23 @@ import javax.json.JsonObject;
  * @author bitter_fox
  */
 class ChannelsImpl implements Channels
-{    private Slack slack;
+{
+    private Slack slack;
     private Api api;
 
     public ChannelsImpl(Slack slack)
     {
         this.slack = slack;
         api = new Api(slack, "channels");
+    }
+
+    @ApiIssuer
+    @Override
+    public Channels.Archive archive(ChannelId channelId)
+    {
+        GetApiRequest apiRequest = api.get("archive", builder -> builder.put("channel", channelId.id()));
+
+        return apiRequest.issue(ChannelsImpl.EmptyResult::new);
     }
 
     @ApiIssuer
@@ -132,6 +142,12 @@ class ChannelsImpl implements Channels
         {
             channel = slack.getConfigure().unmarshaller().asChannel(result.getJsonObject("channel"));
         }
+    }
+
+    private class EmptyResult extends ApiResult implements Channels.Archive
+    {
+        @Override
+        protected void apply(JsonObject result) {}
     }
 
     public final class List extends ApiResult implements Channels.List
