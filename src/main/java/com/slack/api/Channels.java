@@ -8,6 +8,7 @@ package com.slack.api;
 
 import com.slack.data.Channel;
 import com.slack.data.ChannelId;
+import com.slack.data.UserId;
 
 /**
  *
@@ -20,6 +21,9 @@ public interface Channels
 
     @ApiIssuer
     Channels.Info info(ChannelId channelId);
+
+    @ApiIssuer
+    Channels.Invite invite(ChannelId channelId, UserId userId);
 
     @ApiIssuer
     Channels.Join join(String channelName);
@@ -42,6 +46,11 @@ public interface Channels
     }
 
     interface Info
+    {
+        Channel channel();
+    }
+
+    interface Invite
     {
         Channel channel();
     }

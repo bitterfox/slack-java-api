@@ -11,6 +11,7 @@ import com.slack.api.ApiIssuer;
 import com.slack.api.Channels;
 import com.slack.data.Channel;
 import com.slack.data.ChannelId;
+import com.slack.data.UserId;
 import com.slack.data.impl.ChannelIdImpl;
 import javax.json.JsonObject;
 
@@ -34,7 +35,7 @@ class ChannelsImpl implements Channels
     {
         GetApiRequest apiRequest = api.get("create", builder -> builder.put("name", name));
 
-        return apiRequest.issue(ChannelsImpl.Create::new);
+        return apiRequest.issue(ChannelsImpl.ChannelResult::new);
     }
 
     @ApiIssuer
@@ -43,7 +44,18 @@ class ChannelsImpl implements Channels
     {
         GetApiRequest apiRequest = api.get("info", builder -> builder.put("channel", channelId.id()));
 
-        return apiRequest.issue(ChannelsImpl.Info::new);
+        return apiRequest.issue(ChannelsImpl.ChannelResult::new);
+    }
+
+    @ApiIssuer
+    @Override
+    public Channels.Invite invite(ChannelId channelId, UserId userId)
+    {
+        GetApiRequest apiRequest = api.get("invite", builder ->
+            builder.put("channel", channelId.id())
+                .put("user", userId.id()));
+
+        return apiRequest.issue(ChannelsImpl.ChannelResult::new);
     }
 
     @ApiIssuer
@@ -95,23 +107,7 @@ class ChannelsImpl implements Channels
         return apiRequest.issue(ChannelsImpl.SetTopic::new);
     }
 
-    public final class Create extends ApiResult implements Channels.Create
-    {
-        private Channel channel;
-
-        public Channel channel()
-        {
-            return channel;
-        }
-
-        @Override
-        protected void apply(JsonObject result)
-        {
-            channel = slack.getConfigure().unmarshaller().asChannel(result.getJsonObject("channel"));
-        }
-    }
-
-    public final class Info extends ApiResult implements Channels.Info
+    private class ChannelResult extends ApiResult implements Channels.Create, Channels.Info, Channels.Invite
     {
         private Channel channel;
 
