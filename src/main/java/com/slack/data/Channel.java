@@ -6,7 +6,10 @@
 
 package com.slack.data;
 
+import com.slack.data.event.Message;
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 /**
  *
@@ -26,4 +29,9 @@ public interface Channel
     Topic topic();
     Purpose purpose();
     int numMembers();
+
+    Optional<String> lastRead(); // TODO
+    Optional<Message> latest();
+    OptionalInt unreadCount();
+    OptionalInt unreadCountDisplay();
 }

@@ -11,6 +11,7 @@ import com.slack.data.Profile;
 import com.slack.data.Purpose;
 import com.slack.data.Topic;
 import com.slack.data.User;
+import com.slack.data.event.Message;
 import com.slack.util.JsonUtil;
 import java.util.Collections;
 import java.util.List;
@@ -46,4 +47,6 @@ public interface SlackJsonUnmarshaller
                 .collect(Collectors.toList()));
     }
     Profile asProfile(JsonObject jo);
+
+    Message asMessage(JsonObject jo);
 }

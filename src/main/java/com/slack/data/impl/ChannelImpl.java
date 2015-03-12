@@ -11,9 +11,12 @@ import com.slack.data.ChannelId;
 import com.slack.data.Purpose;
 import com.slack.data.Topic;
 import com.slack.data.UserId;
+import com.slack.data.event.Message;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 /**
  *
@@ -33,6 +36,11 @@ public class ChannelImpl implements Channel
     private Topic topic;
     private Purpose purpose;
     private int numMembers;
+
+    private Optional<String> lastRead = Optional.empty();
+    private Optional<Message> latest = Optional.empty();
+    private OptionalInt unreadCount = OptionalInt.empty();
+    private OptionalInt unreadCountDisplay = OptionalInt.empty();
 
     public void id(ChannelId id)
     {
@@ -166,22 +174,70 @@ public class ChannelImpl implements Channel
         return numMembers;
     }
 
+    public void lastRead(String lastRead)
+    {
+        this.lastRead = Optional.of(lastRead);
+    }
+
+    @Override
+    public Optional<String> lastRead()
+    {
+        return lastRead;
+    }
+
+    public void latest(Message latest)
+    {
+        this.latest = Optional.of(latest);
+    }
+
+    @Override
+    public Optional<Message> latest()
+    {
+        return latest;
+    }
+
+    public void unreadCount(int unreadCount)
+    {
+        this.unreadCount = OptionalInt.of(unreadCount);
+    }
+
+    @Override
+    public OptionalInt unreadCount()
+    {
+        return unreadCount;
+    }
+
+    public void unreadCountDisplay(int unreadCountDisplay)
+    {
+        this.unreadCountDisplay = OptionalInt.of(unreadCountDisplay);
+    }
+
+    @Override
+    public OptionalInt unreadCountDisplay()
+    {
+        return unreadCountDisplay;
+    }
+
     @Override
     public int hashCode()
     {
-        int hash = 7;
-        hash = 61 * hash + Objects.hashCode(this.id);
-        hash = 61 * hash + Objects.hashCode(this.name);
-        hash = 61 * hash + (this.isChannel ? 1 : 0);
-        hash = 61 * hash + this.created;
-        hash = 61 * hash + Objects.hashCode(this.creator);
-        hash = 61 * hash + (this.isArchived ? 1 : 0);
-        hash = 61 * hash + (this.isGeneral ? 1 : 0);
-        hash = 61 * hash + (this.isMember ? 1 : 0);
-        hash = 61 * hash + Objects.hashCode(this.members);
-        hash = 61 * hash + Objects.hashCode(this.topic);
-        hash = 61 * hash + Objects.hashCode(this.purpose);
-        hash = 61 * hash + this.numMembers;
+        int hash = 3;
+        hash = 79 * hash + Objects.hashCode(this.id);
+        hash = 79 * hash + Objects.hashCode(this.name);
+        hash = 79 * hash + (this.isChannel ? 1 : 0);
+        hash = 79 * hash + this.created;
+        hash = 79 * hash + Objects.hashCode(this.creator);
+        hash = 79 * hash + (this.isArchived ? 1 : 0);
+        hash = 79 * hash + (this.isGeneral ? 1 : 0);
+        hash = 79 * hash + (this.isMember ? 1 : 0);
+        hash = 79 * hash + Objects.hashCode(this.members);
+        hash = 79 * hash + Objects.hashCode(this.topic);
+        hash = 79 * hash + Objects.hashCode(this.purpose);
+        hash = 79 * hash + this.numMembers;
+        hash = 79 * hash + Objects.hashCode(this.lastRead);
+        hash = 79 * hash + Objects.hashCode(this.latest);
+        hash = 79 * hash + Objects.hashCode(this.unreadCount);
+        hash = 79 * hash + Objects.hashCode(this.unreadCountDisplay);
         return hash;
     }
 
@@ -209,12 +265,17 @@ public class ChannelImpl implements Channel
             Objects.equals(this.members, other.members) &&
             Objects.equals(this.topic, other.topic) &&
             Objects.equals(this.purpose, other.purpose) &&
-            this.numMembers == other.numMembers;
+            this.numMembers == other.numMembers &&
+            Objects.equals(this.lastRead, other.lastRead) &&
+            Objects.equals(this.latest, other.latest) &&
+            Objects.equals(this.unreadCount, other.unreadCount) &&
+            Objects.equals(this.unreadCountDisplay, other.unreadCountDisplay)
+            ;
     }
 
     @Override
     public String toString()
     {
-        return "ChannelImpl{" + "id=" + id + ", name=" + name + ", isChannel=" + isChannel + ", created=" + created + ", creator=" + creator + ", isArchived=" + isArchived + ", isGeneral=" + isGeneral + ", isMember=" + isMember + ", members=" + members + ", topic=" + topic + ", purpose=" + purpose + ", numMembers=" + numMembers + '}';
+        return "ChannelImpl{" + "id=" + id + ", name=" + name + ", isChannel=" + isChannel + ", created=" + created + ", creator=" + creator + ", isArchived=" + isArchived + ", isGeneral=" + isGeneral + ", isMember=" + isMember + ", members=" + members + ", topic=" + topic + ", purpose=" + purpose + ", numMembers=" + numMembers + ", lastRead=" + lastRead + ", latest=" + latest + ", unreadCount=" + unreadCount + ", unreadCountDisplay=" + unreadCountDisplay + '}';
     }
 }
