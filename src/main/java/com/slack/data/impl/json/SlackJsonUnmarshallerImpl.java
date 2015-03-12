@@ -13,6 +13,7 @@ import com.slack.data.Purpose;
 import com.slack.data.Topic;
 import com.slack.data.User;
 import com.slack.data.UserId;
+import com.slack.data.event.Message;
 import com.slack.data.impl.ChannelIdImpl;
 import com.slack.data.impl.ChannelImpl;
 import com.slack.data.impl.ProfileImpl;
@@ -20,6 +21,7 @@ import com.slack.data.impl.PurposeImpl;
 import com.slack.data.impl.TopicImpl;
 import com.slack.data.impl.UserIdImpl;
 import com.slack.data.impl.UserImpl;
+import com.slack.data.impl.event.MessageImpl;
 import com.slack.data.json.SlackJsonUnmarshaller;
 import com.slack.util.JsonUtil;
 import java.time.ZoneId;
@@ -57,6 +59,11 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
         public static final String PURPOSE = "purpose";
         public static final String NUM_MEMBERS = "num_members";
 
+        public static final String LAST_READ = "last_read";
+        public static final String LATEST = "latest";
+        public static final String UNREAD_COUNT = "unread_count";
+        public static final String UNREAD_COUNT_DISPLAY = "unread_count_display";
+
         public static final String VALUE = "value";
         public static final String LAST_SET = "last_set";
 
@@ -90,6 +97,13 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
         public static final String PHONE = "phone";
         public static final String REAL_NAME_NORMALIZED = "real_name_normalized";
         public static final String EMAIL = "email";
+
+        public static final String TYPE = "type";
+
+        public static final String MESSAGE = "message";
+
+        public static final String TEXT = "text";
+        public static final String TIMESTAMP = "ts";
     }
 
     private <T, U> void unmarshal(JsonObject jo, String key, BiFunction<JsonObject, String, T> getter, Consumer<U> consumer, Function<T, U> mapper)
@@ -146,6 +160,10 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
     {
         this.unmarshal(jo, key, JsonObject::getInt, consumer, mapper);
     }
+    private void unmarshalIntOpt(JsonObject jo, String key, Consumer<Integer> consumer)
+    {
+        this.unmarshalOpt(jo, key, JsonObject::getInt, consumer, Function.identity());
+    }
     private void unmarshalIntOpt(JsonObject jo, String key, Consumer<Integer> consumer, Supplier<Integer> onEmpty)
     {
         this.unmarshalOpt(jo, key, JsonObject::getInt, consumer, Function.identity(), onEmpty);
@@ -163,24 +181,47 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
     {
         this.unmarshal(jo, key, JsonObject::getJsonObject, consumer, mapper);
     }
+    private <T> void unmarshalObjectOpt(JsonObject jo, String key, Consumer<T> consumer, Function<JsonObject, T> mapper)
+    {
+        this.unmarshalOpt(jo, key, JsonObject::getJsonObject, consumer, mapper);
+    }
+
+    private void requireString(JsonObject jo, String key, String require)
+    {
+        String actual = jo.getString(key);
+
+        if (!actual.equals(require))
+        {
+            throw new RuntimeException("require " + require + " but " + actual);
+        }
+    }
+
+    private void asChannel(JsonObject jo, ChannelImpl channel)
+    {
+    }
 
     @Override
     public Channel asChannel(JsonObject jo)
     {
         ChannelImpl channel = new ChannelImpl();
 
-        this.unmarshalString(jo,              Names.ID,          channel::id,          ChannelIdImpl::new);
-        this.unmarshalString(jo,              Names.NAME,        channel::name);
-        this.unmarshalBoolean(jo,             Names.IS_CHANNEL,  channel::isChannel);
-        this.unmarshalInt(jo,                 Names.CREATED,     channel::created);
-        this.unmarshalString(jo,              Names.CREATOR,     channel::creator,     UserIdImpl::new);
-        this.unmarshalBoolean(jo,             Names.IS_ARCHIVED, channel::isArchived);
-        this.unmarshalBoolean(jo,             Names.IS_GENERAL,  channel::isGeneral);
-        this.unmarshalBoolean(jo,             Names.IS_MEMBER,   channel::isMember);
-        this.<UserId>unmarshalStringArray(jo, Names.MEMBERS,     channel::members,     UserIdImpl::new); // XXX
-        this.unmarshalObject(jo,              Names.TOPIC,       channel::topic,       this::asTopic);
-        this.unmarshalObject(jo,              Names.PURPOSE,     channel::purpose,     this::asPurpose);
-        this.unmarshalIntOpt(jo,              Names.NUM_MEMBERS, channel::numMembers,                    () -> channel.members().size());
+        this.unmarshalString(jo,              Names.ID,                   channel::id,                  ChannelIdImpl::new);
+        this.unmarshalString(jo,              Names.NAME,                 channel::name);
+        this.unmarshalBoolean(jo,             Names.IS_CHANNEL,           channel::isChannel);
+        this.unmarshalInt(jo,                 Names.CREATED,              channel::created);
+        this.unmarshalString(jo,              Names.CREATOR,              channel::creator,             UserIdImpl::new);
+        this.unmarshalBoolean(jo,             Names.IS_ARCHIVED,          channel::isArchived);
+        this.unmarshalBoolean(jo,             Names.IS_GENERAL,           channel::isGeneral);
+        this.unmarshalBoolean(jo,             Names.IS_MEMBER,            channel::isMember);
+        this.<UserId>unmarshalStringArray(jo, Names.MEMBERS,              channel::members,             UserIdImpl::new); // XXX
+        this.unmarshalObject(jo,              Names.TOPIC,                channel::topic,               this::asTopic);
+        this.unmarshalObject(jo,              Names.PURPOSE,              channel::purpose,             this::asPurpose);
+        this.unmarshalIntOpt(jo,              Names.NUM_MEMBERS,          channel::numMembers,                               () -> channel.members().size());
+
+        this.unmarshalStringOpt(jo,           Names.LAST_READ,            channel::lastRead);
+        this.unmarshalObjectOpt(jo,           Names.LATEST,               channel::latest,              this::asMessage);
+        this.unmarshalIntOpt(jo,              Names.UNREAD_COUNT,         channel::unreadCount);
+        this.unmarshalIntOpt(jo,              Names.UNREAD_COUNT_DISPLAY, channel::unreadCountDisplay);
 
         return channel;
     }
@@ -271,5 +312,21 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
         }
 
         return profile;
+    }
+
+    @Override
+    public Message asMessage(JsonObject jo)
+    {
+        this.requireString(jo, Names.TYPE, Names.MESSAGE);
+
+        // TODO: SUBTYPE
+        MessageImpl message = new MessageImpl();
+
+        this.unmarshalString(jo, Names.TEXT,      message::text);
+        this.unmarshalString(jo, Names.TIMESTAMP, message::timestamp);
+
+        // TODO: edited
+
+        return message;
     }
 }

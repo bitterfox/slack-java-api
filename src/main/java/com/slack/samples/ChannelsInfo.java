@@ -30,9 +30,6 @@ public class ChannelsInfo
 
         channel = channelsInfo.channel();
 
-        System.out.println(channel.id());
-        System.out.println(channel.name());
-        System.out.println(channel.topic().value());
-        System.out.println(channel.purpose().value());
+        System.out.println(channel);
     }
 }
