@@ -7,6 +7,8 @@
 package com.slack.api.impl;
 
 import com.slack.api.exception.AccountInactiveException;
+import com.slack.api.exception.AlreadyInChannelException;
+import com.slack.api.exception.CannotInviteSelfException;
 import com.slack.api.exception.CannotLeaveGeneralException;
 import com.slack.api.exception.ChannelNotFoundException;
 import com.slack.api.exception.InvalidAuthException;
@@ -49,6 +51,8 @@ enum Error
     NO_CHANNEL("no_channel", NoChannelException::new),
     IS_ARCHIVED("is_archived", IsArchivedException::new),
     CANT_LEAVE_GENERAL("cant_leave_general", CannotLeaveGeneralException::new),
+    CANT_INVITE_SELF("cant_invite_self", CannotInviteSelfException::new),
+    ALREADY_IN_CHANNEL("already_in_channel", AlreadyInChannelException::new),
 
     USER_IS_BOT("user_is_bot", UserIsBotException::new),
     USER_IS_RESTRICTED("user_is_restricted", UserIsRestrictedException::new),
