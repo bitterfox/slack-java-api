@@ -7,14 +7,13 @@
 package com.slack.api;
 
 import com.slack.Slack;
-import com.slack.api.exception.CannotArchiveGeneralException;
 import com.slack.api.exception.ChannelNotFoundException;
-import com.slack.api.exception.IsArchivedException;
+import com.slack.api.exception.NotArchivedException;
 import com.slack.data.Channel;
 import com.slack.data.impl.ChannelIdImpl;
-import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,11 +22,12 @@ import org.junit.Test;
  *
  * @author bitter_fox
  */
-public class ChannelsArchiveTest extends AbstractApiTest
+public class ChannelsUnarchiveTest extends AbstractApiTest
 {
-    public ChannelsArchiveTest()
+
+    public ChannelsUnarchiveTest()
     {
-        super(slack -> slack.channels().archive(new ChannelIdImpl("")));
+        super(slack -> slack.channels().unarchive(new ChannelIdImpl("")));
     }
 
     @BeforeClass
@@ -51,32 +51,7 @@ public class ChannelsArchiveTest extends AbstractApiTest
     }
 
     @Test
-    public void testArchive()
-    {
-        Slack slack = this.authedSlack();
-
-        Channel channel = slack.channels().list().channels().stream()
-            .filter(Channel::isMember)
-            .filter(c -> !c.isArchived())
-            .findAny().get();
-
-        slack.channels().archive(channel.id());
-
-        Assert.assertEquals(true, slack.channels().info(channel.id()).channel().isArchived());
-
-        slack.channels().unarchive(channel.id());
-    }
-
-    @Test(expected = ChannelNotFoundException.class)
-    public void testChannelNotFound()
-    {
-        Slack slack = this.authedSlack();
-
-        slack.channels().archive(new ChannelIdImpl(""));
-    }
-
-    @Test(expected = IsArchivedException.class)
-    public void testIsArchived()
+    public void testUnarchive()
     {
         Slack slack = this.authedSlack();
 
@@ -84,18 +59,30 @@ public class ChannelsArchiveTest extends AbstractApiTest
             .filter(Channel::isArchived)
             .findAny().get();
 
+        slack.channels().unarchive(channel.id());
+
+        Assert.assertEquals(false, slack.channels().info(channel.id()).channel().isArchived());
+
         slack.channels().archive(channel.id());
     }
 
-    @Test(expected = CannotArchiveGeneralException.class)
-    public void testCannotArchiveGeneral()
+    @Test(expected = ChannelNotFoundException.class)
+    public void testChannelNotFound()
+    {
+        Slack slack = this.authedSlack();
+
+        slack.channels().unarchive(new ChannelIdImpl(""));
+    }
+
+    @Test(expected = NotArchivedException.class)
+    public void testNotArchivedException()
     {
         Slack slack = this.authedSlack();
 
         Channel channel = slack.channels().list().channels().stream()
-            .filter(Channel::isGeneral)
+            .filter(c -> !c.isArchived())
             .findAny().get();
 
-        slack.channels().archive(channel.id());
+        slack.channels().unarchive(channel.id());
     }
 }

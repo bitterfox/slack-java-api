@@ -17,6 +17,7 @@ import com.slack.api.exception.InvalidNameException;
 import com.slack.api.exception.IsArchivedException;
 import com.slack.api.exception.NameTakenException;
 import com.slack.api.exception.NoChannelException;
+import com.slack.api.exception.NotArchivedException;
 import com.slack.api.exception.NotAuthedException;
 import com.slack.api.exception.NotAuthorizedOperationException;
 import com.slack.api.exception.NotInChannelException;
@@ -50,6 +51,7 @@ enum Error
     NAME_TAKEN("name_taken", NameTakenException::new),
     RESTRICTED_ACTION("restricted_action", RestrictedActionException::new),
     NO_CHANNEL("no_channel", NoChannelException::new),
+    NOT_ARCHIVED("not_archived", NotArchivedException::new),
     IS_ARCHIVED("is_archived", IsArchivedException::new),
     ALREADY_ARCHIVED("already_archived", IsArchivedException::new),
     CANT_ARCHIVE_GENERAL("cant_archive_general", CannotArchiveGeneralException::new),
