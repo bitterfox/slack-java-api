@@ -4,18 +4,18 @@
  * and open the template in the editor.
  */
 
-package com.slack.api;
+package com.slack.data.impl;
 
-import com.slack.Slack;
+import com.slack.data.GroupId;
 
 /**
  *
  * @author bitter_fox
  */
-public interface ApiFactory
+public class GroupIdImpl extends IdImpl<String> implements GroupId
 {
-    Auth createAuth(Slack slack);
-    Channels createChannels(Slack slack);
-    Groups createGroups(Slack slack);
-    Users createUsers(Slack slack);
+    public GroupIdImpl(String id)
+    {
+        super(id);
+    }
 }

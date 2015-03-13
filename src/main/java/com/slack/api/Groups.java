@@ -6,16 +6,19 @@
 
 package com.slack.api;
 
-import com.slack.Slack;
+import com.slack.data.Group;
 
 /**
  *
  * @author bitter_fox
  */
-public interface ApiFactory
+public interface Groups
 {
-    Auth createAuth(Slack slack);
-    Channels createChannels(Slack slack);
-    Groups createGroups(Slack slack);
-    Users createUsers(Slack slack);
+    @ApiIssuer
+    Groups.List list();
+
+    interface List
+    {
+        java.util.List<Group> groups();
+    }
 }
