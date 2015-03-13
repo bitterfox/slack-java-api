@@ -8,6 +8,7 @@ package com.slack;
 
 import com.slack.api.Auth;
 import com.slack.api.Channels;
+import com.slack.api.Groups;
 import com.slack.api.Users;
 import java.util.function.Consumer;
 
@@ -20,6 +21,7 @@ public class Slack
     private Configure config;
     private Auth auth;
     private Channels channels;
+    private Groups groups;
     private Users users;
 
     private Slack(Configure config)
@@ -27,6 +29,7 @@ public class Slack
         this.config = config;
         this.auth = config.apiFactory().createAuth(this);
         this.channels = config.apiFactory().createChannels(this);
+        this.groups = config.apiFactory().createGroups(this);
         this.users = config.apiFactory().createUsers(this);
     }
 
@@ -46,6 +49,11 @@ public class Slack
     public Channels channels()
     {
         return channels;
+    }
+
+    public Groups groups()
+    {
+        return groups;
     }
 
     public Users users()

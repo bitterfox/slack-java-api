@@ -8,6 +8,7 @@ package com.slack.data.impl.json;
 
 import com.slack.api.util.URLUtil;
 import com.slack.data.Channel;
+import com.slack.data.Group;
 import com.slack.data.Profile;
 import com.slack.data.Purpose;
 import com.slack.data.Topic;
@@ -16,6 +17,8 @@ import com.slack.data.UserId;
 import com.slack.data.event.Message;
 import com.slack.data.impl.ChannelIdImpl;
 import com.slack.data.impl.ChannelImpl;
+import com.slack.data.impl.GroupIdImpl;
+import com.slack.data.impl.GroupImpl;
 import com.slack.data.impl.ProfileImpl;
 import com.slack.data.impl.PurposeImpl;
 import com.slack.data.impl.TopicImpl;
@@ -63,6 +66,8 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
         public static final String LATEST = "latest";
         public static final String UNREAD_COUNT = "unread_count";
         public static final String UNREAD_COUNT_DISPLAY = "unread_count_display";
+
+        public static final String IS_GROUP = "is_group";
 
         public static final String VALUE = "value";
         public static final String LAST_SET = "last_set";
@@ -196,10 +201,6 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
         }
     }
 
-    private void asChannel(JsonObject jo, ChannelImpl channel)
-    {
-    }
-
     @Override
     public Channel asChannel(JsonObject jo)
     {
@@ -224,6 +225,24 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
         this.unmarshalIntOpt(jo,              Names.UNREAD_COUNT_DISPLAY, channel::unreadCountDisplay);
 
         return channel;
+    }
+
+    @Override
+    public Group asGroup(JsonObject jo)
+    {
+        GroupImpl group = new GroupImpl();
+
+        this.unmarshalString(jo,              Names.ID,          group::id,          GroupIdImpl::new);
+        this.unmarshalString(jo,              Names.NAME,        group::name);
+        this.unmarshalBoolean(jo,             Names.IS_GROUP,    group::isGroup);
+        this.unmarshalInt(jo,                 Names.CREATED,     group::created);
+        this.unmarshalString(jo,              Names.CREATOR,     group::creator,     UserIdImpl::new);
+        this.unmarshalBoolean(jo,             Names.IS_ARCHIVED, group::isArchived);
+        this.<UserId>unmarshalStringArray(jo, Names.MEMBERS,     group::members,     UserIdImpl::new); // XXX
+        this.unmarshalObject(jo,              Names.TOPIC,       group::topic,       this::asTopic);
+        this.unmarshalObject(jo,              Names.PURPOSE,     group::purpose,     this::asPurpose);
+
+        return group;
     }
 
     @Override

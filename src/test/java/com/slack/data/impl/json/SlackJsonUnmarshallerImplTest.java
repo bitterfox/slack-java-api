@@ -7,6 +7,7 @@
 package com.slack.data.impl.json;
 
 import com.slack.data.Channel;
+import com.slack.data.Group;
 import com.slack.data.Profile;
 import com.slack.data.Purpose;
 import com.slack.data.Topic;
@@ -14,17 +15,23 @@ import com.slack.data.User;
 import com.slack.data.UserId;
 import com.slack.data.impl.ChannelIdImpl;
 import com.slack.data.impl.ChannelImpl;
+import com.slack.data.impl.GroupIdImpl;
+import com.slack.data.impl.GroupImpl;
 import com.slack.data.impl.ProfileImpl;
 import com.slack.data.impl.PurposeImpl;
 import com.slack.data.impl.TopicImpl;
 import com.slack.data.impl.UserIdImpl;
 import com.slack.data.impl.UserImpl;
+import com.slack.data.json.SlackJsonUnmarshaller;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -90,6 +97,23 @@ public class SlackJsonUnmarshallerImplTest
         channel.purpose(this.purpose());
 
         return channel;
+    }
+    private Group group()
+    {
+        GroupImpl group = new GroupImpl();
+
+        group.id(new GroupIdImpl("GROUP-ID"));
+        group.created(43892);
+        group.creator(new UserIdImpl("USER-ID"));
+        group.isArchived(true);
+        group.isGroup(true);
+        group.name("NAME");
+        List<UserId> members = Stream.of("aaa", "bbb", "ccc").map(UserIdImpl::new).collect(Collectors.toList());
+        group.members(members);
+        group.topic(this.topic());
+        group.purpose(this.purpose());
+
+        return group;
     }
     private Topic topic()
     {
@@ -179,6 +203,23 @@ public class SlackJsonUnmarshallerImplTest
             .add("purpose", this.purposeToJsonObject(channel.purpose()))
             .build();
     }
+    private JsonObject groupToJsonObject(Group group)
+    {
+        JsonArrayBuilder members = group.members().stream()
+            .map(UserId::id)
+            .reduce(Json.createArrayBuilder(), JsonArrayBuilder::add, (a1, a2) -> a1);
+        return Json.createObjectBuilder()
+            .add("id", group.id().id())
+            .add("created", group.created())
+            .add("creator", group.creator().id())
+            .add("is_archived", group.isArchived())
+            .add("is_group", group.isGroup())
+            .add("name", group.name())
+            .add("members", members)
+            .add("topic", this.topicToJsonObject(group.topic()))
+            .add("purpose", this.purposeToJsonObject(group.purpose()))
+            .build();
+    }
     private JsonObject topicToJsonObject(Topic topic)
     {
         return Json.createObjectBuilder()
@@ -245,19 +286,39 @@ public class SlackJsonUnmarshallerImplTest
             .build();
     }
 
+    private <T> void test(Supplier<T> supplier,
+        Function<T, JsonObject> toJsonObject,
+        BiFunction<SlackJsonUnmarshaller, JsonObject, T> unmarshaller)
+    {
+        T expResult = supplier.get();
+
+        JsonObject jo = toJsonObject.apply(expResult);
+
+        SlackJsonUnmarshallerImpl instance = new SlackJsonUnmarshallerImpl();
+        T result = unmarshaller.apply(instance, jo);
+        assertEquals(expResult, result);
+    }
+
     /**
      * Test of asChannel method, of class SlackJsonUnmarshallerImpl.
      */
     @Test
     public void testAsChannel()
     {
-        Channel expResult = this.channel();
+        this.test(this::channel,
+            this::channelToJsonObject,
+            SlackJsonUnmarshaller::asChannel);
+    }
 
-        JsonObject jo = this.channelToJsonObject(expResult);
-
-        SlackJsonUnmarshallerImpl instance = new SlackJsonUnmarshallerImpl();
-        Channel result = instance.asChannel(jo);
-        assertEquals(expResult, result);
+    /**
+     * Test of asGroup method, of class SlackJsonUnmarshallerImpl.
+     */
+    @Test
+    public void testAsGroup()
+    {
+        this.test(this::group,
+            this::groupToJsonObject,
+            SlackJsonUnmarshaller::asGroup);
     }
 
     /**
@@ -266,14 +327,9 @@ public class SlackJsonUnmarshallerImplTest
     @Test
     public void testAsTopic()
     {
-        Topic expResult = this.topic();
-
-        JsonObject jo = this.topicToJsonObject(expResult);
-
-        SlackJsonUnmarshallerImpl instance = new SlackJsonUnmarshallerImpl();
-
-        Topic result = instance.asTopic(jo);
-        assertEquals(expResult, result);
+        this.test(this::topic,
+            this::topicToJsonObject,
+            SlackJsonUnmarshaller::asTopic);
     }
 
     /**
@@ -282,13 +338,9 @@ public class SlackJsonUnmarshallerImplTest
     @Test
     public void testAsPurpose()
     {
-        Purpose expResult = this.purpose();
-
-        JsonObject jo = this.purposeToJsonObject(expResult);
-
-        SlackJsonUnmarshallerImpl instance = new SlackJsonUnmarshallerImpl();
-        Purpose result = instance.asPurpose(jo);
-        assertEquals(expResult, result);
+        this.test(this::purpose,
+            this::purposeToJsonObject,
+            SlackJsonUnmarshaller::asPurpose);
     }
 
     /**
@@ -297,13 +349,9 @@ public class SlackJsonUnmarshallerImplTest
     @Test
     public void testAsUser()
     {
-        User expResult = this.user();
-
-        JsonObject jo = this.userToJsonObject(expResult);
-
-        SlackJsonUnmarshallerImpl instance = new SlackJsonUnmarshallerImpl();
-        User result = instance.asUser(jo);
-        assertEquals(expResult, result);
+        this.test(this::user,
+            this::userToJsonObject,
+            SlackJsonUnmarshaller::asUser);
     }
 
     /**
@@ -312,12 +360,8 @@ public class SlackJsonUnmarshallerImplTest
     @Test
     public void testAsProfile()
     {
-        Profile expResult = this.profile();
-
-        JsonObject jo = this.profileToJsonObject(expResult);
-
-        SlackJsonUnmarshallerImpl instance = new SlackJsonUnmarshallerImpl();
-        Profile result = instance.asProfile(jo);
-        assertEquals(expResult, result);
+        this.test(this::profile,
+            this::profileToJsonObject,
+            SlackJsonUnmarshaller::asProfile);
     }
 }

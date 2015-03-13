@@ -4,19 +4,13 @@
  * and open the template in the editor.
  */
 
-package com.slack.data.impl;
-
-import com.slack.data.UserId;
-import java.util.Objects;
+package com.slack.data;
 
 /**
  *
  * @author bitter_fox
  */
-public class UserIdImpl extends IdImpl<String> implements UserId
+public interface GroupId
 {
-    public UserIdImpl(String id)
-    {
-        super(id);
-    }
+    String id();
 }
