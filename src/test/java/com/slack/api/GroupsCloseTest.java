@@ -16,19 +16,20 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author bitter_fox
  */
-public class GroupsOpenTest extends AbstractApiTest
+public class GroupsCloseTest extends AbstractApiTest
 {
     private Group group;
     private boolean alreadyOpen;
 
-    public GroupsOpenTest()
+    public GroupsCloseTest()
     {
-        super(slack -> slack.groups().open(new GroupIdImpl("")));
+        super(slack -> slack.groups().close(new GroupIdImpl("")));
     }
 
     @BeforeClass
@@ -46,7 +47,7 @@ public class GroupsOpenTest extends AbstractApiTest
     {
         Slack slack = this.authedSlack();
         group = slack.groups().list().groups().get(0);
-        alreadyOpen = !slack.groups().close(group.id()).alreadyClosed();
+        alreadyOpen = slack.groups().open(group.id()).alreadyOpen();
     }
 
     @After
@@ -63,22 +64,22 @@ public class GroupsOpenTest extends AbstractApiTest
     }
 
     @Test
-    public void testOpen()
+    public void testClose()
     {
         Slack slack = this.authedSlack();
 
-        Groups.Open open = slack.groups().open(group.id()); // open
-        Assert.assertEquals(open.alreadyOpen(), open.noOperation());
-        Assert.assertEquals(false, open.noOperation());
+        Groups.Close close = slack.groups().close(group.id()); // close
+        Assert.assertEquals(close.alreadyClosed(), close.noOperation());
+        Assert.assertEquals(false, close.noOperation());
 
-        open = slack.groups().open(group.id()); // already open
-        Assert.assertEquals(open.alreadyOpen(), open.noOperation());
-        Assert.assertEquals(true, open.noOperation());
+        close = slack.groups().close(group.id()); // already close
+        Assert.assertEquals(close.alreadyClosed(), close.noOperation());
+        Assert.assertEquals(true, close.noOperation());
     }
 
     @Test(expected = ChannelNotFoundException.class)
     public void testChannelNotFound()
     {
-        this.authedSlack().groups().open(new GroupIdImpl(""));
+        this.authedSlack().groups().close(new GroupIdImpl(""));
     }
 }
