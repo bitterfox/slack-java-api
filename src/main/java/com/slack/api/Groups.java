@@ -25,6 +25,9 @@ public interface Groups
     Groups.Open open(GroupId groupId);
 
     @ApiIssuer
+    Groups.Rename rename(GroupId groupId, String newName);
+
+    @ApiIssuer
     Groups.SetPurpose setPurpose(GroupId groupId, String purpose);
 
     @ApiIssuer
@@ -45,6 +48,14 @@ public interface Groups
     {
         boolean noOperation();
         boolean alreadyOpen();
+    }
+
+    interface Rename
+    {
+        GroupId id();
+        boolean isGroup();
+        String name();
+        int created();
     }
 
     interface SetPurpose
