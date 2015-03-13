@@ -14,19 +14,19 @@ import javax.json.JsonObject;
  *
  * @author bitter_fox
  */
-final class SetPurposeResult extends ApiResult implements Channels.SetPurpose, Groups.SetPurpose
+final class SetTopicResult extends ApiResult implements Channels.SetTopic, Groups.SetTopic
 {
-    private String purpose;
+    private String topic;
 
     @Override
-    public String purpose()
+    public String topic()
     {
-        return purpose;
+        return topic;
     }
 
     @Override
-    public void apply(JsonObject result)
+    protected void apply(JsonObject result)
     {
-        this.purpose = result.getString("purpose");
+        this.topic = result.getString("topic");
     }
 }

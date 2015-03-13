@@ -27,6 +27,9 @@ public interface Groups
     @ApiIssuer
     Groups.SetPurpose setPurpose(GroupId groupId, String purpose);
 
+    @ApiIssuer
+    Groups.SetTopic setTopic(GroupId groupId, String topic);
+
     interface Close
     {
         boolean noOperation();
@@ -47,5 +50,10 @@ public interface Groups
     interface SetPurpose
     {
         String purpose();
+    }
+
+    interface SetTopic
+    {
+        String topic();
     }
 }
