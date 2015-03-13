@@ -11,6 +11,7 @@ import com.slack.api.ApiIssuer;
 import com.slack.api.Groups;
 import com.slack.data.Group;
 import com.slack.data.GroupId;
+import com.slack.data.impl.GroupIdImpl;
 import javax.json.JsonObject;
 
 /**
@@ -56,6 +57,17 @@ class GroupsImpl implements Groups
             builder.put("channel", groupId.id()));
 
         return apiRequest.issue(GroupsImpl.Open::new);
+    }
+
+    @ApiIssuer
+    @Override
+    public Groups.Rename rename(GroupId id, String newName)
+    {
+        GetApiRequest apiRequest = api.get("rename", builder ->
+            builder.put("channel", id.id())
+                .put("name", newName));
+
+        return apiRequest.issue(GroupsImpl.Rename::new);
     }
 
     @ApiIssuer
@@ -144,6 +156,48 @@ class GroupsImpl implements Groups
         {
             this.noOperation = result.getBoolean("no_op", false);
             this.alreadyOpen = result.getBoolean("already_open", false);
+        }
+    }
+
+    private final class Rename extends ApiResult implements Groups.Rename
+    {
+        private GroupId id;
+        private boolean isGroup;
+        private String name;
+        private int created;
+
+        @Override
+        public GroupId id()
+        {
+            return id;
+        }
+
+        @Override
+        public boolean isGroup()
+        {
+            return isGroup;
+        }
+
+        @Override
+        public String name()
+        {
+            return name;
+        }
+
+        @Override
+        public int created()
+        {
+            return created;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            JsonObject channel = result.getJsonObject("channel");
+            this.id = new GroupIdImpl(channel.getString("id"));
+            this.isGroup = channel.getBoolean("is_group");
+            this.name = channel.getString("name");
+            this.created = channel.getInt("created");
         }
     }
 }
