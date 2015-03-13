@@ -31,6 +31,16 @@ class GroupsImpl implements Groups
 
     @ApiIssuer
     @Override
+    public Groups.Close close(GroupId groupId)
+    {
+        GetApiRequest apiRequest = api.get("close", builder ->
+            builder.put("channel", groupId.id()));
+
+        return apiRequest.issue(GroupsImpl.Close::new);
+    }
+
+    @ApiIssuer
+    @Override
     public Groups.List list()
     {
         GetApiRequest apiRequest = api.get("list");
@@ -46,6 +56,31 @@ class GroupsImpl implements Groups
             builder.put("channel", groupId.id()));
 
         return apiRequest.issue(GroupsImpl.Open::new);
+    }
+
+    private final class Close extends ApiResult implements Groups.Close
+    {
+        private boolean noOperation;
+        private boolean alreadyClosed;
+
+        @Override
+        public boolean noOperation()
+        {
+            return noOperation;
+        }
+
+        @Override
+        public boolean alreadyClosed()
+        {
+            return alreadyClosed;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            this.noOperation = result.getBoolean("no_op", false);
+            this.alreadyClosed = result.getBoolean("already_closed", false);
+        }
     }
 
     private final class List extends ApiResult implements Groups.List

@@ -16,10 +16,19 @@ import com.slack.data.GroupId;
 public interface Groups
 {
     @ApiIssuer
+    Groups.Close close(GroupId groupId);
+
+    @ApiIssuer
     Groups.List list();
 
     @ApiIssuer
     Groups.Open open(GroupId groupId);
+
+    interface Close
+    {
+        boolean noOperation();
+        boolean alreadyClosed();
+    }
 
     interface List
     {
