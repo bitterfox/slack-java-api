@@ -136,7 +136,7 @@ class ChannelsImpl implements Channels
             builder.put("channel", channelId.id())
                 .put("topic", topic));
 
-        return apiRequest.issue(ChannelsImpl.SetTopic::new);
+        return apiRequest.issue(SetTopicResult::new);
     }
 
     @ApiIssuer
@@ -265,20 +265,4 @@ class ChannelsImpl implements Channels
         }
     }
 
-    public final class SetTopic extends ApiResult implements Channels.SetTopic
-    {
-        private String topic;
-
-        @Override
-        public String topic()
-        {
-            return topic;
-        }
-
-        @Override
-        protected void apply(JsonObject result)
-        {
-            this.topic = result.getString("topic");
-        }
-    }
 }
