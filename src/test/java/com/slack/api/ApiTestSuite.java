@@ -31,6 +31,9 @@ import org.junit.runners.Suite;
     ChannelsSetPurposeTest.class,
     ChannelsSetTopicTest.class,
     ChannelsUnarchiveTest.class,
+    GroupsCloseTest.class,
+    GroupsListTest.class,
+    GroupsOpenTest.class,
     UsersInfoTest.class,
 })
 public class ApiTestSuite
