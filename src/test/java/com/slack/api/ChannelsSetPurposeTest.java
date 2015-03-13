@@ -30,7 +30,6 @@ import static org.junit.Assert.*;
  */
 public class ChannelsSetPurposeTest extends AbstractApiTest
 {
-
     public ChannelsSetPurposeTest()
     {
         super(slack -> slack.channels().setPurpose(new ChannelIdImpl(""), ""));
@@ -133,5 +132,4 @@ public class ChannelsSetPurposeTest extends AbstractApiTest
 
         slack.channels().setPurpose(channel.id(), tooLongPurpose);
     }
-
 }

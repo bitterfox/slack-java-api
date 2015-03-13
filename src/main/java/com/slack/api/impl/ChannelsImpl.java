@@ -125,7 +125,7 @@ class ChannelsImpl implements Channels
             builder.put("channel", channelId.id())
                 .put("purpose", purpose));
 
-        return apiRequest.issue(ChannelsImpl.SetPurpose::new);
+        return apiRequest.issue(SetPurposeResult::new);
     }
 
     @ApiIssuer
@@ -262,23 +262,6 @@ class ChannelsImpl implements Channels
             this.isChannel = channel.getBoolean("is_channel");
             this.name = channel.getString("name");
             this.created = channel.getInt("created");
-        }
-    }
-
-    public final class SetPurpose extends ApiResult implements Channels.SetPurpose
-    {
-        private String purpose;
-
-        @Override
-        public String purpose()
-        {
-            return purpose;
-        }
-
-        @Override
-        public void apply(JsonObject result)
-        {
-            this.purpose = result.getString("purpose");
         }
     }
 

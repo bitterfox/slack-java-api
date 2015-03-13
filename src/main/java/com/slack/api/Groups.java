@@ -24,6 +24,9 @@ public interface Groups
     @ApiIssuer
     Groups.Open open(GroupId groupId);
 
+    @ApiIssuer
+    Groups.SetPurpose setPurpose(GroupId groupId, String purpose);
+
     interface Close
     {
         boolean noOperation();
@@ -39,5 +42,10 @@ public interface Groups
     {
         boolean noOperation();
         boolean alreadyOpen();
+    }
+
+    interface SetPurpose
+    {
+        String purpose();
     }
 }
