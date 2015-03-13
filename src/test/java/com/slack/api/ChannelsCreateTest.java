@@ -6,9 +6,8 @@
 
 package com.slack.api;
 
-import com.slack.Slack;
-import com.slack.api.exception.InvalidAuthException;
-import com.slack.api.exception.NotAuthedException;
+import com.slack.api.exception.NameTakenException;
+import com.slack.api.exception.NoChannelException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -19,11 +18,12 @@ import org.junit.Test;
  *
  * @author bitter_fox
  */
-public class AuthTestErrorTest extends AbstractApiTest
+public class ChannelsCreateTest extends AbstractApiTest
 {
-    public AuthTestErrorTest()
+
+    public ChannelsCreateTest()
     {
-        super(s -> s.auth().test());
+        super(slack -> slack.channels().create(""));
     }
 
     @BeforeClass
@@ -44,5 +44,17 @@ public class AuthTestErrorTest extends AbstractApiTest
     @After
     public void tearDown()
     {
+    }
+
+    @Test(expected = NoChannelException.class)
+    public void testNoChannel()
+    {
+        this.authedSlack().channels().create("");
+    }
+
+    @Test(expected = NameTakenException.class)
+    public void testNameTaken()
+    {
+        this.authedSlack().channels().create("general");
     }
 }

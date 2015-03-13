@@ -20,14 +20,18 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
 {
-    UsersInfoTest.class,
-    ChannelsCreate.class,
-    AuthTestErrorTest.class,
-    ChannelsRenameTest.class,
+    AuthTestTest.class,
+    ChannelsArchiveTest.class,
+    ChannelsCreateTest.class,
+    ChannelsInviteTest.class,
     ChannelsJoinTest.class,
     ChannelsKickTest.class,
     ChannelsLeaveTest.class,
-    ChannelsSetTopicTest.class
+    ChannelsRenameTest.class,
+    ChannelsSetPurposeTest.class,
+    ChannelsSetTopicTest.class,
+    ChannelsUnarchiveTest.class,
+    UsersInfoTest.class,
 })
 public class ApiTestSuite
 {
