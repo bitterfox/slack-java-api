@@ -58,6 +58,17 @@ class GroupsImpl implements Groups
         return apiRequest.issue(GroupsImpl.Open::new);
     }
 
+    @ApiIssuer
+    @Override
+    public Groups.SetPurpose setPurpose(GroupId groupId, String purpose)
+    {
+        GetApiRequest apiRequest = api.get("setPurpose", builder ->
+            builder.put("channel", groupId.id())
+                .put("purpose", purpose));
+
+        return apiRequest.issue(SetPurposeResult::new);
+    }
+
     private final class Close extends ApiResult implements Groups.Close
     {
         private boolean noOperation;
