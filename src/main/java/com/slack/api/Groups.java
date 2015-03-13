@@ -7,6 +7,7 @@
 package com.slack.api;
 
 import com.slack.data.Group;
+import com.slack.data.GroupId;
 
 /**
  *
@@ -17,8 +18,17 @@ public interface Groups
     @ApiIssuer
     Groups.List list();
 
+    @ApiIssuer
+    Groups.Open open(GroupId groupId);
+
     interface List
     {
         java.util.List<Group> groups();
+    }
+
+    interface Open
+    {
+        boolean noOperation();
+        boolean alreadyOpen();
     }
 }

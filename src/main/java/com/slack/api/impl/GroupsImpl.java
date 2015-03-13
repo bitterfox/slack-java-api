@@ -10,6 +10,7 @@ import com.slack.Slack;
 import com.slack.api.ApiIssuer;
 import com.slack.api.Groups;
 import com.slack.data.Group;
+import com.slack.data.GroupId;
 import javax.json.JsonObject;
 
 /**
@@ -37,6 +38,16 @@ class GroupsImpl implements Groups
         return apiRequest.issue(GroupsImpl.List::new);
     }
 
+    @ApiIssuer
+    @Override
+    public Groups.Open open(GroupId groupId)
+    {
+        GetApiRequest apiRequest = api.get("open", builder ->
+            builder.put("channel", groupId.id()));
+
+        return apiRequest.issue(GroupsImpl.Open::new);
+    }
+
     private final class List extends ApiResult implements Groups.List
     {
         private java.util.List<Group> groups;
@@ -51,6 +62,31 @@ class GroupsImpl implements Groups
         protected void apply(JsonObject result)
         {
             this.groups = slack.getConfigure().unmarshaller().asGroups(result.getJsonArray("groups"));
+        }
+    }
+
+    private final class Open extends ApiResult implements Groups.Open
+    {
+        private boolean noOperation;
+        private boolean alreadyOpen;
+
+        @Override
+        public boolean noOperation()
+        {
+            return noOperation;
+        }
+
+        @Override
+        public boolean alreadyOpen()
+        {
+            return alreadyOpen;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            this.noOperation = result.getBoolean("no_op", false);
+            this.alreadyOpen = result.getBoolean("already_open", false);
         }
     }
 }
