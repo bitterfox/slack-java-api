@@ -39,7 +39,8 @@ class GroupsImpl implements Groups
     @Override
     public Groups.Archive archive(GroupId groupId)
     {
-        GetApiRequest apiRequest = api.get("archive", builder -> builder.put("channel", groupId.id()));
+        GetApiRequest apiRequest = api.get("archive", builder ->
+            builder.put("channel", groupId.id()));
 
         return apiRequest.issue(EmptyResult::new);
     }
@@ -104,6 +105,16 @@ class GroupsImpl implements Groups
                 .put("topic", topic));
 
         return apiRequest.issue(SetTopicResult::new);
+    }
+
+    @ApiIssuer
+    @Override
+    public Groups.Unarchive unarchive(GroupId groupId)
+    {
+        GetApiRequest apiRequest = api.get("unarchive", builder ->
+            builder.put("channel", groupId.id()));
+
+        return apiRequest.issue(EmptyResult::new);
     }
 
     @ApiBridge
