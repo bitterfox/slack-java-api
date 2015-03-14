@@ -2,17 +2,16 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 group = 'bitter_fox'
-version = '1.0-SNAPSHOT'
+version = '0.1-SNAPSHOT'
 
 description = """"""
 
-sourceCompatibility = 1.5
-targetCompatibility = 1.5
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
-
+test.maxParallelForks = 5
 
 repositories {
-        
      maven { url "http://repo.maven.apache.org/maven2" }
 }
 dependencies {
