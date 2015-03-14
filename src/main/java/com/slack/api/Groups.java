@@ -8,6 +8,7 @@ package com.slack.api;
 
 import com.slack.data.Group;
 import com.slack.data.GroupId;
+import com.slack.data.UserId;
 import java.util.Optional;
 
 /**
@@ -21,6 +22,9 @@ public interface Groups
 
     @ApiIssuer
     Groups.Close close(GroupId groupId);
+
+    @ApiIssuer
+    Groups.Invite invite(GroupId groupId, UserId userId);
 
     @ApiIssuer
     Groups.List list();
@@ -49,6 +53,12 @@ public interface Groups
     {
         boolean noOperation();
         boolean alreadyClosed();
+    }
+
+    interface Invite
+    {
+        boolean alreadyInGroup();
+        Group group();
     }
 
     interface List

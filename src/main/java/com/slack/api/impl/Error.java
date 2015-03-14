@@ -10,6 +10,7 @@ import com.slack.api.exception.AccountInactiveException;
 import com.slack.api.exception.AlreadyInChannelException;
 import com.slack.api.exception.CannotDoGeneralException;
 import com.slack.api.exception.CannotDoSelfException;
+import com.slack.api.exception.CannotInviteException;
 import com.slack.api.exception.ChannelNotFoundException;
 import com.slack.api.exception.InvalidAuthException;
 import com.slack.api.exception.InvalidNameException;
@@ -58,6 +59,7 @@ enum Error
     CANT_KICK_GENERAL("cant_kick_from_general", CannotDoGeneralException::new),
     CANT_INVITE_SELF("cant_invite_self", CannotDoSelfException::new),
     CANT_KICK_SELF("cant_kick_self", CannotDoSelfException::new),
+    CANT_INVITE("cant_invite", CannotInviteException::new),
     ALREADY_IN_CHANNEL("already_in_channel", AlreadyInChannelException::new),
 
     USER_IS_BOT("user_is_bot", UserIsBotException::new),
