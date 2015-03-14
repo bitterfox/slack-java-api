@@ -6,18 +6,14 @@
 
 package com.slack.api;
 
-import com.slack.Slack;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 
 /**
  *
  * @author bitter_fox
  */
-public class AbstractApiTest
+@Target(ElementType.METHOD)
+public @interface ApiBridge
 {
-    private Slack authedSlack = Slack.create(config -> config.token("YOUR-TOKEN"));
-
-    protected Slack authedSlack()
-    {
-        return authedSlack;
-    }
 }

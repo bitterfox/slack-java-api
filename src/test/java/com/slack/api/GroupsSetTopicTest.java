@@ -30,7 +30,7 @@ import org.junit.Test;
  *
  * @author bitter_fox
  */
-public class GroupsSetTopicTest extends AbstractApiTest
+public class GroupsSetTopicTest extends AbstractApiIssuerTest
 {
     public GroupsSetTopicTest()
     {
@@ -59,9 +59,7 @@ public class GroupsSetTopicTest extends AbstractApiTest
 
     private Group findGroup(Slack slack, GroupId groupId)
     {
-        return slack.groups().list().groups().stream()
-            .filter(g -> g.id().equals(groupId))
-            .findAny().get();
+        return slack.groups().findById(groupId).get();
     }
 
     private void setTopic(Slack slack, Group group)

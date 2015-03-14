@@ -7,6 +7,7 @@
 package com.slack.api.impl;
 
 import com.slack.Slack;
+import com.slack.api.ApiBridge;
 import com.slack.api.ApiIssuer;
 import com.slack.api.Channels;
 import com.slack.api.Groups;
@@ -14,6 +15,7 @@ import com.slack.data.ChannelId;
 import com.slack.data.Group;
 import com.slack.data.GroupId;
 import com.slack.data.impl.GroupIdImpl;
+import java.util.Optional;
 import javax.json.JsonObject;
 
 /**
@@ -102,6 +104,15 @@ class GroupsImpl implements Groups
                 .put("topic", topic));
 
         return apiRequest.issue(SetTopicResult::new);
+    }
+
+    @ApiBridge
+    @Override
+    public Optional<Group> findById(GroupId groupId)
+    {
+        return this.list().groups().stream()
+            .filter(g -> g.id().equals(groupId))
+            .findAny();
     }
 
     private final class Close extends ApiResult implements Groups.Close

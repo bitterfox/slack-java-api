@@ -28,7 +28,7 @@ import static org.junit.Assert.*;
  *
  * @author bitter_fox
  */
-public class ChannelsSetPurposeTest extends AbstractApiTest
+public class ChannelsSetPurposeTest extends AbstractApiIssuerTest
 {
     public ChannelsSetPurposeTest()
     {

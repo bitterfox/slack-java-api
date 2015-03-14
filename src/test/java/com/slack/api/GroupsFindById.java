@@ -6,23 +6,24 @@
 
 package com.slack.api;
 
-import com.slack.api.exception.NoChannelException;
+import com.slack.Slack;
+import com.slack.data.Group;
+import java.util.List;
+import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author bitter_fox
  */
-public class ChannelsJoinTest extends AbstractApiIssuerTest
+public class GroupsFindById extends AbstractApiTest
 {
-    public ChannelsJoinTest()
+    public GroupsFindById()
     {
-        super(s -> s.channels().join(""));
     }
 
     @BeforeClass
@@ -45,9 +46,13 @@ public class ChannelsJoinTest extends AbstractApiIssuerTest
     {
     }
 
-    @Test(expected = NoChannelException.class)
-    public void testNoChannel()
+    @Test
+    public void testFindById()
     {
-        this.authedSlack().channels().join("");
+        Slack slack = this.authedSlack();
+
+        List<Group> groups = slack.groups().list().groups();
+
+        groups.forEach(g -> Assert.assertEquals(g, slack.groups().findById(g.id()).get()));
     }
 }

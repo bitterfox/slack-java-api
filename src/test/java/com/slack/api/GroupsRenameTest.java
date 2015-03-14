@@ -24,7 +24,7 @@ import org.junit.Test;
  *
  * @author bitter_fox
  */
-public class GroupsRenameTest extends AbstractApiTest
+public class GroupsRenameTest extends AbstractApiIssuerTest
 {
     public GroupsRenameTest()
     {
@@ -68,9 +68,7 @@ public class GroupsRenameTest extends AbstractApiTest
         Assert.assertEquals(group.created(), rename.created());
         Assert.assertEquals(newName, rename.name());
 
-        group = slack.groups().list().groups().stream()
-            .filter(g -> g.id().equals(groupId))
-            .findAny().get();
+        group = slack.groups().findById(groupId).get();
 
         Assert.assertEquals(newName, group.name());
 

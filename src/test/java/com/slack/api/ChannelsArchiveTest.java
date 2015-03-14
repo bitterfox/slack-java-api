@@ -23,7 +23,7 @@ import org.junit.Test;
  *
  * @author bitter_fox
  */
-public class ChannelsArchiveTest extends AbstractApiTest
+public class ChannelsArchiveTest extends AbstractApiIssuerTest
 {
     public ChannelsArchiveTest()
     {

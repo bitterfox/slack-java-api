@@ -19,7 +19,7 @@ import org.junit.Test;
  *
  * @author bitter_fox
  */
-public class AuthTestTest extends AbstractApiTest
+public class AuthTestTest extends AbstractApiIssuerTest
 {
     public AuthTestTest()
     {
