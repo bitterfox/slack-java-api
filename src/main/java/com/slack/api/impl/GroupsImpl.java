@@ -9,11 +9,10 @@ package com.slack.api.impl;
 import com.slack.Slack;
 import com.slack.api.ApiBridge;
 import com.slack.api.ApiIssuer;
-import com.slack.api.Channels;
 import com.slack.api.Groups;
-import com.slack.data.ChannelId;
 import com.slack.data.Group;
 import com.slack.data.GroupId;
+import com.slack.data.UserId;
 import com.slack.data.impl.GroupIdImpl;
 import java.util.Optional;
 import javax.json.JsonObject;
@@ -53,6 +52,18 @@ class GroupsImpl implements Groups
             builder.put("channel", groupId.id()));
 
         return apiRequest.issue(GroupsImpl.Close::new);
+    }
+
+    @ApiIssuer
+    @Override
+    public Groups.Invite invite(GroupId groupId, UserId userId)
+    {
+        GetApiRequest apiRequest = api.get("invite", builder ->
+            builder.put("channel", groupId.id())
+                .put("user", userId.id()));
+
+        return apiRequest.issue(GroupsImpl.Invite::new);
+
     }
 
     @ApiIssuer
@@ -167,6 +178,34 @@ class GroupsImpl implements Groups
             this.groups = slack.getConfigure().unmarshaller().asGroups(result.getJsonArray("groups"));
         }
     }
+
+    private final class Invite extends ApiResult implements Groups.Invite
+    {
+        private static final String ALREADY_IN_GROUP = "already_in_group";
+
+        private Group group;
+        private boolean alreadyInGroup;
+
+        @Override
+        public Group group()
+        {
+            return group;
+        }
+
+        @Override
+        public boolean alreadyInGroup()
+        {
+            return alreadyInGroup;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            group = slack.getConfigure().unmarshaller().asGroup(result.getJsonObject("group"));
+            alreadyInGroup = result.getBoolean(ALREADY_IN_GROUP, false);
+        }
+    }
+
 
     private final class Open extends ApiResult implements Groups.Open
     {
