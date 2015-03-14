@@ -36,7 +36,7 @@ class ChannelsImpl implements Channels
     {
         GetApiRequest apiRequest = api.get("archive", builder -> builder.put("channel", channelId.id()));
 
-        return apiRequest.issue(ChannelsImpl.EmptyResult::new);
+        return apiRequest.issue(EmptyResult::new);
     }
 
     @ApiIssuer
@@ -103,7 +103,7 @@ class ChannelsImpl implements Channels
             builder.put("channel", channelId.id())
                 .put("user", userId.id()));
 
-        return apiRequest.issue(ChannelsImpl.EmptyResult::new);
+        return apiRequest.issue(EmptyResult::new);
     }
 
     @ApiIssuer
@@ -145,7 +145,7 @@ class ChannelsImpl implements Channels
     {
         GetApiRequest apiRequest = api.get("unarchive", builder -> builder.put("channel", channelId.id()));
 
-        return apiRequest.issue(ChannelsImpl.EmptyResult::new);
+        return apiRequest.issue(EmptyResult::new);
     }
 
     private class ChannelResult extends ApiResult implements Channels.Create, Channels.Info, Channels.Invite
@@ -162,12 +162,6 @@ class ChannelsImpl implements Channels
         {
             channel = slack.getConfigure().unmarshaller().asChannel(result.getJsonObject("channel"));
         }
-    }
-
-    private class EmptyResult extends ApiResult implements Channels.Archive, Channels.Unarchive, Channels.Kick
-    {
-        @Override
-        protected void apply(JsonObject result) {}
     }
 
     public final class List extends ApiResult implements Channels.List
