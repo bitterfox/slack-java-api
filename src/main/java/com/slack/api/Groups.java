@@ -37,6 +37,9 @@ public interface Groups
     @ApiIssuer
     Groups.SetTopic setTopic(GroupId groupId, String topic);
 
+    @ApiIssuer
+    Groups.Unarchive unarchive(GroupId groupId);
+
     @ApiBridge
     Optional<Group> findById(GroupId groupId);
 
@@ -76,4 +79,6 @@ public interface Groups
     {
         String topic();
     }
+
+    interface Unarchive {}
 }
