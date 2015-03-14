@@ -16,6 +16,9 @@ import com.slack.data.GroupId;
 public interface Groups
 {
     @ApiIssuer
+    Groups.Archive archive(GroupId groupId);
+
+    @ApiIssuer
     Groups.Close close(GroupId groupId);
 
     @ApiIssuer
@@ -32,6 +35,8 @@ public interface Groups
 
     @ApiIssuer
     Groups.SetTopic setTopic(GroupId groupId, String topic);
+
+    interface Archive {}
 
     interface Close
     {

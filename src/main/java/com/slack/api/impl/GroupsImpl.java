@@ -8,7 +8,9 @@ package com.slack.api.impl;
 
 import com.slack.Slack;
 import com.slack.api.ApiIssuer;
+import com.slack.api.Channels;
 import com.slack.api.Groups;
+import com.slack.data.ChannelId;
 import com.slack.data.Group;
 import com.slack.data.GroupId;
 import com.slack.data.impl.GroupIdImpl;
@@ -28,6 +30,16 @@ class GroupsImpl implements Groups
         this.slack = slack;
 
         this.api = new Api(slack, "groups");
+    }
+
+
+    @ApiIssuer
+    @Override
+    public Groups.Archive archive(GroupId groupId)
+    {
+        GetApiRequest apiRequest = api.get("archive", builder -> builder.put("channel", groupId.id()));
+
+        return apiRequest.issue(EmptyResult::new);
     }
 
     @ApiIssuer
