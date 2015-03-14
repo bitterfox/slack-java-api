@@ -28,7 +28,7 @@ import org.junit.Test;
  *
  * @author bitter_fox
  */
-public class ChannelsKickTest extends AbstractApiTest
+public class ChannelsKickTest extends AbstractApiIssuerTest
 {
 
     public ChannelsKickTest()

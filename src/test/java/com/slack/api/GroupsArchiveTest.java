@@ -25,7 +25,7 @@ import org.junit.Test;
  *
  * @author bitter_fox
  */
-public class GroupsArchiveTest extends AbstractApiTest
+public class GroupsArchiveTest extends AbstractApiIssuerTest
 {
     public GroupsArchiveTest()
     {
@@ -64,9 +64,7 @@ public class GroupsArchiveTest extends AbstractApiTest
         slack.groups().archive(group.id());
 
         Assert.assertEquals(true,
-            slack.groups().list().groups().stream()
-                .filter(g -> g.id().equals(group.id()))
-                .findAny().get().isArchived());
+            slack.groups().findById(group.id()).get().isArchived());
 
 //        slack.groups().unarchive(group.id());
     }

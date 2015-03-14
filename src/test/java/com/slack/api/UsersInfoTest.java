@@ -18,7 +18,7 @@ import org.junit.Test;
  *
  * @author bitter_fox
  */
-public class UsersInfoTest extends AbstractApiTest
+public class UsersInfoTest extends AbstractApiIssuerTest
 {
     public UsersInfoTest()
     {

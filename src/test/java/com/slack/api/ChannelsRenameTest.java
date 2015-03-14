@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  *
  * @author bitter_fox
  */
-public class ChannelsRenameTest extends AbstractApiTest
+public class ChannelsRenameTest extends AbstractApiIssuerTest
 {
     public ChannelsRenameTest()
     {

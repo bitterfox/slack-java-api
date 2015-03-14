@@ -8,6 +8,7 @@ package com.slack.api;
 
 import com.slack.data.Group;
 import com.slack.data.GroupId;
+import java.util.Optional;
 
 /**
  *
@@ -35,6 +36,9 @@ public interface Groups
 
     @ApiIssuer
     Groups.SetTopic setTopic(GroupId groupId, String topic);
+
+    @ApiBridge
+    Optional<Group> findById(GroupId groupId);
 
     interface Archive {}
 

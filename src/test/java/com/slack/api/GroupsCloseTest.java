@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
  *
  * @author bitter_fox
  */
-public class GroupsCloseTest extends AbstractApiTest
+public class GroupsCloseTest extends AbstractApiIssuerTest
 {
     private Group group;
     private boolean alreadyOpen;

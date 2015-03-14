@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  *
  * @author bitter_fox
  */
-public class GroupsListTest extends AbstractApiTest
+public class GroupsListTest extends AbstractApiIssuerTest
 {
 
     public GroupsListTest()

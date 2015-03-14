@@ -22,7 +22,7 @@ import org.junit.Test;
  *
  * @author bitter_fox
  */
-public class ChannelsUnarchiveTest extends AbstractApiTest
+public class ChannelsUnarchiveTest extends AbstractApiIssuerTest
 {
 
     public ChannelsUnarchiveTest()

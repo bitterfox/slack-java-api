@@ -23,7 +23,7 @@ import org.junit.Test;
  *
  * @author bitter_fox
  */
-public class ChannelsLeaveTest extends AbstractApiTest
+public class ChannelsLeaveTest extends AbstractApiIssuerTest
 {
     public ChannelsLeaveTest()
     {
