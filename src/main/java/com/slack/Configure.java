@@ -39,6 +39,7 @@ public class Configure
 
     private String token;
     private URL url = DEFAULT_URL;
+    private SlackJsonUnmarshaller unmarshaller = DEFAULT_UNMARSHALLER;
     private ApiFactory factory = DEFAULT_API_FACTORY;
 
     public void token(String token)
@@ -61,9 +62,14 @@ public class Configure
         return url;
     }
 
+    public void unmarshaller(SlackJsonUnmarshaller unmarshaller)
+    {
+        this.unmarshaller = unmarshaller;
+    }
+
     public SlackJsonUnmarshaller unmarshaller()
     {
-        return DEFAULT_UNMARSHALLER;
+        return unmarshaller;
     }
 
     public ApiFactory apiFactory()
