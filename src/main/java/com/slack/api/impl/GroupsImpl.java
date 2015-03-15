@@ -63,6 +63,16 @@ class GroupsImpl implements Groups
                 .put("user", userId.id()));
 
         return apiRequest.issue(GroupsImpl.Invite::new);
+    }
+
+    @ApiIssuer
+    @Override
+    public Leave leave(GroupId groupId)
+    {
+        GetApiRequest apiRequest = api.get("leave", builder ->
+            builder.put("channel", groupId.id()));
+
+        return apiRequest.issue(EmptyResult::new);
 
     }
 

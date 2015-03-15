@@ -27,6 +27,9 @@ public interface Groups
     Groups.Invite invite(GroupId groupId, UserId userId);
 
     @ApiIssuer
+    Groups.Leave leave(GroupId groupId);
+
+    @ApiIssuer
     Groups.List list();
 
     @ApiIssuer
@@ -60,6 +63,8 @@ public interface Groups
         boolean alreadyInGroup();
         Group group();
     }
+
+    interface Leave {}
 
     interface List
     {
