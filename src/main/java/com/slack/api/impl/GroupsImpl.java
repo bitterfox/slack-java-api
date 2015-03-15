@@ -56,6 +56,16 @@ class GroupsImpl implements Groups
 
     @ApiIssuer
     @Override
+    public Create create(String name)
+    {
+        GetApiRequest apiRequest = api.get("create", builder ->
+            builder.put("name", name));
+
+        return apiRequest.issue(GroupsImpl.Create::new);
+    }
+
+    @ApiIssuer
+    @Override
     public Groups.Invite invite(GroupId groupId, UserId userId)
     {
         GetApiRequest apiRequest = api.get("invite", builder ->
@@ -169,6 +179,23 @@ class GroupsImpl implements Groups
         {
             this.noOperation = result.getBoolean("no_op", false);
             this.alreadyClosed = result.getBoolean("already_closed", false);
+        }
+    }
+
+    private final class Create extends ApiResult implements Groups.Create
+    {
+        private Group group;
+
+        @Override
+        public Group group()
+        {
+            return group;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            this.group = slack.getConfigure().unmarshaller().asGroup(result.getJsonObject("group"));
         }
     }
 

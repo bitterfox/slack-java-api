@@ -24,6 +24,9 @@ public interface Groups
     Groups.Close close(GroupId groupId);
 
     @ApiIssuer
+    Groups.Create create(String name);
+
+    @ApiIssuer
     Groups.Invite invite(GroupId groupId, UserId userId);
 
     @ApiIssuer
@@ -56,6 +59,11 @@ public interface Groups
     {
         boolean noOperation();
         boolean alreadyClosed();
+    }
+
+    interface Create
+    {
+        Group group();
     }
 
     interface Invite
