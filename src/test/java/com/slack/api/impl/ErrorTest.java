@@ -12,6 +12,7 @@ import com.slack.api.exception.AccountInactiveException;
 import com.slack.api.exception.AlreadyInChannelException;
 import com.slack.api.exception.CannotDoGeneralException;
 import com.slack.api.exception.CannotDoSelfException;
+import com.slack.api.exception.CannotInviteException;
 import com.slack.api.exception.ChannelNotFoundException;
 import com.slack.api.exception.InvalidAuthException;
 import com.slack.api.exception.InvalidNameException;
@@ -178,6 +179,13 @@ public class ErrorTest extends AbstractApiTest<Auth, Auth.Test>
     @ErrorResult("cant_kick_self")
     @Test(expected = CannotDoSelfException.class)
     public void testCannotKickSelf()
+    {
+        this.call();
+    }
+
+    @ErrorResult("cant_invite")
+    @Test(expected = CannotInviteException.class)
+    public void testCannotInvite()
     {
         this.call();
     }

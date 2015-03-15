@@ -36,17 +36,4 @@ public class ChannelsInviteTest extends AbstractApiTest<Channels, Channels.Invit
 
         Objects.requireNonNull(invite.channel());
     }
-
-    @Result("{\"ok\":true,"
-        + "\"channel\":{},"
-        + "\"already_in_channel\":true"
-        + "}"
-        )
-    @Test
-    public void testAlreadyInChannel()
-    {
-        Channels.Invite invite = this.call();
-
-        Objects.requireNonNull(invite.channel());
-    }
 }

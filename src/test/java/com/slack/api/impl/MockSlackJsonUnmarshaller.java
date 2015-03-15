@@ -21,6 +21,7 @@ import com.slack.data.impl.TopicImpl;
 import com.slack.data.impl.UserImpl;
 import com.slack.data.impl.event.MessageImpl;
 import com.slack.data.json.SlackJsonUnmarshaller;
+import java.util.Objects;
 import javax.json.JsonObject;
 
 /**
@@ -29,47 +30,52 @@ import javax.json.JsonObject;
  */
 public class MockSlackJsonUnmarshaller implements SlackJsonUnmarshaller
 {
-
     @Override
     public Channel asChannel(JsonObject jo)
     {
+        Objects.requireNonNull(jo);
         return new ChannelImpl();
     }
 
     @Override
     public Topic asTopic(JsonObject jo)
     {
+        Objects.requireNonNull(jo);
         return new TopicImpl();
     }
 
     @Override
     public Purpose asPurpose(JsonObject jo)
     {
+        Objects.requireNonNull(jo);
         return new PurposeImpl();
     }
 
     @Override
     public Group asGroup(JsonObject jo)
     {
+        Objects.requireNonNull(jo);
         return new GroupImpl();
     }
 
     @Override
     public User asUser(JsonObject jo)
     {
+        Objects.requireNonNull(jo);
         return new UserImpl();
     }
 
     @Override
     public Profile asProfile(JsonObject jo)
     {
+        Objects.requireNonNull(jo);
         return new ProfileImpl();
     }
 
     @Override
     public Message asMessage(JsonObject jo)
     {
+        Objects.requireNonNull(jo);
         return new MessageImpl();
     }
-
 }

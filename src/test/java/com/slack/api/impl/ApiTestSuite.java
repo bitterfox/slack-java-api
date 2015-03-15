@@ -34,6 +34,7 @@ import org.junit.runners.Suite;
     ErrorTest.class,
     GroupsArchiveTest.class,
     GroupsCloseTest.class,
+    GroupsInviteTest.class,
     GroupsListTest.class,
     GroupsOpenTest.class,
     GroupsRenameTest.class,
