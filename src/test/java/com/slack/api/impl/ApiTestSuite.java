@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.slack.api;
+package com.slack.api.impl;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -31,9 +31,16 @@ import org.junit.runners.Suite;
     ChannelsSetPurposeTest.class,
     ChannelsSetTopicTest.class,
     ChannelsUnarchiveTest.class,
+    ErrorTest.class,
+    GroupsArchiveTest.class,
     GroupsCloseTest.class,
+    GroupsInviteTest.class,
     GroupsListTest.class,
     GroupsOpenTest.class,
+    GroupsRenameTest.class,
+    GroupsSetPurposeTest.class,
+    GroupsSetTopicTest.class,
+    GroupsUnarchiveTest.class,
     UsersInfoTest.class,
 })
 public class ApiTestSuite
