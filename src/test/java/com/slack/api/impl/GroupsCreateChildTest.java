@@ -8,17 +8,18 @@ package com.slack.api.impl;
 
 import com.slack.Slack;
 import com.slack.api.Groups;
+import com.slack.data.impl.GroupIdImpl;
 import org.junit.Test;
 
 /**
  *
  * @author bitter_fox
  */
-public class GroupsCreateTest extends AbstractApiTest<Groups, Groups.Create>
+public class GroupsCreateChildTest extends AbstractApiTest<Groups, Groups.CreateChild>
 {
-    public GroupsCreateTest()
+    public GroupsCreateChildTest()
     {
-        super(Slack::groups, groups -> groups.create(""));
+        super(Slack::groups, groups -> groups.createChild(new GroupIdImpl("")));
     }
 
     @Result("{\"ok\":true,"
