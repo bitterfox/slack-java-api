@@ -27,6 +27,9 @@ public interface Groups
     Groups.Create create(String name);
 
     @ApiIssuer
+    Groups.CreateChild createChild(GroupId groupId);
+
+    @ApiIssuer
     Groups.Invite invite(GroupId groupId, UserId userId);
 
     @ApiIssuer
@@ -62,6 +65,11 @@ public interface Groups
     }
 
     interface Create
+    {
+        Group group();
+    }
+
+    interface CreateChild
     {
         Group group();
     }

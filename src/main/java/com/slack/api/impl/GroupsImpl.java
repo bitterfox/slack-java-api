@@ -56,10 +56,20 @@ class GroupsImpl implements Groups
 
     @ApiIssuer
     @Override
-    public Create create(String name)
+    public Groups.Create create(String name)
     {
         GetApiRequest apiRequest = api.get("create", builder ->
             builder.put("name", name));
+
+        return apiRequest.issue(GroupsImpl.Create::new);
+    }
+
+    @ApiIssuer
+    @Override
+    public Groups.CreateChild createChild(GroupId groupId)
+    {
+        GetApiRequest apiRequest = api.get("createChild", builder ->
+            builder.put("channel", groupId.id()));
 
         return apiRequest.issue(GroupsImpl.Create::new);
     }
@@ -182,7 +192,7 @@ class GroupsImpl implements Groups
         }
     }
 
-    private final class Create extends ApiResult implements Groups.Create
+    private final class Create extends ApiResult implements Groups.Create, Groups.CreateChild
     {
         private Group group;
 
