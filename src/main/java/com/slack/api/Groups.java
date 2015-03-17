@@ -33,6 +33,9 @@ public interface Groups
     Groups.Invite invite(GroupId groupId, UserId userId);
 
     @ApiIssuer
+    Groups.Kick kick(GroupId groupId, UserId userId);
+
+    @ApiIssuer
     Groups.Leave leave(GroupId groupId);
 
     @ApiIssuer
@@ -79,6 +82,8 @@ public interface Groups
         boolean alreadyInGroup();
         Group group();
     }
+
+    interface Kick {}
 
     interface Leave {}
 
