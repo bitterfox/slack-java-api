@@ -92,6 +92,13 @@ public class ErrorTest extends AbstractApiTest<Auth, Auth.Test>
         this.call();
     }
 
+    @ErrorResult("not_in_group")
+    @Test(expected = NotInChannelException.class)
+    public void testNotInGroup()
+    {
+        this.call();
+    }
+
     @ErrorResult("not_authorized")
     @Test(expected = NotAuthorizedOperationException.class)
     public void testNotAuthorizedOperation()

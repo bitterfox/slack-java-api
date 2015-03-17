@@ -87,7 +87,19 @@ class GroupsImpl implements Groups
 
     @ApiIssuer
     @Override
-    public Leave leave(GroupId groupId)
+    public Groups.Kick kick(GroupId groupId, UserId userId)
+    {
+        GetApiRequest apiRequest = api.get("kick", builder ->
+            builder.put("channel", groupId.id())
+                .put("user", userId.id()));
+
+        return apiRequest.issue(EmptyResult::new);
+
+    }
+
+    @ApiIssuer
+    @Override
+    public Groups.Leave leave(GroupId groupId)
     {
         GetApiRequest apiRequest = api.get("leave", builder ->
             builder.put("channel", groupId.id()));

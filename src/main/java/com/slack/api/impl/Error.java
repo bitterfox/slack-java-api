@@ -46,6 +46,7 @@ enum Error
 
     CHANNEL_NOT_FOUND("channel_not_found", ChannelNotFoundException::new),
     NOT_IN_CHANNEL("not_in_channel", NotInChannelException::new),
+    NOT_IN_GROUP("not_in_group", NotInChannelException::new),
     NOT_AUTHORIZED("not_authorized", NotAuthorizedOperationException::new),
     INVALID_NAME("invalid_name", InvalidNameException::new),
     NAME_TAKEN("name_taken", NameTakenException::new),
