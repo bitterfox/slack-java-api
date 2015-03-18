@@ -9,6 +9,28 @@ package com.slack.api.impl;
 import com.slack.Slack;
 import com.slack.api.ApiIssuer;
 import com.slack.api.Channels;
+import static com.slack.api.impl.Names.ALREADY_IN_CHANNEL;
+import static com.slack.api.impl.Names.ARCHIVE;
+import static com.slack.api.impl.Names.CHANNEL;
+import static com.slack.api.impl.Names.CHANNELS;
+import static com.slack.api.impl.Names.CREATED;
+import static com.slack.api.impl.Names.ID;
+import static com.slack.api.impl.Names.INFO;
+import static com.slack.api.impl.Names.INVITE;
+import static com.slack.api.impl.Names.IS_CHANNEL;
+import static com.slack.api.impl.Names.JOIN;
+import static com.slack.api.impl.Names.KICK;
+import static com.slack.api.impl.Names.LEAVE;
+import static com.slack.api.impl.Names.LIST;
+import static com.slack.api.impl.Names.NAME;
+import static com.slack.api.impl.Names.NOT_IN_CHANNEL;
+import static com.slack.api.impl.Names.PURPOSE;
+import static com.slack.api.impl.Names.RENAME;
+import static com.slack.api.impl.Names.SET_PURPOSE;
+import static com.slack.api.impl.Names.SET_TOPIC;
+import static com.slack.api.impl.Names.TOPIC;
+import static com.slack.api.impl.Names.UNARCHIVE;
+import static com.slack.api.impl.Names.USER;
 import com.slack.data.Channel;
 import com.slack.data.ChannelId;
 import com.slack.data.UserId;
@@ -27,14 +49,14 @@ class ChannelsImpl implements Channels
     public ChannelsImpl(Slack slack)
     {
         this.slack = slack;
-        api = new Api(slack, "channels");
+        api = new Api(slack, CHANNELS);
     }
 
     @ApiIssuer
     @Override
     public Channels.Archive archive(ChannelId channelId)
     {
-        GetApiRequest apiRequest = api.get("archive", builder -> builder.put("channel", channelId.id()));
+        GetApiRequest apiRequest = api.get(ARCHIVE, builder -> builder.put(CHANNEL, channelId.id()));
 
         return apiRequest.issue(EmptyResult::new);
     }
@@ -43,7 +65,7 @@ class ChannelsImpl implements Channels
     @Override
     public Channels.Create create(String name)
     {
-        GetApiRequest apiRequest = api.get("create", builder -> builder.put("name", name));
+        GetApiRequest apiRequest = api.get(Names.CREATE, builder -> builder.put(Names.NAME, name));
 
         return apiRequest.issue(ChannelsImpl.ChannelResult::new);
     }
@@ -52,7 +74,7 @@ class ChannelsImpl implements Channels
     @Override
     public Channels.Info info(ChannelId channelId)
     {
-        GetApiRequest apiRequest = api.get("info", builder -> builder.put("channel", channelId.id()));
+        GetApiRequest apiRequest = api.get(INFO, builder -> builder.put(CHANNEL, channelId.id()));
 
         return apiRequest.issue(ChannelsImpl.ChannelResult::new);
     }
@@ -61,9 +83,9 @@ class ChannelsImpl implements Channels
     @Override
     public Channels.Invite invite(ChannelId channelId, UserId userId)
     {
-        GetApiRequest apiRequest = api.get("invite", builder ->
-            builder.put("channel", channelId.id())
-                .put("user", userId.id()));
+        GetApiRequest apiRequest = api.get(INVITE, builder ->
+            builder.put(CHANNEL, channelId.id())
+                .put(USER, userId.id()));
 
         return apiRequest.issue(ChannelsImpl.ChannelResult::new);
     }
@@ -72,7 +94,7 @@ class ChannelsImpl implements Channels
     @Override
     public Channels.List list()
     {
-        GetApiRequest apiRequest = api.get("list");
+        GetApiRequest apiRequest = api.get(LIST);
 
         return apiRequest.issue(ChannelsImpl.List::new);
     }
@@ -81,7 +103,7 @@ class ChannelsImpl implements Channels
     @Override
     public Channels.Leave leave(ChannelId id)
     {
-        GetApiRequest apiRequest = api.get("leave", builder -> builder.put("channel", id.id()));
+        GetApiRequest apiRequest = api.get(LEAVE, builder -> builder.put(CHANNEL, id.id()));
 
         return apiRequest.issue(ChannelsImpl.Leave::new);
     }
@@ -90,7 +112,7 @@ class ChannelsImpl implements Channels
     @Override
     public Channels.Join join(String name)
     {
-        GetApiRequest apiRequest = api.get("join", builder -> builder.put("name", name));
+        GetApiRequest apiRequest = api.get(JOIN, builder -> builder.put(NAME, name));
 
         return apiRequest.issue(ChannelsImpl.Join::new);
     }
@@ -99,9 +121,9 @@ class ChannelsImpl implements Channels
     @Override
     public Channels.Kick kick(ChannelId channelId, UserId userId)
     {
-        GetApiRequest apiRequest = api.get("kick", builder ->
-            builder.put("channel", channelId.id())
-                .put("user", userId.id()));
+        GetApiRequest apiRequest = api.get(KICK, builder ->
+            builder.put(CHANNEL, channelId.id())
+                .put(USER, userId.id()));
 
         return apiRequest.issue(EmptyResult::new);
     }
@@ -110,9 +132,9 @@ class ChannelsImpl implements Channels
     @Override
     public Channels.Rename rename(ChannelId id, String newName)
     {
-        GetApiRequest apiRequest = api.get("rename", builder ->
-            builder.put("channel", id.id())
-                .put("name", newName));
+        GetApiRequest apiRequest = api.get(RENAME, builder ->
+            builder.put(CHANNEL, id.id())
+                .put(NAME, newName));
 
         return apiRequest.issue(ChannelsImpl.Rename::new);
     }
@@ -121,9 +143,9 @@ class ChannelsImpl implements Channels
     @Override
     public Channels.SetPurpose setPurpose(ChannelId channelId, String purpose)
     {
-        GetApiRequest apiRequest = api.get("setPurpose", builder ->
-            builder.put("channel", channelId.id())
-                .put("purpose", purpose));
+        GetApiRequest apiRequest = api.get(SET_PURPOSE, builder ->
+            builder.put(CHANNEL, channelId.id())
+                .put(PURPOSE, purpose));
 
         return apiRequest.issue(SetPurposeResult::new);
     }
@@ -132,9 +154,9 @@ class ChannelsImpl implements Channels
     @Override
     public Channels.SetTopic setTopic(ChannelId channelId, String topic)
     {
-        GetApiRequest apiRequest = api.get("setTopic", builder ->
-            builder.put("channel", channelId.id())
-                .put("topic", topic));
+        GetApiRequest apiRequest = api.get(SET_TOPIC, builder ->
+            builder.put(CHANNEL, channelId.id())
+                .put(TOPIC, topic));
 
         return apiRequest.issue(SetTopicResult::new);
     }
@@ -143,7 +165,7 @@ class ChannelsImpl implements Channels
     @Override
     public Channels.Unarchive unarchive(ChannelId channelId)
     {
-        GetApiRequest apiRequest = api.get("unarchive", builder -> builder.put("channel", channelId.id()));
+        GetApiRequest apiRequest = api.get(UNARCHIVE, builder -> builder.put(CHANNEL, channelId.id()));
 
         return apiRequest.issue(EmptyResult::new);
     }
@@ -152,6 +174,7 @@ class ChannelsImpl implements Channels
     {
         private Channel channel;
 
+        @Override
         public Channel channel()
         {
             return channel;
@@ -160,7 +183,7 @@ class ChannelsImpl implements Channels
         @Override
         protected void apply(JsonObject result)
         {
-            channel = slack.getConfigure().unmarshaller().asChannel(result.getJsonObject("channel"));
+            channel = slack.getConfigure().unmarshaller().asChannel(result.getJsonObject(CHANNEL));
         }
     }
 
@@ -168,6 +191,7 @@ class ChannelsImpl implements Channels
     {
         private java.util.List<Channel> channels;
 
+        @Override
         public java.util.List<Channel> channels()
         {
             return channels;
@@ -176,7 +200,7 @@ class ChannelsImpl implements Channels
         @Override
         protected void apply(JsonObject result)
         {
-            channels = slack.getConfigure().unmarshaller().asChannels(result.getJsonArray("channels"));
+            channels = slack.getConfigure().unmarshaller().asChannels(result.getJsonArray(CHANNELS));
         }
     }
 
@@ -184,6 +208,7 @@ class ChannelsImpl implements Channels
     {
         private boolean notInChannel;
 
+        @Override
         public boolean notInChannel()
         {
             return notInChannel;
@@ -192,22 +217,22 @@ class ChannelsImpl implements Channels
         @Override
         protected void apply(JsonObject result)
         {
-            this.notInChannel = result.getBoolean("not_in_channel", false);
+            this.notInChannel = result.getBoolean(NOT_IN_CHANNEL, false);
         }
     }
 
     public final class Join extends ApiResult implements Channels.Join
     {
-        private static final String ALREADY_IN_CHANNEL = "already_in_channel";
-
         private Channel channel;
         private boolean alreadyInChannel;
 
+        @Override
         public Channel channel()
         {
             return channel;
         }
 
+        @Override
         public boolean alreadyInChannel()
         {
             return alreadyInChannel;
@@ -216,7 +241,7 @@ class ChannelsImpl implements Channels
         @Override
         protected void apply(JsonObject result)
         {
-            channel = slack.getConfigure().unmarshaller().asChannel(result.getJsonObject("channel"));
+            channel = slack.getConfigure().unmarshaller().asChannel(result.getJsonObject(CHANNEL));
             alreadyInChannel = result.getBoolean(ALREADY_IN_CHANNEL, false);
         }
     }
@@ -228,21 +253,25 @@ class ChannelsImpl implements Channels
         private String name;
         private int created;
 
+        @Override
         public ChannelId id()
         {
             return id;
         }
 
+        @Override
         public boolean isChannel()
         {
             return isChannel;
         }
 
+        @Override
         public String name()
         {
             return name;
         }
 
+        @Override
         public int created()
         {
             return created;
@@ -251,12 +280,11 @@ class ChannelsImpl implements Channels
         @Override
         protected void apply(JsonObject result)
         {
-            JsonObject channel = result.getJsonObject("channel");
-            this.id = new ChannelIdImpl(channel.getString("id"));
-            this.isChannel = channel.getBoolean("is_channel");
-            this.name = channel.getString("name");
-            this.created = channel.getInt("created");
+            JsonObject channel = result.getJsonObject(CHANNEL);
+            this.id = new ChannelIdImpl(channel.getString(ID));
+            this.isChannel = channel.getBoolean(IS_CHANNEL);
+            this.name = channel.getString(NAME);
+            this.created = channel.getInt(CREATED);
         }
     }
-
 }

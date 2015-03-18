@@ -10,6 +10,33 @@ import com.slack.Slack;
 import com.slack.api.ApiBridge;
 import com.slack.api.ApiIssuer;
 import com.slack.api.Groups;
+import static com.slack.api.impl.Names.ALREADY_CLOSED;
+import static com.slack.api.impl.Names.ALREADY_IN_GROUP;
+import static com.slack.api.impl.Names.ALREADY_OPEN;
+import static com.slack.api.impl.Names.ARCHIVE;
+import static com.slack.api.impl.Names.CHANNEL;
+import static com.slack.api.impl.Names.CLOSE;
+import static com.slack.api.impl.Names.CREATE;
+import static com.slack.api.impl.Names.CREATED;
+import static com.slack.api.impl.Names.CREATE_CHILD;
+import static com.slack.api.impl.Names.GROUP;
+import static com.slack.api.impl.Names.GROUPS;
+import static com.slack.api.impl.Names.ID;
+import static com.slack.api.impl.Names.INVITE;
+import static com.slack.api.impl.Names.IS_GROUP;
+import static com.slack.api.impl.Names.KICK;
+import static com.slack.api.impl.Names.LEAVE;
+import static com.slack.api.impl.Names.LIST;
+import static com.slack.api.impl.Names.NAME;
+import static com.slack.api.impl.Names.NO_OP;
+import static com.slack.api.impl.Names.OPEN;
+import static com.slack.api.impl.Names.PURPOSE;
+import static com.slack.api.impl.Names.RENAME;
+import static com.slack.api.impl.Names.SET_PURPOSE;
+import static com.slack.api.impl.Names.SET_TOPIC;
+import static com.slack.api.impl.Names.TOPIC;
+import static com.slack.api.impl.Names.UNARCHIVE;
+import static com.slack.api.impl.Names.USER;
 import com.slack.data.Group;
 import com.slack.data.GroupId;
 import com.slack.data.UserId;
@@ -30,7 +57,7 @@ class GroupsImpl implements Groups
     {
         this.slack = slack;
 
-        this.api = new Api(slack, "groups");
+        this.api = new Api(slack, GROUPS);
     }
 
 
@@ -38,8 +65,8 @@ class GroupsImpl implements Groups
     @Override
     public Groups.Archive archive(GroupId groupId)
     {
-        GetApiRequest apiRequest = api.get("archive", builder ->
-            builder.put("channel", groupId.id()));
+        GetApiRequest apiRequest = api.get(ARCHIVE, builder ->
+            builder.put(CHANNEL, groupId.id()));
 
         return apiRequest.issue(EmptyResult::new);
     }
@@ -48,8 +75,8 @@ class GroupsImpl implements Groups
     @Override
     public Groups.Close close(GroupId groupId)
     {
-        GetApiRequest apiRequest = api.get("close", builder ->
-            builder.put("channel", groupId.id()));
+        GetApiRequest apiRequest = api.get(CLOSE, builder ->
+            builder.put(CHANNEL, groupId.id()));
 
         return apiRequest.issue(GroupsImpl.Close::new);
     }
@@ -58,8 +85,8 @@ class GroupsImpl implements Groups
     @Override
     public Groups.Create create(String name)
     {
-        GetApiRequest apiRequest = api.get("create", builder ->
-            builder.put("name", name));
+        GetApiRequest apiRequest = api.get(CREATE, builder ->
+            builder.put(NAME, name));
 
         return apiRequest.issue(GroupsImpl.Create::new);
     }
@@ -68,8 +95,8 @@ class GroupsImpl implements Groups
     @Override
     public Groups.CreateChild createChild(GroupId groupId)
     {
-        GetApiRequest apiRequest = api.get("createChild", builder ->
-            builder.put("channel", groupId.id()));
+        GetApiRequest apiRequest = api.get(CREATE_CHILD, builder ->
+            builder.put(CHANNEL, groupId.id()));
 
         return apiRequest.issue(GroupsImpl.Create::new);
     }
@@ -78,9 +105,9 @@ class GroupsImpl implements Groups
     @Override
     public Groups.Invite invite(GroupId groupId, UserId userId)
     {
-        GetApiRequest apiRequest = api.get("invite", builder ->
-            builder.put("channel", groupId.id())
-                .put("user", userId.id()));
+        GetApiRequest apiRequest = api.get(INVITE, builder ->
+            builder.put(CHANNEL, groupId.id())
+                .put(USER, userId.id()));
 
         return apiRequest.issue(GroupsImpl.Invite::new);
     }
@@ -89,9 +116,9 @@ class GroupsImpl implements Groups
     @Override
     public Groups.Kick kick(GroupId groupId, UserId userId)
     {
-        GetApiRequest apiRequest = api.get("kick", builder ->
-            builder.put("channel", groupId.id())
-                .put("user", userId.id()));
+        GetApiRequest apiRequest = api.get(KICK, builder ->
+            builder.put(CHANNEL, groupId.id())
+                .put(USER, userId.id()));
 
         return apiRequest.issue(EmptyResult::new);
 
@@ -101,8 +128,8 @@ class GroupsImpl implements Groups
     @Override
     public Groups.Leave leave(GroupId groupId)
     {
-        GetApiRequest apiRequest = api.get("leave", builder ->
-            builder.put("channel", groupId.id()));
+        GetApiRequest apiRequest = api.get(LEAVE, builder ->
+            builder.put(CHANNEL, groupId.id()));
 
         return apiRequest.issue(EmptyResult::new);
 
@@ -112,7 +139,7 @@ class GroupsImpl implements Groups
     @Override
     public Groups.List list()
     {
-        GetApiRequest apiRequest = api.get("list");
+        GetApiRequest apiRequest = api.get(LIST);
 
         return apiRequest.issue(GroupsImpl.List::new);
     }
@@ -121,8 +148,8 @@ class GroupsImpl implements Groups
     @Override
     public Groups.Open open(GroupId groupId)
     {
-        GetApiRequest apiRequest = api.get("open", builder ->
-            builder.put("channel", groupId.id()));
+        GetApiRequest apiRequest = api.get(OPEN, builder ->
+            builder.put(CHANNEL, groupId.id()));
 
         return apiRequest.issue(GroupsImpl.Open::new);
     }
@@ -131,9 +158,9 @@ class GroupsImpl implements Groups
     @Override
     public Groups.Rename rename(GroupId id, String newName)
     {
-        GetApiRequest apiRequest = api.get("rename", builder ->
-            builder.put("channel", id.id())
-                .put("name", newName));
+        GetApiRequest apiRequest = api.get(RENAME, builder ->
+            builder.put(CHANNEL, id.id())
+                .put(NAME, newName));
 
         return apiRequest.issue(GroupsImpl.Rename::new);
     }
@@ -142,9 +169,9 @@ class GroupsImpl implements Groups
     @Override
     public Groups.SetPurpose setPurpose(GroupId groupId, String purpose)
     {
-        GetApiRequest apiRequest = api.get("setPurpose", builder ->
-            builder.put("channel", groupId.id())
-                .put("purpose", purpose));
+        GetApiRequest apiRequest = api.get(SET_PURPOSE, builder ->
+            builder.put(CHANNEL, groupId.id())
+                .put(PURPOSE, purpose));
 
         return apiRequest.issue(SetPurposeResult::new);
     }
@@ -153,9 +180,9 @@ class GroupsImpl implements Groups
     @Override
     public Groups.SetTopic setTopic(GroupId groupId, String topic)
     {
-        GetApiRequest apiRequest = api.get("setTopic", builder ->
-            builder.put("channel", groupId.id())
-                .put("topic", topic));
+        GetApiRequest apiRequest = api.get(SET_TOPIC, builder ->
+            builder.put(CHANNEL, groupId.id())
+                .put(TOPIC, topic));
 
         return apiRequest.issue(SetTopicResult::new);
     }
@@ -164,8 +191,8 @@ class GroupsImpl implements Groups
     @Override
     public Groups.Unarchive unarchive(GroupId groupId)
     {
-        GetApiRequest apiRequest = api.get("unarchive", builder ->
-            builder.put("channel", groupId.id()));
+        GetApiRequest apiRequest = api.get(UNARCHIVE, builder ->
+            builder.put(CHANNEL, groupId.id()));
 
         return apiRequest.issue(EmptyResult::new);
     }
@@ -199,8 +226,8 @@ class GroupsImpl implements Groups
         @Override
         protected void apply(JsonObject result)
         {
-            this.noOperation = result.getBoolean("no_op", false);
-            this.alreadyClosed = result.getBoolean("already_closed", false);
+            this.noOperation = result.getBoolean(NO_OP, false);
+            this.alreadyClosed = result.getBoolean(ALREADY_CLOSED, false);
         }
     }
 
@@ -217,7 +244,7 @@ class GroupsImpl implements Groups
         @Override
         protected void apply(JsonObject result)
         {
-            this.group = slack.getConfigure().unmarshaller().asGroup(result.getJsonObject("group"));
+            this.group = slack.getConfigure().unmarshaller().asGroup(result.getJsonObject(GROUP));
         }
     }
 
@@ -234,14 +261,12 @@ class GroupsImpl implements Groups
         @Override
         protected void apply(JsonObject result)
         {
-            this.groups = slack.getConfigure().unmarshaller().asGroups(result.getJsonArray("groups"));
+            this.groups = slack.getConfigure().unmarshaller().asGroups(result.getJsonArray(GROUPS));
         }
     }
 
     private final class Invite extends ApiResult implements Groups.Invite
     {
-        private static final String ALREADY_IN_GROUP = "already_in_group";
-
         private Group group;
         private boolean alreadyInGroup;
 
@@ -260,7 +285,7 @@ class GroupsImpl implements Groups
         @Override
         protected void apply(JsonObject result)
         {
-            group = slack.getConfigure().unmarshaller().asGroup(result.getJsonObject("group"));
+            group = slack.getConfigure().unmarshaller().asGroup(result.getJsonObject(GROUP));
             alreadyInGroup = result.getBoolean(ALREADY_IN_GROUP, false);
         }
     }
@@ -286,8 +311,8 @@ class GroupsImpl implements Groups
         @Override
         protected void apply(JsonObject result)
         {
-            this.noOperation = result.getBoolean("no_op", false);
-            this.alreadyOpen = result.getBoolean("already_open", false);
+            this.noOperation = result.getBoolean(NO_OP, false);
+            this.alreadyOpen = result.getBoolean(ALREADY_OPEN, false);
         }
     }
 
@@ -325,11 +350,11 @@ class GroupsImpl implements Groups
         @Override
         protected void apply(JsonObject result)
         {
-            JsonObject channel = result.getJsonObject("channel");
-            this.id = new GroupIdImpl(channel.getString("id"));
-            this.isGroup = channel.getBoolean("is_group");
-            this.name = channel.getString("name");
-            this.created = channel.getInt("created");
+            JsonObject channel = result.getJsonObject(CHANNEL);
+            this.id = new GroupIdImpl(channel.getString(ID));
+            this.isGroup = channel.getBoolean(IS_GROUP);
+            this.name = channel.getString(NAME);
+            this.created = channel.getInt(CREATED);
         }
     }
 }

@@ -9,6 +9,13 @@ package com.slack.api.impl;
 import com.slack.Slack;
 import com.slack.api.ApiIssuer;
 import com.slack.api.Auth;
+import static com.slack.api.impl.Names.AUTH;
+import static com.slack.api.impl.Names.TEAM;
+import static com.slack.api.impl.Names.TEAM_ID;
+import static com.slack.api.impl.Names.TEST;
+import static com.slack.api.impl.Names.URL;
+import static com.slack.api.impl.Names.USER;
+import static com.slack.api.impl.Names.USER_ID;
 import com.slack.data.UserId;
 import com.slack.data.impl.UserIdImpl;
 import java.net.MalformedURLException;
@@ -27,14 +34,14 @@ class AuthImpl implements Auth
 
     public AuthImpl(Slack slack)
     {
-        api = new Api(slack, "auth");
+        api = new Api(slack, AUTH);
     }
 
     @ApiIssuer
     @Override
     public Auth.Test test()
     {
-        ApiRequest req = api.get("test");
+        ApiRequest req = api.get(TEST);
 
         return req.issue(AuthImpl.Test::new);
     }
@@ -82,11 +89,11 @@ class AuthImpl implements Auth
         {
             try
             {
-                url = new URL(result.getString("url"));
-                team = result.getString("team");
-                user = result.getString("user");
-                userId = new UserIdImpl(result.getString("user_id"));
-                teamId = result.getString("team_id");
+                url = new URL(result.getString(URL));
+                team = result.getString(TEAM);
+                user = result.getString(USER);
+                userId = new UserIdImpl(result.getString(USER_ID));
+                teamId = result.getString(TEAM_ID);
             }
             catch (MalformedURLException ex)
             {

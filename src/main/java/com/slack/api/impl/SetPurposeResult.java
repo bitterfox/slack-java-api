@@ -8,6 +8,7 @@ package com.slack.api.impl;
 
 import com.slack.api.Channels;
 import com.slack.api.Groups;
+import static com.slack.api.impl.Names.PURPOSE;
 import javax.json.JsonObject;
 
 /**
@@ -27,6 +28,6 @@ final class SetPurposeResult extends ApiResult implements Channels.SetPurpose, G
     @Override
     public void apply(JsonObject result)
     {
-        this.purpose = result.getString("purpose");
+        this.purpose = result.getString(PURPOSE);
     }
 }

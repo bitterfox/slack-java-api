@@ -8,6 +8,7 @@ package com.slack.api.impl;
 
 import com.slack.api.Channels;
 import com.slack.api.Groups;
+import static com.slack.api.impl.Names.TOPIC;
 import javax.json.JsonObject;
 
 /**
@@ -27,6 +28,6 @@ final class SetTopicResult extends ApiResult implements Channels.SetTopic, Group
     @Override
     protected void apply(JsonObject result)
     {
-        this.topic = result.getString("topic");
+        this.topic = result.getString(TOPIC);
     }
 }

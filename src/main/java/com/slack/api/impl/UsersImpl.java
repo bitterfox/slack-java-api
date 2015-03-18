@@ -9,6 +9,11 @@ package com.slack.api.impl;
 import com.slack.Slack;
 import com.slack.api.ApiIssuer;
 import com.slack.api.Users;
+import static com.slack.api.impl.Names.INFO;
+import static com.slack.api.impl.Names.LIST;
+import static com.slack.api.impl.Names.MEMBERS;
+import static com.slack.api.impl.Names.USER;
+import static com.slack.api.impl.Names.USERS;
 import com.slack.data.User;
 import com.slack.data.UserId;
 import javax.json.JsonObject;
@@ -25,14 +30,14 @@ class UsersImpl implements Users
     public UsersImpl(Slack slack)
     {
         this.slack = slack;
-        api = new Api(slack, "users");
+        api = new Api(slack, USERS);
     }
 
     @ApiIssuer
     @Override
     public Users.Info info(UserId userId)
     {
-        ApiRequest apiRequest = api.get("info", builder -> builder.put("user", userId.id()));
+        ApiRequest apiRequest = api.get(INFO, builder -> builder.put(USER, userId.id()));
 
         return apiRequest.issue(UsersImpl.Info::new);
     }
@@ -41,7 +46,7 @@ class UsersImpl implements Users
     @Override
     public Users.List list()
     {
-        ApiRequest apiRequest = api.get("list");
+        ApiRequest apiRequest = api.get(LIST);
 
         return apiRequest.issue(UsersImpl.List::new);
     }
@@ -59,7 +64,7 @@ class UsersImpl implements Users
         @Override
         protected void apply(JsonObject result)
         {
-            user = slack.getConfigure().unmarshaller().asUser(result.getJsonObject("user"));
+            user = slack.getConfigure().unmarshaller().asUser(result.getJsonObject(USER));
         }
     }
 
@@ -76,8 +81,7 @@ class UsersImpl implements Users
         @Override
         protected void apply(JsonObject result)
         {
-            members = slack.getConfigure().unmarshaller().asUsers(result.getJsonArray("members"));
+            members = slack.getConfigure().unmarshaller().asUsers(result.getJsonArray(MEMBERS));
         }
     }
-
 }
