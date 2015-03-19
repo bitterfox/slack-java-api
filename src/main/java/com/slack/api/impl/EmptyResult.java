@@ -14,7 +14,7 @@ import javax.json.JsonObject;
  *
  * @author bitter_fox
  */
-class EmptyResult extends ApiResult implements Channels.Archive, Channels.Unarchive, Channels.Kick, Groups.Archive, Groups.Unarchive, Groups.Kick, Groups.Leave
+class EmptyResult extends ApiResult implements Channels.Archive, Channels.Unarchive, Channels.Kick, Channels.Mark, Groups.Archive, Groups.Unarchive, Groups.Kick, Groups.Leave
 {
     @Override
     protected void apply(JsonObject result) {}

@@ -47,6 +47,7 @@ class Names
     public static final String NO_OP = "no_op";
     public static final String NOT_IN_CHANNEL = "not_in_channel";
 
+    public static final String MARK = "mark";
     public static final String MEMBERS = "members";
 
     public static final String OPEN = "open";
@@ -62,6 +63,7 @@ class Names
     public static final String TEAM_ID = "team_id";
     public static final String TEST = "test";
     public static final String TOPIC = "topic";
+    public static final String TS = "ts";
 
     public static final String UNARCHIVE = "unarchive";
     public static final String URL = "url";
