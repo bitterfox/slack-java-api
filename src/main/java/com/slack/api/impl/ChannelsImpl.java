@@ -22,6 +22,7 @@ import static com.slack.api.impl.Names.JOIN;
 import static com.slack.api.impl.Names.KICK;
 import static com.slack.api.impl.Names.LEAVE;
 import static com.slack.api.impl.Names.LIST;
+import static com.slack.api.impl.Names.MARK;
 import static com.slack.api.impl.Names.NAME;
 import static com.slack.api.impl.Names.NOT_IN_CHANNEL;
 import static com.slack.api.impl.Names.PURPOSE;
@@ -29,6 +30,7 @@ import static com.slack.api.impl.Names.RENAME;
 import static com.slack.api.impl.Names.SET_PURPOSE;
 import static com.slack.api.impl.Names.SET_TOPIC;
 import static com.slack.api.impl.Names.TOPIC;
+import static com.slack.api.impl.Names.TS;
 import static com.slack.api.impl.Names.UNARCHIVE;
 import static com.slack.api.impl.Names.USER;
 import com.slack.data.Channel;
@@ -115,6 +117,16 @@ class ChannelsImpl implements Channels
         GetApiRequest apiRequest = api.get(JOIN, builder -> builder.put(NAME, name));
 
         return apiRequest.issue(ChannelsImpl.Join::new);
+    }
+
+    @Override
+    public Channels.Mark mark(ChannelId channelId, String timestamp)
+    {
+        GetApiRequest apiRequest = api.get(MARK, builder ->
+            builder.put(CHANNEL, channelId.id())
+                .put(TS, timestamp));
+
+        return apiRequest.issue(EmptyResult::new);
     }
 
     @ApiIssuer

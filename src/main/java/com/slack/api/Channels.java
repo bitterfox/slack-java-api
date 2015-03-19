@@ -41,6 +41,9 @@ public interface Channels
     Channels.List list();
 
     @ApiIssuer
+    Channels.Mark mark(ChannelId channelId, String timestamp);
+
+    @ApiIssuer
     Channels.Rename rename(ChannelId channelId, String newName);
 
     @ApiIssuer
@@ -86,6 +89,8 @@ public interface Channels
     {
         java.util.List<Channel> channels();
     }
+
+    interface Mark {}
 
     interface Rename
     {
