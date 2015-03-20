@@ -7,6 +7,8 @@
 package com.slack.api;
 
 import com.slack.data.SharedFile;
+import com.slack.data.SharedFileComment;
+import com.slack.data.SharedFileId;
 
 /**
  *
@@ -14,7 +16,18 @@ import com.slack.data.SharedFile;
  */
 public interface Files
 {
+    @ApiIssuer
+    Files.Info info(SharedFileId fileId);
+
+    @ApiIssuer
     Files.List list();
+
+    interface Info
+    {
+        SharedFile file();
+        java.util.List<SharedFileComment> comments();
+        Paging paging();
+    }
 
     interface List
     {
