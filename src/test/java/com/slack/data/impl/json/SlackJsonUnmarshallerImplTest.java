@@ -8,6 +8,7 @@ package com.slack.data.impl.json;
 
 import com.slack.data.Channel;
 import com.slack.data.Group;
+import com.slack.data.Im;
 import com.slack.data.Profile;
 import com.slack.data.Purpose;
 import com.slack.data.Topic;
@@ -17,6 +18,8 @@ import com.slack.data.impl.ChannelIdImpl;
 import com.slack.data.impl.ChannelImpl;
 import com.slack.data.impl.GroupIdImpl;
 import com.slack.data.impl.GroupImpl;
+import com.slack.data.impl.ImIdImpl;
+import com.slack.data.impl.ImImpl;
 import com.slack.data.impl.ProfileImpl;
 import com.slack.data.impl.PurposeImpl;
 import com.slack.data.impl.TopicImpl;
@@ -114,6 +117,18 @@ public class SlackJsonUnmarshallerImplTest
         group.purpose(this.purpose());
 
         return group;
+    }
+    private Im im()
+    {
+        ImImpl im = new ImImpl();
+
+        im.id(new ImIdImpl("IM-ID"));
+        im.isIm(true);
+        im.user(new UserIdImpl("USLACKBOT"));
+        im.created(123456);
+        im.isUserDeleted(true);
+
+        return im;
     }
     private Topic topic()
     {
@@ -220,6 +235,16 @@ public class SlackJsonUnmarshallerImplTest
             .add("purpose", this.purposeToJsonObject(group.purpose()))
             .build();
     }
+    private JsonObject imToJsonObject(Im im)
+    {
+        return Json.createObjectBuilder()
+            .add("id", im.id().id())
+            .add("is_im", im.isIm())
+            .add("user", im.user().id())
+            .add("created", im.created())
+            .add("is_user_deleted", im.isUserDeleted())
+            .build();
+    }
     private JsonObject topicToJsonObject(Topic topic)
     {
         return Json.createObjectBuilder()
@@ -319,6 +344,17 @@ public class SlackJsonUnmarshallerImplTest
         this.test(this::group,
             this::groupToJsonObject,
             SlackJsonUnmarshaller::asGroup);
+    }
+
+    /**
+     * Test of asIm method, of class SlackJsonUnmarshallerImpl.
+     */
+    @Test
+    public void testAsIm()
+    {
+        this.test(this::im,
+            this::imToJsonObject,
+            SlackJsonUnmarshaller::asIm);
     }
 
     /**

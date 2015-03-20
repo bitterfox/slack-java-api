@@ -11,6 +11,7 @@ import com.slack.data.Channel;
 import com.slack.data.ChannelId;
 import com.slack.data.Group;
 import com.slack.data.GroupId;
+import com.slack.data.Im;
 import com.slack.data.Profile;
 import com.slack.data.Purpose;
 import com.slack.data.SharedFile;
@@ -23,6 +24,8 @@ import com.slack.data.impl.ChannelIdImpl;
 import com.slack.data.impl.ChannelImpl;
 import com.slack.data.impl.GroupIdImpl;
 import com.slack.data.impl.GroupImpl;
+import com.slack.data.impl.ImIdImpl;
+import com.slack.data.impl.ImImpl;
 import com.slack.data.impl.ProfileImpl;
 import com.slack.data.impl.PurposeImpl;
 import com.slack.data.impl.SharedFileCommentIdImpl;
@@ -157,6 +160,9 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
         public static final Function<SharedFile.Thumb.Size, String> THUMB = size -> String.format("thumb_%d", size.getSize());
         public static final Function<SharedFile.Thumb.Size, String> THUMB_WIDTH = size -> String.format("thumb_%d_w", size.getSize());
         public static final Function<SharedFile.Thumb.Size, String> THUMB_HEIGHT = size -> String.format("thumb_%d_h", size.getSize());
+
+        public static final String IS_IM = "is_im";
+        public static final String IS_USER_DELETED = "is_user_deleted";
     }
 
     private <T, U> void unmarshal(JsonObject jo, String key, BiFunction<JsonObject, String, T> getter, Consumer<U> consumer, Function<T, U> mapper)
@@ -291,6 +297,20 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
         this.unmarshalObject(jo,              Names.PURPOSE,     group::purpose,     this::asPurpose);
 
         return group;
+    }
+
+    @Override
+    public Im asIm(JsonObject jo)
+    {
+        ImImpl im = new ImImpl();
+
+        this.unmarshalString(jo,  Names.ID,              im::id,             ImIdImpl::new);
+        this.unmarshalBoolean(jo, Names.IS_IM,           im::isIm);
+        this.unmarshalString(jo,  Names.USER,            im::user,           UserIdImpl::new);
+        this.unmarshalInt(jo,     Names.CREATED,         im::created);
+        this.unmarshalBoolean(jo, Names.IS_USER_DELETED, im::isUserDeleted);
+
+        return im;
     }
 
     @Override

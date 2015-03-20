@@ -8,6 +8,7 @@ package com.slack.api.impl;
 
 import com.slack.data.Channel;
 import com.slack.data.Group;
+import com.slack.data.Im;
 import com.slack.data.Profile;
 import com.slack.data.Purpose;
 import com.slack.data.SharedFile;
@@ -17,6 +18,7 @@ import com.slack.data.User;
 import com.slack.data.event.Message;
 import com.slack.data.impl.ChannelImpl;
 import com.slack.data.impl.GroupImpl;
+import com.slack.data.impl.ImImpl;
 import com.slack.data.impl.ProfileImpl;
 import com.slack.data.impl.PurposeImpl;
 import com.slack.data.impl.SharedFileCommentImpl;
@@ -60,6 +62,13 @@ public class MockSlackJsonUnmarshaller implements SlackJsonUnmarshaller
     {
         Objects.requireNonNull(jo);
         return new GroupImpl();
+    }
+
+    @Override
+    public Im asIm(JsonObject jo)
+    {
+        Objects.requireNonNull(jo);
+        return new ImImpl();
     }
 
     @Override
