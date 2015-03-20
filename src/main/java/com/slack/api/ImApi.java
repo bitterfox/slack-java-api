@@ -7,6 +7,8 @@
 package com.slack.api;
 
 import com.slack.data.Im;
+import com.slack.data.ImId;
+import com.slack.data.UserId;
 
 /**
  *
@@ -17,8 +19,18 @@ public interface ImApi
     @ApiIssuer
     ImApi.List list();
 
+    @ApiIssuer
+    ImApi.Open open(UserId userId);
+
     interface List
     {
         java.util.List<Im> ims();
+    }
+
+    interface Open
+    {
+        ImId im();
+        boolean noOperation();
+        boolean alreadyOpen();
     }
 }
