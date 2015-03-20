@@ -9,10 +9,18 @@ package com.slack.api.impl;
 import com.slack.Slack;
 import com.slack.api.ApiIssuer;
 import com.slack.api.ImApi;
+import static com.slack.api.impl.Names.ALREADY_OPEN;
+import static com.slack.api.impl.Names.CHANNEL;
+import static com.slack.api.impl.Names.ID;
 import static com.slack.api.impl.Names.IM;
 import static com.slack.api.impl.Names.IMS;
 import static com.slack.api.impl.Names.LIST;
+import static com.slack.api.impl.Names.NO_OP;
+import static com.slack.api.impl.Names.OPEN;
 import com.slack.data.Im;
+import com.slack.data.ImId;
+import com.slack.data.UserId;
+import com.slack.data.impl.ImIdImpl;
 import javax.json.JsonObject;
 
 /**
@@ -39,6 +47,16 @@ class ImApiImpl implements ImApi
         return apiRequest.issue(ImApiImpl.List::new);
     }
 
+    @ApiIssuer
+    @Override
+    public ImApi.Open open(UserId userId)
+    {
+        GetApiRequest apiRequest = api.get(OPEN, builder ->
+            builder.put("user", userId.id()));
+
+        return apiRequest.issue(ImApiImpl.Open::new);
+    }
+
     private final class List extends ApiResult implements ImApi.List
     {
         private java.util.List<Im> ims;
@@ -53,6 +71,39 @@ class ImApiImpl implements ImApi
         protected void apply(JsonObject result)
         {
             this.ims = slack.getConfigure().unmarshaller().asIms(result.getJsonArray(IMS));
+        }
+    }
+
+    private final class Open extends ApiResult implements ImApi.Open
+    {
+        private ImId im;
+        private boolean noOperation;
+        private boolean alreadyOpen;
+
+        @Override
+        public ImId im()
+        {
+            return im;
+        }
+
+        @Override
+        public boolean noOperation()
+        {
+            return noOperation;
+        }
+
+        @Override
+        public boolean alreadyOpen()
+        {
+            return alreadyOpen;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            this.im = new ImIdImpl(result.getJsonObject(CHANNEL).getString(ID));
+            this.noOperation = result.getBoolean(NO_OP, false);
+            this.alreadyOpen = result.getBoolean(ALREADY_OPEN, false);
         }
     }
 }
