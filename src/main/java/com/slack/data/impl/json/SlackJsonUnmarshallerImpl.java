@@ -8,9 +8,13 @@ package com.slack.data.impl.json;
 
 import com.slack.api.util.URLUtil;
 import com.slack.data.Channel;
+import com.slack.data.ChannelId;
 import com.slack.data.Group;
+import com.slack.data.GroupId;
 import com.slack.data.Profile;
 import com.slack.data.Purpose;
+import com.slack.data.SharedFile;
+import com.slack.data.SharedFileComment;
 import com.slack.data.Topic;
 import com.slack.data.User;
 import com.slack.data.UserId;
@@ -21,6 +25,11 @@ import com.slack.data.impl.GroupIdImpl;
 import com.slack.data.impl.GroupImpl;
 import com.slack.data.impl.ProfileImpl;
 import com.slack.data.impl.PurposeImpl;
+import com.slack.data.impl.SharedFileCommentIdImpl;
+import com.slack.data.impl.SharedFileCommentImpl;
+import com.slack.data.impl.SharedFileIdImpl;
+import com.slack.data.impl.SharedFileImpl;
+import com.slack.data.impl.SharedFileThumbImpl;
 import com.slack.data.impl.TopicImpl;
 import com.slack.data.impl.UserIdImpl;
 import com.slack.data.impl.UserImpl;
@@ -29,6 +38,7 @@ import com.slack.data.json.SlackJsonUnmarshaller;
 import com.slack.util.JsonUtil;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -38,6 +48,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.scene.paint.Color;
+import javax.activation.MimeType;
+import javax.activation.MimeTypeParseException;
 import javax.json.JsonObject;
 import javax.json.JsonString;
 
@@ -108,7 +120,43 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
         public static final String MESSAGE = "message";
 
         public static final String TEXT = "text";
-        public static final String TIMESTAMP = "ts";
+        public static final String TS = "ts";
+        public static final String TIMESTAMP = "timestamp";
+
+        public static final String MIME_TYPE = "mimetype";
+        public static final String FILE_TYPE = "filetype";
+        public static final String PRETTY_TYPE = "pretty_type";
+        public static final String IS_EDITABLE = "editable";
+        public static final String SIZE = "size";
+        public static final String MODE = "mode";
+        public static final String USER = "user";
+
+        public static final String HOSTED = "hosted";
+        public static final String EXTERNAL = "external";
+        public static final String SNIPPET = "snippet";
+        public static final String POST = "post";
+
+        public static final String IS_EXTERNAL = "is_external";
+        public static final String EXTERNAL_TYPE = "external_type";
+        public static final String IS_PUBLIC = "is_public";
+        public static final String PUBLIC_URL_SHARED = "public_url_shared";
+        public static final String URL = "url";
+        public static final String URL_DOWNLOAD = "url_download";
+        public static final String URL_PRIVATE = "url_private";
+        public static final String URL_PRIVATE_DOWNLOAD = "url_private_download";
+        public static final String PERMALINK = "permalink";
+        public static final String PERMALINK_PUBLIC = "permalink_public";
+        public static final String CHANNELS = "channels";
+        public static final String GROUPS = "groups";
+        public static final String IMS = "ims";
+        public static final String COMMENTS_COUNT = "comments_count";
+        public static final String INITIAL_COMMENT = "initial_comment";
+
+        public static final String COMMENT = "comment";
+
+        public static final Function<SharedFile.Thumb.Size, String> THUMB = size -> String.format("thumb_%d", size.getSize());
+        public static final Function<SharedFile.Thumb.Size, String> THUMB_WIDTH = size -> String.format("thumb_%d_w", size.getSize());
+        public static final Function<SharedFile.Thumb.Size, String> THUMB_HEIGHT = size -> String.format("thumb_%d_h", size.getSize());
     }
 
     private <T, U> void unmarshal(JsonObject jo, String key, BiFunction<JsonObject, String, T> getter, Consumer<U> consumer, Function<T, U> mapper)
@@ -342,10 +390,105 @@ public class SlackJsonUnmarshallerImpl implements SlackJsonUnmarshaller
         MessageImpl message = new MessageImpl();
 
         this.unmarshalString(jo, Names.TEXT,      message::text);
-        this.unmarshalString(jo, Names.TIMESTAMP, message::timestamp);
+        this.unmarshalString(jo, Names.TS, message::timestamp);
 
         // TODO: edited
 
         return message;
+    }
+
+    @Override
+    public SharedFile asSharedFile(JsonObject jo)
+    {
+        SharedFileImpl file = new SharedFileImpl();
+        System.out.println(jo);
+
+        this.unmarshalString(jo, Names.ID, file::id, SharedFileIdImpl::new);
+        this.unmarshalInt(jo, Names.CREATED, file::created);
+        this.unmarshalInt(jo, Names.TIMESTAMP, file::timestamp);
+        this.unmarshalString(jo, Names.NAME, file::name);
+        this.unmarshalString(jo, Names.TITLE, file::title);
+        this.unmarshalString(jo, Names.MIME_TYPE, file::mimeType,
+            s ->
+            {
+                try
+                {
+                    return new MimeType(s);
+                }
+                catch (MimeTypeParseException ex)
+                {
+                    Logger.getLogger(SlackJsonUnmarshallerImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    throw new RuntimeException(ex);
+                }
+            });
+        this.unmarshalString(jo, Names.FILE_TYPE, file::fileType);
+        this.unmarshalString(jo, Names.PRETTY_TYPE, file::prettyType);
+        this.unmarshalString(jo, Names.USER, file::user, UserIdImpl::new);
+        this.unmarshalString(jo, Names.MODE, file::mode, this::asMode);
+        this.unmarshalBoolean(jo, Names.IS_EDITABLE, file::isEditable);
+        this.unmarshalBoolean(jo, Names.IS_EXTERNAL, file::isExternal);
+        this.unmarshalString(jo, Names.EXTERNAL_TYPE, file::externalType);
+        this.unmarshalInt(jo, Names.SIZE, file::size);
+        this.unmarshalBoolean(jo, Names.IS_PUBLIC, file::isPublic);
+        this.unmarshalBoolean(jo, Names.PUBLIC_URL_SHARED, file::isPublicUrlShared);
+        this.unmarshalString(jo, Names.URL, file::url, URLUtil::unsafeCreate);
+        this.unmarshalStringOpt(jo, Names.URL_DOWNLOAD, file::urlDownload, URLUtil::unsafeCreate);
+        this.unmarshalString(jo, Names.URL_PRIVATE, file::urlPrivate, URLUtil::unsafeCreate);
+        this.unmarshalStringOpt(jo, Names.URL_PRIVATE_DOWNLOAD, file::urlPrivateDownload, URLUtil::unsafeCreate);
+        this.unmarshalString(jo, Names.PERMALINK, file::permalink, URLUtil::unsafeCreate);
+        this.unmarshalStringOpt(jo, Names.PERMALINK_PUBLIC, file::permalinkPublic, URLUtil::unsafeCreate);
+        this.<ChannelId>unmarshalStringArray(jo, Names.CHANNELS, file::sharedChannels, ChannelIdImpl::new);
+        this.<GroupId>unmarshalStringArray(jo, Names.GROUPS, file::sharedGroups, GroupIdImpl::new);
+        // ims
+        this.unmarshalInt(jo, Names.COMMENTS_COUNT, file::commentsCount);
+        this.unmarshalObjectOpt(jo, Names.INITIAL_COMMENT, file::initialComment, this::asSharedFileComment);
+
+        for (SharedFile.Thumb.Size size : SharedFile.Thumb.Size.values())
+        {
+            String thumbString = Names.THUMB.apply(size);
+            if (jo.containsKey(thumbString))
+            {
+                SharedFileThumbImpl thumb = new SharedFileThumbImpl(size);
+
+                this.unmarshalString(jo, thumbString, thumb::url, URLUtil::unsafeCreate);
+                this.unmarshalIntOpt(jo, Names.THUMB_WIDTH.apply(size), thumb::width);
+                this.unmarshalIntOpt(jo, Names.THUMB_HEIGHT.apply(size), thumb::height);
+
+                file.thumb(thumb);
+            }
+        }
+
+        return file;
+    }
+    //where
+    private SharedFile.Mode asMode(String mode)
+    {
+        switch (mode)
+        {
+        case Names.HOSTED:
+            return SharedFile.Mode.HOSTED;
+        case Names.EXTERNAL:
+            return SharedFile.Mode.EXTERNAL;
+        case Names.SNIPPET:
+            return SharedFile.Mode.SNIPPET;
+        case Names.POST:
+            return SharedFile.Mode.POST;
+        default:
+            throw new NoSuchElementException("Not found mode: " + mode);
+        }
+    }
+
+    @Override
+    public SharedFileComment asSharedFileComment(JsonObject jo)
+    {
+        SharedFileCommentImpl comment = new SharedFileCommentImpl();
+
+        this.unmarshalString(jo, Names.ID, comment::id, SharedFileCommentIdImpl::new);
+        this.unmarshalInt(jo, Names.CREATED, comment::created);
+        this.unmarshalInt(jo, Names.TIMESTAMP, comment::timestamp);
+        this.unmarshalString(jo, Names.USER, comment::user, UserIdImpl::new);
+        this.unmarshalString(jo, Names.COMMENT, comment::comment);
+
+        return comment;
     }
 }

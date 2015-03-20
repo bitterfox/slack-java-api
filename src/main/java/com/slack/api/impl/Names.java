@@ -12,7 +12,6 @@ package com.slack.api.impl;
  */
 class Names
 {
-
     public static final String ALREADY_CLOSED = "already_closed";
     public static final String ALREADY_IN_CHANNEL = "already_in_channel";
     public static final String ALREADY_IN_GROUP = "already_in_group";
@@ -23,9 +22,12 @@ class Names
     public static final String CHANNEL = "channel";
     public static final String CHANNELS = "channels";
     public static final String CLOSE = "close";
+    public static final String COUNT = "count";
     public static final String CREATE = "create";
     public static final String CREATE_CHILD = "createChild";
     public static final String CREATED = "created";
+
+    public static final String FILES = "files";
 
     public static final String GROUP = "group";
     public static final String GROUPS = "groups";
@@ -52,6 +54,9 @@ class Names
 
     public static final String OPEN = "open";
 
+    public static final String PAGE = "page";
+    public static final String PAGES = "pages";
+    public static final String PAGING = "paging";
     public static final String PURPOSE = "purpose";
 
     public static final String RENAME = "rename";
@@ -63,6 +68,7 @@ class Names
     public static final String TEAM_ID = "team_id";
     public static final String TEST = "test";
     public static final String TOPIC = "topic";
+    public static final String TOTAL = "total";
     public static final String TS = "ts";
 
     public static final String UNARCHIVE = "unarchive";

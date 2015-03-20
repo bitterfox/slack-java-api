@@ -10,6 +10,7 @@ import com.slack.Slack;
 import com.slack.api.ApiFactory;
 import com.slack.api.Auth;
 import com.slack.api.Channels;
+import com.slack.api.Files;
 import com.slack.api.Groups;
 import com.slack.api.Users;
 
@@ -19,7 +20,6 @@ import com.slack.api.Users;
  */
 public class ApiFactoryImpl implements ApiFactory
 {
-
     @Override
     public Auth createAuth(Slack slack)
     {
@@ -30,6 +30,12 @@ public class ApiFactoryImpl implements ApiFactory
     public Channels createChannels(Slack slack)
     {
         return new ChannelsImpl(slack);
+    }
+
+    @Override
+    public Files createFiles(Slack slack)
+    {
+        return new FilesImpl(slack);
     }
 
     @Override

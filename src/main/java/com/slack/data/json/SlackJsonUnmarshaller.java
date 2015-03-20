@@ -10,6 +10,8 @@ import com.slack.data.Channel;
 import com.slack.data.Group;
 import com.slack.data.Profile;
 import com.slack.data.Purpose;
+import com.slack.data.SharedFile;
+import com.slack.data.SharedFileComment;
 import com.slack.data.Topic;
 import com.slack.data.User;
 import com.slack.data.event.Message;
@@ -49,6 +51,13 @@ public interface SlackJsonUnmarshaller
     Profile asProfile(JsonObject jo);
 
     Message asMessage(JsonObject jo);
+
+    SharedFile asSharedFile(JsonObject jo);
+    default List<SharedFile> asSharedFiles(JsonArray ja)
+    {
+        return SlackJsonUnmarshallers.asList(ja, this::asSharedFile);
+    }
+    SharedFileComment asSharedFileComment(JsonObject jo);
 }
 
 class SlackJsonUnmarshallers

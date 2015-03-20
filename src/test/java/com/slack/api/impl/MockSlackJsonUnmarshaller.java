@@ -10,6 +10,8 @@ import com.slack.data.Channel;
 import com.slack.data.Group;
 import com.slack.data.Profile;
 import com.slack.data.Purpose;
+import com.slack.data.SharedFile;
+import com.slack.data.SharedFileComment;
 import com.slack.data.Topic;
 import com.slack.data.User;
 import com.slack.data.event.Message;
@@ -17,6 +19,8 @@ import com.slack.data.impl.ChannelImpl;
 import com.slack.data.impl.GroupImpl;
 import com.slack.data.impl.ProfileImpl;
 import com.slack.data.impl.PurposeImpl;
+import com.slack.data.impl.SharedFileCommentImpl;
+import com.slack.data.impl.SharedFileImpl;
 import com.slack.data.impl.TopicImpl;
 import com.slack.data.impl.UserImpl;
 import com.slack.data.impl.event.MessageImpl;
@@ -77,5 +81,19 @@ public class MockSlackJsonUnmarshaller implements SlackJsonUnmarshaller
     {
         Objects.requireNonNull(jo);
         return new MessageImpl();
+    }
+
+    @Override
+    public SharedFile asSharedFile(JsonObject jo)
+    {
+        Objects.requireNonNull(jo);
+        return new SharedFileImpl();
+    }
+
+    @Override
+    public SharedFileComment asSharedFileComment(JsonObject jo)
+    {
+        Objects.requireNonNull(jo);
+        return new SharedFileCommentImpl();
     }
 }

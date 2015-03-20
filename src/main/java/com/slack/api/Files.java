@@ -6,17 +6,19 @@
 
 package com.slack.api;
 
-import com.slack.Slack;
+import com.slack.data.SharedFile;
 
 /**
  *
  * @author bitter_fox
  */
-public interface ApiFactory
+public interface Files
 {
-    Auth createAuth(Slack slack);
-    Channels createChannels(Slack slack);
-    Files createFiles(Slack slack);
-    Groups createGroups(Slack slack);
-    Users createUsers(Slack slack);
+    Files.List list();
+
+    interface List
+    {
+        java.util.List<SharedFile> files();
+        Paging paging();
+    }
 }
