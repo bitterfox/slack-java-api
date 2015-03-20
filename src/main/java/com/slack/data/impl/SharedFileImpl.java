@@ -396,7 +396,7 @@ public class SharedFileImpl implements SharedFile
     @Override
     public int commentsCount()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return commentsCount;
     }
 
     public void initialComment(SharedFileComment initialComment)

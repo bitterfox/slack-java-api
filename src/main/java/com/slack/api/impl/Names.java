@@ -23,10 +23,12 @@ class Names
     public static final String CHANNELS = "channels";
     public static final String CLOSE = "close";
     public static final String COUNT = "count";
+    public static final String COMMENTS = "comments";
     public static final String CREATE = "create";
     public static final String CREATE_CHILD = "createChild";
     public static final String CREATED = "created";
 
+    public static final String FILE = "file";
     public static final String FILES = "files";
 
     public static final String GROUP = "group";

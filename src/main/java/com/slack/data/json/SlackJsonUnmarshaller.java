@@ -58,6 +58,10 @@ public interface SlackJsonUnmarshaller
         return SlackJsonUnmarshallers.asList(ja, this::asSharedFile);
     }
     SharedFileComment asSharedFileComment(JsonObject jo);
+    default List<SharedFileComment> asSharedFileComments(JsonArray ja)
+    {
+        return SlackJsonUnmarshallers.asList(ja, this::asSharedFileComment);
+    }
 }
 
 class SlackJsonUnmarshallers
