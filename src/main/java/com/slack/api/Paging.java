@@ -6,17 +6,14 @@
 
 package com.slack.api;
 
-import com.slack.Slack;
-
 /**
  *
  * @author bitter_fox
  */
-public interface ApiFactory
+public interface Paging
 {
-    Auth createAuth(Slack slack);
-    Channels createChannels(Slack slack);
-    Files createFiles(Slack slack);
-    Groups createGroups(Slack slack);
-    Users createUsers(Slack slack);
+    int count();
+    int total();
+    int page();
+    int pages();
 }
