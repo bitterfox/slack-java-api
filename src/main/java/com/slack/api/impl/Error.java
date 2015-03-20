@@ -22,6 +22,8 @@ import com.slack.api.exception.NotAuthedException;
 import com.slack.api.exception.NotAuthorizedOperationException;
 import com.slack.api.exception.NotInChannelException;
 import com.slack.api.exception.RestrictedActionException;
+import com.slack.api.exception.SharedFileDeletedException;
+import com.slack.api.exception.SharedFileNotFoundException;
 import com.slack.api.exception.SlackException;
 import com.slack.api.exception.TokenRevokedException;
 import com.slack.api.exception.TooLongException;
@@ -67,6 +69,9 @@ enum Error
     USER_IS_RESTRICTED("user_is_restricted", UserIsRestrictedException::new),
     USER_NOT_FOUND("user_not_found", UserNotFoundException::new),
     USER_NOT_VISIBLE("user_not_visible", UserNotVisibleException::new),
+
+    FILE_NOT_FOUND("file_not_found", SharedFileNotFoundException::new),
+    FILE_DELETED("file_deleted", SharedFileDeletedException::new)
     ;
 
     private String code;
