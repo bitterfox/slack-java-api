@@ -78,7 +78,7 @@ class GroupsImpl implements Groups
         GetApiRequest apiRequest = api.get(CLOSE, builder ->
             builder.put(CHANNEL, groupId.id()));
 
-        return apiRequest.issue(GroupsImpl.Close::new);
+        return apiRequest.issue(CloseResult::new);
     }
 
     @ApiIssuer
@@ -204,31 +204,6 @@ class GroupsImpl implements Groups
         return this.list().groups().stream()
             .filter(g -> g.id().equals(groupId))
             .findAny();
-    }
-
-    private final class Close extends ApiResult implements Groups.Close
-    {
-        private boolean noOperation;
-        private boolean alreadyClosed;
-
-        @Override
-        public boolean noOperation()
-        {
-            return noOperation;
-        }
-
-        @Override
-        public boolean alreadyClosed()
-        {
-            return alreadyClosed;
-        }
-
-        @Override
-        protected void apply(JsonObject result)
-        {
-            this.noOperation = result.getBoolean(NO_OP, false);
-            this.alreadyClosed = result.getBoolean(ALREADY_CLOSED, false);
-        }
     }
 
     private final class Create extends ApiResult implements Groups.Create, Groups.CreateChild

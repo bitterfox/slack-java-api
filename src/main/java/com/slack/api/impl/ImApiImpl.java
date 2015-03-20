@@ -11,12 +11,14 @@ import com.slack.api.ApiIssuer;
 import com.slack.api.ImApi;
 import static com.slack.api.impl.Names.ALREADY_OPEN;
 import static com.slack.api.impl.Names.CHANNEL;
+import static com.slack.api.impl.Names.CLOSE;
 import static com.slack.api.impl.Names.ID;
 import static com.slack.api.impl.Names.IM;
 import static com.slack.api.impl.Names.IMS;
 import static com.slack.api.impl.Names.LIST;
 import static com.slack.api.impl.Names.NO_OP;
 import static com.slack.api.impl.Names.OPEN;
+import static com.slack.api.impl.Names.USER;
 import com.slack.data.Im;
 import com.slack.data.ImId;
 import com.slack.data.UserId;
@@ -40,6 +42,16 @@ class ImApiImpl implements ImApi
 
     @ApiIssuer
     @Override
+    public ImApi.Close close(ImId imId)
+    {
+        GetApiRequest apiRequest = api.get(CLOSE, builder ->
+            builder.put(CHANNEL, imId.id()));
+
+        return apiRequest.issue(CloseResult::new);
+    }
+
+    @ApiIssuer
+    @Override
     public ImApi.List list()
     {
         GetApiRequest apiRequest = api.get(LIST);
@@ -52,7 +64,7 @@ class ImApiImpl implements ImApi
     public ImApi.Open open(UserId userId)
     {
         GetApiRequest apiRequest = api.get(OPEN, builder ->
-            builder.put("user", userId.id()));
+            builder.put(USER, userId.id()));
 
         return apiRequest.issue(ImApiImpl.Open::new);
     }

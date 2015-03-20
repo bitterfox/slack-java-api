@@ -17,10 +17,19 @@ import com.slack.data.UserId;
 public interface ImApi
 {
     @ApiIssuer
+    ImApi.Close close(ImId imId);
+
+    @ApiIssuer
     ImApi.List list();
 
     @ApiIssuer
     ImApi.Open open(UserId userId);
+
+    interface Close
+    {
+        boolean noOperation();
+        boolean alreadyClosed();
+    }
 
     interface List
     {
