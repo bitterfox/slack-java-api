@@ -12,6 +12,7 @@ import com.slack.api.Auth;
 import com.slack.api.Channels;
 import com.slack.api.Files;
 import com.slack.api.Groups;
+import com.slack.api.ImApi;
 import com.slack.api.Users;
 
 /**
@@ -42,6 +43,12 @@ public class ApiFactoryImpl implements ApiFactory
     public Groups createGroups(Slack slack)
     {
         return new GroupsImpl(slack);
+    }
+
+    @Override
+    public ImApi createIm(Slack slack)
+    {
+        return new ImApiImpl(slack);
     }
 
     @Override

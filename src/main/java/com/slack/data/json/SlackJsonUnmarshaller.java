@@ -8,6 +8,7 @@ package com.slack.data.json;
 
 import com.slack.data.Channel;
 import com.slack.data.Group;
+import com.slack.data.Im;
 import com.slack.data.Profile;
 import com.slack.data.Purpose;
 import com.slack.data.SharedFile;
@@ -15,7 +16,6 @@ import com.slack.data.SharedFileComment;
 import com.slack.data.Topic;
 import com.slack.data.User;
 import com.slack.data.event.Message;
-import com.slack.util.JsonUtil;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -41,6 +41,12 @@ public interface SlackJsonUnmarshaller
     default List<Group> asGroups(JsonArray ja)
     {
         return SlackJsonUnmarshallers.asList(ja, this::asGroup);
+    }
+
+    Im asIm(JsonObject jo);
+    default List<Im> asIms(JsonArray ja)
+    {
+        return SlackJsonUnmarshallers.asList(ja, this::asIm);
     }
 
     User asUser(JsonObject jo);

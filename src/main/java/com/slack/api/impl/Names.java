@@ -35,6 +35,8 @@ class Names
     public static final String GROUPS = "groups";
 
     public static final String ID = "id";
+    public static final String IM = "im";
+    public static final String IMS = "ims";
     public static final String INFO = "info";
     public static final String INVITE = "invite";
     public static final String IS_CHANNEL = "is_channel";
