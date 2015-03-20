@@ -15,9 +15,9 @@ import org.junit.Test;
  *
  * @author bitter_fox
  */
-public class ImList extends AbstractApiTest<ImApi, ImApi.List>
+public class ImListTest extends AbstractApiTest<ImApi, ImApi.List>
 {
-    public ImList()
+    public ImListTest()
     {
         super(Slack::im, ImApi::list);
     }
