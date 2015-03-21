@@ -16,8 +16,10 @@ import static com.slack.api.impl.Names.ID;
 import static com.slack.api.impl.Names.IM;
 import static com.slack.api.impl.Names.IMS;
 import static com.slack.api.impl.Names.LIST;
+import static com.slack.api.impl.Names.MARK;
 import static com.slack.api.impl.Names.NO_OP;
 import static com.slack.api.impl.Names.OPEN;
+import static com.slack.api.impl.Names.TS;
 import static com.slack.api.impl.Names.USER;
 import com.slack.data.Im;
 import com.slack.data.ImId;
@@ -57,6 +59,17 @@ class ImApiImpl implements ImApi
         GetApiRequest apiRequest = api.get(LIST);
 
         return apiRequest.issue(ImApiImpl.List::new);
+    }
+
+    @ApiIssuer
+    @Override
+    public ImApi.Mark mark(ImId imId, String ts)
+    {
+        GetApiRequest apiRequest = api.get(MARK, builder ->
+            builder.put(CHANNEL, imId.id())
+                .put(TS, ts));
+
+        return apiRequest.issue(EmptyResult::new);
     }
 
     @ApiIssuer
