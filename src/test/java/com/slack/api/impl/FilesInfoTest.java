@@ -6,6 +6,7 @@
 
 package com.slack.api.impl;
 
+import com.slack.Slack;
 import com.slack.api.Files;
 import com.slack.data.impl.SharedFileIdImpl;
 import java.util.Objects;
