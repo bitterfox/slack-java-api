@@ -25,7 +25,7 @@ public class FilesInfoTest extends AbstractApiTest<Files, Files.Info>
     }
 
     @Result("{\"ok\":true,"
-        + "\"file\":{}"
+        + "\"file\":{},"
         + "\"comments\":[{}, {}, {}],"
         + "\"paging\":{"
         + "\"count\":100,"
