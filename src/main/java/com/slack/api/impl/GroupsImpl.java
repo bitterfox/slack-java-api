@@ -10,7 +10,6 @@ import com.slack.Slack;
 import com.slack.api.ApiBridge;
 import com.slack.api.ApiIssuer;
 import com.slack.api.Groups;
-import static com.slack.api.impl.Names.ALREADY_CLOSED;
 import static com.slack.api.impl.Names.ALREADY_IN_GROUP;
 import static com.slack.api.impl.Names.ALREADY_OPEN;
 import static com.slack.api.impl.Names.ARCHIVE;
@@ -27,6 +26,7 @@ import static com.slack.api.impl.Names.IS_GROUP;
 import static com.slack.api.impl.Names.KICK;
 import static com.slack.api.impl.Names.LEAVE;
 import static com.slack.api.impl.Names.LIST;
+import static com.slack.api.impl.Names.MARK;
 import static com.slack.api.impl.Names.NAME;
 import static com.slack.api.impl.Names.NO_OP;
 import static com.slack.api.impl.Names.OPEN;
@@ -35,6 +35,7 @@ import static com.slack.api.impl.Names.RENAME;
 import static com.slack.api.impl.Names.SET_PURPOSE;
 import static com.slack.api.impl.Names.SET_TOPIC;
 import static com.slack.api.impl.Names.TOPIC;
+import static com.slack.api.impl.Names.TS;
 import static com.slack.api.impl.Names.UNARCHIVE;
 import static com.slack.api.impl.Names.USER;
 import com.slack.data.Group;
@@ -142,6 +143,17 @@ class GroupsImpl implements Groups
         GetApiRequest apiRequest = api.get(LIST);
 
         return apiRequest.issue(GroupsImpl.List::new);
+    }
+
+    @ApiIssuer
+    @Override
+    public Groups.Mark mark(GroupId groupId, String ts)
+    {
+        GetApiRequest apiRequest = api.get(MARK, builder ->
+            builder.put(CHANNEL, groupId.id())
+                .put(TS, ts));
+
+        return apiRequest.issue(EmptyResult::new);
     }
 
     @ApiIssuer
