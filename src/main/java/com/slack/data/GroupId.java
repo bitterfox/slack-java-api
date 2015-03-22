@@ -10,7 +10,6 @@ package com.slack.data;
  *
  * @author bitter_fox
  */
-public interface GroupId
+public interface GroupId extends RoomableId
 {
-    String id();
 }

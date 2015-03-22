@@ -77,6 +77,13 @@ class Api
             return this;
         }
 
+        public GetBuilder put(String key, boolean value)
+        {
+            this.put(key, String.valueOf(value));
+
+            return this;
+        }
+
         private String escape(String str)
         {
             try
