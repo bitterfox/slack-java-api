@@ -23,6 +23,9 @@ public interface ImApi
     ImApi.List list();
 
     @ApiIssuer
+    ImApi.Mark mark(ImId imId, String ts);
+
+    @ApiIssuer
     ImApi.Open open(UserId userId);
 
     interface Close
@@ -35,6 +38,8 @@ public interface ImApi
     {
         java.util.List<Im> ims();
     }
+
+    interface Mark {}
 
     interface Open
     {

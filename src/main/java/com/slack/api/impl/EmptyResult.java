@@ -8,13 +8,24 @@ package com.slack.api.impl;
 
 import com.slack.api.Channels;
 import com.slack.api.Groups;
+import com.slack.api.ImApi;
 import javax.json.JsonObject;
 
 /**
  *
  * @author bitter_fox
  */
-class EmptyResult extends ApiResult implements Channels.Archive, Channels.Unarchive, Channels.Kick, Channels.Mark, Groups.Archive, Groups.Unarchive, Groups.Kick, Groups.Leave, Groups.Mark
+class EmptyResult extends ApiResult implements
+    Channels.Archive,
+    Channels.Unarchive,
+    Channels.Kick,
+    Channels.Mark,
+    Groups.Archive,
+    Groups.Unarchive,
+    Groups.Kick,
+    Groups.Leave,
+    Groups.Mark,
+    ImApi.Mark
 {
     @Override
     protected void apply(JsonObject result) {}
