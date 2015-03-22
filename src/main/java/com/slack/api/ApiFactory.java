@@ -16,6 +16,7 @@ public interface ApiFactory
 {
     Auth createAuth(Slack slack);
     Channels createChannels(Slack slack);
+    ChatApi createChat(Slack slack);
     Files createFiles(Slack slack);
     Groups createGroups(Slack slack);
     ImApi createIm(Slack slack);
