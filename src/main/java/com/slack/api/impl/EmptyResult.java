@@ -24,6 +24,7 @@ class EmptyResult extends ApiResult implements
     Groups.Unarchive,
     Groups.Kick,
     Groups.Leave,
+    Groups.Mark,
     ImApi.Mark
 {
     @Override

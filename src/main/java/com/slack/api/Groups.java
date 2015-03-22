@@ -42,6 +42,9 @@ public interface Groups
     Groups.List list();
 
     @ApiIssuer
+    Groups.Mark mark(GroupId groupId, String ts);
+
+    @ApiIssuer
     Groups.Open open(GroupId groupId);
 
     @ApiIssuer
@@ -91,6 +94,8 @@ public interface Groups
     {
         java.util.List<Group> groups();
     }
+
+    interface Mark {}
 
     interface Open
     {
