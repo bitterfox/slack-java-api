@@ -86,6 +86,7 @@ class Names
 
     public static final String UNFURL_LINKS = "unfurl_links";
     public static final String UNFURL_MEDIA = "unfurl_media";
+    public static final String UPDATE = "update";
 
     public static final String UNARCHIVE = "unarchive";
     public static final String URL = "url";

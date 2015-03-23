@@ -28,7 +28,10 @@ public interface ChatApi
     ChatApi.PostMessage postMessageAsBot(RoomableId channel, String text, String name, Either<URL, String/*EmojiName*/> icon);
 
     @ApiIssuer
-    PostMessage postMessage(RoomableId channel, String text, Optional<String> username, Optional<Boolean> asUser, Optional<ParseMode> parse, Optional<Boolean> linkNames, Optional<Boolean> unfurlLinks, Optional<Boolean> unfurlMedia, Optional<URL> iconUrl, Optional<String> iconEmoji);
+    ChatApi.PostMessage postMessage(RoomableId channel, String text, Optional<String> username, Optional<Boolean> asUser, Optional<ParseMode> parse, Optional<Boolean> linkNames, Optional<Boolean> unfurlLinks, Optional<Boolean> unfurlMedia, Optional<URL> iconUrl, Optional<String> iconEmoji);
+
+    @ApiIssuer
+    ChatApi.Update update(RoomableId channel, String ts, String text);
 
     enum ParseMode
     {
@@ -40,5 +43,12 @@ public interface ChatApi
         // current, ignoring channel
         Message message();
         String timestamp();
+    }
+
+    interface Update
+    {
+        // current, ignoring channel
+        String timestamp();
+        String text();
     }
 }
