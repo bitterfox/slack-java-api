@@ -8,6 +8,7 @@ package com.slack.api.impl;
 
 import com.slack.api.exception.AccountInactiveException;
 import com.slack.api.exception.AlreadyInChannelException;
+import com.slack.api.exception.CannotDoException;
 import com.slack.api.exception.CannotDoGeneralException;
 import com.slack.api.exception.CannotDoSelfException;
 import com.slack.api.exception.CannotInviteException;
@@ -15,6 +16,7 @@ import com.slack.api.exception.ChannelNotFoundException;
 import com.slack.api.exception.InvalidAuthException;
 import com.slack.api.exception.InvalidNameException;
 import com.slack.api.exception.IsArchivedException;
+import com.slack.api.exception.MessageNotFoundException;
 import com.slack.api.exception.NameTakenException;
 import com.slack.api.exception.NoChannelException;
 import com.slack.api.exception.NotArchivedException;
@@ -69,6 +71,9 @@ enum Error
     USER_IS_RESTRICTED("user_is_restricted", UserIsRestrictedException::new),
     USER_NOT_FOUND("user_not_found", UserNotFoundException::new),
     USER_NOT_VISIBLE("user_not_visible", UserNotVisibleException::new),
+
+    MESSAGE_NOT_FOUND("message_not_found", MessageNotFoundException::new),
+    CANT_DELETE_MESSAGE("cant_delete_message", CannotDoException::new),
 
     FILE_NOT_FOUND("file_not_found", SharedFileNotFoundException::new),
     FILE_DELETED("file_deleted", SharedFileDeletedException::new)

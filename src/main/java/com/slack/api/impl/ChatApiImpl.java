@@ -13,6 +13,7 @@ import com.slack.api.ChatApi;
 import static com.slack.api.impl.Names.AS_USER;
 import static com.slack.api.impl.Names.CHANNEL;
 import static com.slack.api.impl.Names.CHAT;
+import static com.slack.api.impl.Names.DELETE;
 import static com.slack.api.impl.Names.ICON_EMOJI;
 import static com.slack.api.impl.Names.ICON_URL;
 import static com.slack.api.impl.Names.LINK_NAMES;
@@ -24,7 +25,6 @@ import static com.slack.api.impl.Names.TS;
 import static com.slack.api.impl.Names.UNFURL_LINKS;
 import static com.slack.api.impl.Names.UNFURL_MEDIA;
 import static com.slack.api.impl.Names.USER_NAME;
-import com.slack.data.ChannelId;
 import com.slack.data.RoomableId;
 import com.slack.data.event.Message;
 import com.slack.util.Either;
@@ -45,6 +45,17 @@ public class ChatApiImpl implements ChatApi
     {
         this.slack = slack;
         this.api = new Api(slack, CHAT);
+    }
+
+    @ApiIssuer
+    @Override
+    public ChatApi.Delete delete(RoomableId channel, String timestamp)
+    {
+        GetApiRequest apiRequest = api.get(DELETE, builder ->
+            builder.put(CHANNEL, channel.id())
+                .put(TS, timestamp));
+
+        return apiRequest.issue(ChatApiImpl.Delete::new);
     }
 
     @ApiBridge
@@ -89,6 +100,23 @@ public class ChatApiImpl implements ChatApi
             });
 
         return apiRequest.issue(ChatApiImpl.PostMessage::new);
+    }
+
+    private final class Delete extends ApiResult implements ChatApi.Delete
+    {
+        private String timestamp;
+
+        @Override
+        public String timestamp()
+        {
+            return timestamp;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            this.timestamp = result.getString(TS);
+        }
     }
 
     private final class PostMessage extends ApiResult implements ChatApi.PostMessage

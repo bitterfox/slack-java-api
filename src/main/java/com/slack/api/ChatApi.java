@@ -19,6 +19,9 @@ import java.util.Optional;
  */
 public interface ChatApi
 {
+    @ApiIssuer
+    ChatApi.Delete delete(RoomableId channel, String timestamp);
+
     @ApiBridge
     ChatApi.PostMessage postMessage(RoomableId channel, String text); // channel=channel, text=str, parse=full,as_user=true, link_names=true
 
@@ -33,6 +36,12 @@ public interface ChatApi
     enum ParseMode
     {
         FULL, DEFAULT, NONE;
+    }
+
+    interface Delete
+    {
+        // current, ignoring channel
+        String timestamp();
     }
 
     interface PostMessage
