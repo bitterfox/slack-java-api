@@ -19,6 +19,7 @@ import com.slack.api.exception.IsArchivedException;
 import com.slack.api.exception.MessageNotFoundException;
 import com.slack.api.exception.NameTakenException;
 import com.slack.api.exception.NoChannelException;
+import com.slack.api.exception.NoTextException;
 import com.slack.api.exception.NotArchivedException;
 import com.slack.api.exception.NotAuthedException;
 import com.slack.api.exception.NotAuthorizedOperationException;
@@ -76,7 +77,9 @@ enum Error
     CANT_DELETE_MESSAGE("cant_delete_message", CannotDoException::new),
 
     FILE_NOT_FOUND("file_not_found", SharedFileNotFoundException::new),
-    FILE_DELETED("file_deleted", SharedFileDeletedException::new)
+    FILE_DELETED("file_deleted", SharedFileDeletedException::new),
+
+    NO_TEXT("no_text", NoTextException::new),
     ;
 
     private String code;

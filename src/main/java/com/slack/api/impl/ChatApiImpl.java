@@ -24,6 +24,7 @@ import static com.slack.api.impl.Names.TEXT;
 import static com.slack.api.impl.Names.TS;
 import static com.slack.api.impl.Names.UNFURL_LINKS;
 import static com.slack.api.impl.Names.UNFURL_MEDIA;
+import static com.slack.api.impl.Names.UPDATE;
 import static com.slack.api.impl.Names.USER_NAME;
 import com.slack.data.RoomableId;
 import com.slack.data.event.Message;
@@ -102,6 +103,18 @@ public class ChatApiImpl implements ChatApi
         return apiRequest.issue(ChatApiImpl.PostMessage::new);
     }
 
+    @ApiIssuer
+    @Override
+    public ChatApi.Update update(RoomableId channel, String timestamp, String text)
+    {
+        GetApiRequest apiRequest = api.get(UPDATE, builder ->
+            builder.put(CHANNEL, channel.id())
+                .put(TS, timestamp)
+                .put(TEXT, text));
+
+        return apiRequest.issue(ChatApiImpl.Update::new);
+    }
+
     private final class Delete extends ApiResult implements ChatApi.Delete
     {
         private String timestamp;
@@ -141,6 +154,31 @@ public class ChatApiImpl implements ChatApi
         {
             this.message = slack.getConfigure().unmarshaller().asMessage(result.getJsonObject(MESSAGE));
             this.timestamp = result.getString(TS);
+        }
+    }
+
+    private final class Update extends ApiResult implements ChatApi.Update
+    {
+        private String timestamp;
+        private String text;
+
+        @Override
+        public String timestamp()
+        {
+            return timestamp;
+        }
+
+        @Override
+        public String text()
+        {
+            return text;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            this.timestamp = result.getString(TS);
+            this.text = result.getString(TEXT);
         }
     }
 }
