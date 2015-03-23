@@ -17,6 +17,7 @@ import com.slack.api.exception.InvalidNameException;
 import com.slack.api.exception.IsArchivedException;
 import com.slack.api.exception.NameTakenException;
 import com.slack.api.exception.NoChannelException;
+import com.slack.api.exception.NoTextException;
 import com.slack.api.exception.NotArchivedException;
 import com.slack.api.exception.NotAuthedException;
 import com.slack.api.exception.NotAuthorizedOperationException;
@@ -71,7 +72,9 @@ enum Error
     USER_NOT_VISIBLE("user_not_visible", UserNotVisibleException::new),
 
     FILE_NOT_FOUND("file_not_found", SharedFileNotFoundException::new),
-    FILE_DELETED("file_deleted", SharedFileDeletedException::new)
+    FILE_DELETED("file_deleted", SharedFileDeletedException::new),
+
+    NO_TEXT("no_text", NoTextException::new),
     ;
 
     private String code;
