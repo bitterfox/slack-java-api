@@ -30,6 +30,8 @@ class Names
     public static final String CREATE_CHILD = "createChild";
     public static final String CREATED = "created";
 
+    public static final String DELETE = "delete";
+
     public static final String FILE = "file";
     public static final String FILES = "files";
 

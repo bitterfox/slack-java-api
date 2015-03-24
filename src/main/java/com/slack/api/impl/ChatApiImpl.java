@@ -13,6 +13,7 @@ import com.slack.api.ChatApi;
 import static com.slack.api.impl.Names.AS_USER;
 import static com.slack.api.impl.Names.CHANNEL;
 import static com.slack.api.impl.Names.CHAT;
+import static com.slack.api.impl.Names.DELETE;
 import static com.slack.api.impl.Names.ICON_EMOJI;
 import static com.slack.api.impl.Names.ICON_URL;
 import static com.slack.api.impl.Names.LINK_NAMES;
@@ -45,6 +46,17 @@ public class ChatApiImpl implements ChatApi
     {
         this.slack = slack;
         this.api = new Api(slack, CHAT);
+    }
+
+    @ApiIssuer
+    @Override
+    public ChatApi.Delete delete(RoomableId channel, String timestamp)
+    {
+        GetApiRequest apiRequest = api.get(DELETE, builder ->
+            builder.put(CHANNEL, channel.id())
+                .put(TS, timestamp));
+
+        return apiRequest.issue(ChatApiImpl.Delete::new);
     }
 
     @ApiBridge
@@ -101,6 +113,23 @@ public class ChatApiImpl implements ChatApi
                 .put(TEXT, text));
 
         return apiRequest.issue(ChatApiImpl.Update::new);
+    }
+
+    private final class Delete extends ApiResult implements ChatApi.Delete
+    {
+        private String timestamp;
+
+        @Override
+        public String timestamp()
+        {
+            return timestamp;
+        }
+
+        @Override
+        protected void apply(JsonObject result)
+        {
+            this.timestamp = result.getString(TS);
+        }
     }
 
     private final class PostMessage extends ApiResult implements ChatApi.PostMessage
