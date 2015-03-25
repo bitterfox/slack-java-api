@@ -12,6 +12,7 @@ import com.slack.api.Users;
 import static com.slack.api.impl.Names.INFO;
 import static com.slack.api.impl.Names.LIST;
 import static com.slack.api.impl.Names.MEMBERS;
+import static com.slack.api.impl.Names.SET_ACTIVE;
 import static com.slack.api.impl.Names.USER;
 import static com.slack.api.impl.Names.USERS;
 import com.slack.data.User;
@@ -49,6 +50,15 @@ class UsersImpl implements Users
         ApiRequest apiRequest = api.get(LIST);
 
         return apiRequest.issue(UsersImpl.List::new);
+    }
+
+    @ApiIssuer
+    @Override
+    public Users.SetActive setActive()
+    {
+        ApiRequest apiRequest = api.get(SET_ACTIVE);
+
+        return apiRequest.issue(EmptyResult::new);
     }
 
     public final class Info extends ApiResult implements Users.Info

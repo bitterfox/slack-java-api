@@ -21,6 +21,9 @@ public interface Users
     @ApiIssuer
     Users.List list();
 
+    @ApiIssuer
+    Users.SetActive setActive();
+
     interface Info
     {
         User user();
@@ -30,4 +33,6 @@ public interface Users
     {
         java.util.List<User> members();
     }
+
+    interface SetActive {}
 }
