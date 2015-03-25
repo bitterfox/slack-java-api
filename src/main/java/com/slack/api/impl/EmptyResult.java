@@ -9,6 +9,7 @@ package com.slack.api.impl;
 import com.slack.api.Channels;
 import com.slack.api.Groups;
 import com.slack.api.ImApi;
+import com.slack.api.Users;
 import javax.json.JsonObject;
 
 /**
@@ -25,7 +26,8 @@ class EmptyResult extends ApiResult implements
     Groups.Kick,
     Groups.Leave,
     Groups.Mark,
-    ImApi.Mark
+    ImApi.Mark,
+    Users.SetActive
 {
     @Override
     protected void apply(JsonObject result) {}
