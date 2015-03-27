@@ -8,6 +8,8 @@ package com.slack.api;
 
 import com.slack.data.User;
 import com.slack.data.UserId;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 /**
  *
@@ -16,10 +18,26 @@ import com.slack.data.UserId;
 public interface Users
 {
     @ApiIssuer
+    Users.GetPresence getPresence(UserId userId);
+
+    @ApiIssuer
     Users.Info info(UserId userId);
 
     @ApiIssuer
     Users.List list();
+
+    interface GetPresence
+    {
+        boolean isAway();
+        boolean isActive();
+
+        boolean forSelf();
+        Optional<Boolean> isOnline();
+        Optional<Boolean> isAutoAway();
+        Optional<Boolean> isManualAway();
+        OptionalInt connectionCount();
+        OptionalInt lastActivity();
+    }
 
     interface Info
     {
