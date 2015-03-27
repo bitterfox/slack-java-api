@@ -19,6 +19,7 @@ import static com.slack.api.impl.Names.MANUAL_AWAY;
 import static com.slack.api.impl.Names.MEMBERS;
 import static com.slack.api.impl.Names.ONLINE;
 import static com.slack.api.impl.Names.PRESENCE;
+import static com.slack.api.impl.Names.SET_ACTIVE;
 import static com.slack.api.impl.Names.USER;
 import static com.slack.api.impl.Names.USERS;
 import com.slack.data.User;
@@ -26,6 +27,7 @@ import com.slack.data.UserId;
 import java.util.Optional;
 import java.util.OptionalInt;
 import javax.json.JsonObject;
+import static javax.swing.text.html.HTML.Tag.HEAD;
 
 /**
  *
@@ -68,6 +70,15 @@ class UsersImpl implements Users
         ApiRequest apiRequest = api.get(LIST);
 
         return apiRequest.issue(UsersImpl.List::new);
+    }
+
+    @ApiIssuer
+    @Override
+    public Users.SetActive setActive()
+    {
+        ApiRequest apiRequest = api.get(SET_ACTIVE);
+
+        return apiRequest.issue(EmptyResult::new);
     }
 
     private final class GetPresence extends ApiResult implements Users.GetPresence

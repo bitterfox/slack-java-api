@@ -82,6 +82,7 @@ class Names
 
     public static final String RENAME = "rename";
 
+    public static final String SET_ACTIVE = "setActive";
     public static final String SET_PURPOSE = "setPurpose";
     public static final String SET_TOPIC = "setTopic";
 
