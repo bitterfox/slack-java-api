@@ -19,13 +19,15 @@ class Names
     public static final String ARCHIVE = "archive";
     public static final String AS_USER = "as_user";
     public static final String AUTH = "auth";
+    public static final String AUTO_AWAY = "auto_away";
 
     public static final String CHANNEL = "channel";
     public static final String CHANNELS = "channels";
     public static final String CHAT = "chat";
     public static final String CLOSE = "close";
-    public static final String COUNT = "count";
     public static final String COMMENTS = "comments";
+    public static final String CONNECTION_COUNT = "connection_count";
+    public static final String COUNT = "count";
     public static final String CREATE = "create";
     public static final String CREATE_CHILD = "createChild";
     public static final String CREATED = "created";
@@ -35,6 +37,7 @@ class Names
     public static final String FILE = "file";
     public static final String FILES = "files";
 
+    public static final String GET_PRESENCE = "getPresence";
     public static final String GROUP = "group";
     public static final String GROUPS = "groups";
 
@@ -52,6 +55,7 @@ class Names
 
     public static final String KICK = "kick";
 
+    public static final String LAST_ACTIVITY = "last_activity";
     public static final String LEAVE = "leave";
     public static final String LINK_NAMES = "linkNames";
     public static final String LIST = "list";
@@ -60,10 +64,12 @@ class Names
     public static final String NO_OP = "no_op";
     public static final String NOT_IN_CHANNEL = "not_in_channel";
 
+    public static final String MANUAL_AWAY = "manual_away";
     public static final String MARK = "mark";
     public static final String MEMBERS = "members";
     public static final String MESSAGE = "message";
 
+    public static final String ONLINE = "online";
     public static final String OPEN = "open";
 
     public static final String PAGE = "page";
@@ -71,6 +77,7 @@ class Names
     public static final String PAGING = "paging";
     public static final String PARSE = "parse";
     public static final String POST_MESSAGE = "postMessage";
+    public static final String PRESENCE = "presence";
     public static final String PURPOSE = "purpose";
 
     public static final String RENAME = "rename";
