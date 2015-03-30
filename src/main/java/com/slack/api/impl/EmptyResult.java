@@ -7,6 +7,7 @@
 package com.slack.api.impl;
 
 import com.slack.api.Channels;
+import com.slack.api.Files;
 import com.slack.api.Groups;
 import com.slack.api.ImApi;
 import com.slack.api.Users;
@@ -21,6 +22,7 @@ class EmptyResult extends ApiResult implements
     Channels.Unarchive,
     Channels.Kick,
     Channels.Mark,
+    Files.Delete,
     Groups.Archive,
     Groups.Unarchive,
     Groups.Kick,

@@ -17,10 +17,15 @@ import com.slack.data.SharedFileId;
 public interface Files
 {
     @ApiIssuer
+    Files.Delete delete(SharedFileId fileId);
+
+    @ApiIssuer
     Files.Info info(SharedFileId fileId);
 
     @ApiIssuer
     Files.List list();
+
+    interface Delete {}
 
     interface Info
     {
