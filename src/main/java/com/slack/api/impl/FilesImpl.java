@@ -11,6 +11,7 @@ import com.slack.api.ApiIssuer;
 import com.slack.api.Files;
 import com.slack.api.Paging;
 import static com.slack.api.impl.Names.COMMENTS;
+import static com.slack.api.impl.Names.DELETE;
 import static com.slack.api.impl.Names.FILE;
 import static com.slack.api.impl.Names.FILES;
 import static com.slack.api.impl.Names.INFO;
@@ -34,6 +35,16 @@ class FilesImpl implements Files
     {
         this.slack = slack;
         api = new Api(slack, FILES);
+    }
+    
+    @ApiIssuer
+    @Override
+    public Files.Delete delete(SharedFileId fileId)
+    {
+        GetApiRequest apiRequest = api.get(DELETE, builder ->
+                builder.put(FILE, fileId.id()));
+        
+        return apiRequest.issue(EmptyResult::new);
     }
 
     @ApiIssuer
